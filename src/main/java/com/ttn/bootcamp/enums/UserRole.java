@@ -1,7 +1,22 @@
 package com.ttn.bootcamp.enums;
 
 public enum UserRole {
-    CUSTOMER,
-    SELLER,
-    ADMIN;
+    DEFAULT(0),
+    CUSTOMER(1),
+    SELLER(2),
+    ADMIN(3);
+
+    private int type;
+
+    UserRole(int type) {
+        this.type = type;
+    }
+
+    public static UserRole getUserRole(int type) {
+        for (UserRole role : UserRole.values()) {
+            if (role.type == type)
+                return role;
+        }
+        return UserRole.DEFAULT;
+    }
 }

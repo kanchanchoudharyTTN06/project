@@ -28,8 +28,8 @@ public class Order
     private Date dateCreated;
     private String paymentMethod = "COD";
 
-    @OneToMany(mappedBy = "order" , cascade = CascadeType.ALL)
-    private List<Address> customerAddressList;
+    /*@OneToMany(mappedBy = "order" , cascade = CascadeType.ALL)
+    private List<Address> customerAddressList;*/
 
     @ManyToOne
     @JoinColumn(name = "customer_id")

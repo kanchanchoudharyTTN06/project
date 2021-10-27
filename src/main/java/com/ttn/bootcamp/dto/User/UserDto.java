@@ -5,6 +5,7 @@ import com.sun.istack.internal.NotNull;
 import com.ttn.bootcamp.domains.User.Address;
 import com.ttn.bootcamp.domains.User.Role;
 import com.ttn.bootcamp.domains.User.User;
+import com.ttn.bootcamp.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +17,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -48,7 +50,8 @@ public class UserDto {
     private boolean isExpired = false;
     private int invalidAttemptCount;
     private Date lockTime;
-    private List<Role> roleList = new ArrayList<>();
+    //private List<Role> roleList = new ArrayList<>();
+    private int userType;
     private List<Address> addressList;
 
     public User toUserEntity() {
@@ -62,6 +65,10 @@ public class UserDto {
                 .isActive(this.isActive)
                 .isLocked(this.isLocked)
                 .isExpired(this.isExpired)
+                /*.roleList(Collections.singletonList(new Role()
+                                .builder()
+                                .authority(UserRole.getUserRole(this.userType).name())
+                                .userList(Collections.singletonList()))*/
                 .invalidAttemptCount(this.invalidAttemptCount)
                 .build();
     }
