@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
+
 
 @Entity
 @Data
@@ -17,6 +17,8 @@ import java.util.Date;
 @JsonFilter("Filter")
 public class Cart
 {
+    @EmbeddedId
+    private CustomerProductVariationKey customerProductVariationKey = new CustomerProductVariationKey();
     private int quantity;
     private boolean isWishlistItem;
 
