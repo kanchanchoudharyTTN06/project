@@ -1,5 +1,8 @@
 package com.ttn.bootcamp.domains.User;
 
+import com.ttn.bootcamp.domains.Order.Cart;
+import com.ttn.bootcamp.domains.Order.Order;
+import com.ttn.bootcamp.domains.Product.ProductReview;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,12 +20,12 @@ public class Customer extends User {
     @CollectionTable(name = "customer_contacts", joinColumns = @JoinColumn(name = "customer_id", referencedColumnName = "id"))
     private List<Long> contactList;
 
-    /*@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<ProductReview> productReviewList;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Order> orderList;
 
     @OneToMany(mappedBy = "customer" , cascade = CascadeType.ALL)
-    private List<Cart> carts;*/
+    private List<Cart> carts;
 }

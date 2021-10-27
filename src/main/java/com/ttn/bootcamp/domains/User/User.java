@@ -41,6 +41,7 @@ public class User {
     @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL)
     private List<Address> addressList;
 
+
     public UserDto toUserDto(){
         return new UserDto().builder()
                 .email(this.email)

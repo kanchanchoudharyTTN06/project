@@ -1,5 +1,6 @@
 package com.ttn.bootcamp.domains.User;
 
+import com.ttn.bootcamp.domains.Product.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,6 @@ public class Seller extends User {
     @CollectionTable(name = "seller_contacts", joinColumns = @JoinColumn(name = "seller_id", referencedColumnName = "id"))
     private List<Long> contactList;
     private String companyName;
-    /*@OneToMany(mappedBy = "seller")
-    private List<Product> productList;*/
+    @OneToMany(mappedBy = "seller")
+    private List<Product> productList;
 }
