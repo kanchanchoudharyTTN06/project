@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,7 +18,7 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<Object> userRegistration(@RequestBody UserDto userDto) throws GenericException {
+    public ResponseEntity<Object> userRegistration(@Valid @RequestBody UserDto userDto) throws GenericException {
         UserDto user = userService.registerUser(userDto);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }

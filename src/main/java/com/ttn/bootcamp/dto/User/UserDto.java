@@ -30,7 +30,7 @@ public class UserDto {
 
     private int id;
     @NotBlank(message = "Email is mandatory")
-    @Email
+    @Email(message = "Invalid email")
     @Column(unique = true)
     private String email;
     @NotBlank(message = "First Name is mandatory")

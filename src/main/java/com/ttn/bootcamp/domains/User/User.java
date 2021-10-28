@@ -41,7 +41,7 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Address> addressList;
 
-    public UserDto toUserDto(){
+    public UserDto toUserDto() {
         return new UserDto().builder()
                 .id(this.id)
                 .email(this.email)
@@ -56,6 +56,7 @@ public class User {
                 .invalidAttemptCount(this.invalidAttemptCount)
                 .addressList(this.addressList)
                 .roleList(this.roleList)
+                .confirmPassword(this.password)
                 .build();
     }
 }
