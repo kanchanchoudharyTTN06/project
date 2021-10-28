@@ -18,25 +18,25 @@ public class GlobalControllerAdvice {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @ExceptionHandler(GenericException.class)
-    public ResponseEntity<CustomeExceptionResponse> handleBaseExceptions(GenericException exception) {
+    public ResponseEntity<CustomExceptionResponse> handleBaseExceptions(GenericException exception) {
 
-        CustomeExceptionResponse customeExceptionResponse = new CustomeExceptionResponse()
+        CustomExceptionResponse customExceptionResponse = new CustomExceptionResponse()
                 .setMessage(exception.getMsg())
                 .setStatusCode(exception.getStatusCode().value());
         logger.error("-->", exception);
-        return new ResponseEntity<>(customeExceptionResponse, exception.getStatusCode());
+        return new ResponseEntity<>(customExceptionResponse, exception.getStatusCode());
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<CustomeExceptionResponse> handleException(Exception exception) {
-        CustomeExceptionResponse customeExceptionResponse = new CustomeExceptionResponse().setMessage(exception.getMessage())
+    public ResponseEntity<CustomExceptionResponse> handleException(Exception exception) {
+        CustomExceptionResponse customExceptionResponse = new CustomExceptionResponse().setMessage(exception.getMessage())
                 .setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
         logger.error("-->", exception);
-        return new ResponseEntity<>(customeExceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(customExceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<CustomeExceptionResponse> handleException(MethodArgumentNotValidException exception) {
+    public ResponseEntity<CustomExceptionResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
 
         Map<String, String> errors = new HashMap<>();
         exception.getBindingResult().getAllErrors().forEach((error) -> {
@@ -45,10 +45,10 @@ public class GlobalControllerAdvice {
             errors.put(fieldName, errorMessage);
         });
 
-        CustomeExceptionResponse customeExceptionResponse = new CustomeExceptionResponse().setMessage(errors)
+        CustomExceptionResponse customExceptionResponse = new CustomExceptionResponse().setMessage(errors)
                 .setStatusCode(HttpStatus.BAD_REQUEST.value());
         logger.error("-->", exception);
-        return new ResponseEntity<>(customeExceptionResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(customExceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
 }

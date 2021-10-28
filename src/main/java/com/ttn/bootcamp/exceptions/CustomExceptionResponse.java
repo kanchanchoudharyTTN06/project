@@ -1,6 +1,6 @@
 package com.ttn.bootcamp.exceptions;
 
-public class CustomeExceptionResponse {
+public class CustomExceptionResponse {
     private Object message;
     private int statusCode;
     private String status = "error";
@@ -9,7 +9,7 @@ public class CustomeExceptionResponse {
         return message;
     }
 
-    public CustomeExceptionResponse setMessage(Object message) {
+    public CustomExceptionResponse setMessage(Object message) {
         this.message = message;
         return this;
     }
@@ -18,7 +18,7 @@ public class CustomeExceptionResponse {
         return statusCode;
     }
 
-    public CustomeExceptionResponse setStatusCode(int statusCode) {
+    public CustomExceptionResponse setStatusCode(int statusCode) {
         this.statusCode = statusCode;
         return this;
     }
@@ -27,7 +27,7 @@ public class CustomeExceptionResponse {
         return status;
     }
 
-    public CustomeExceptionResponse setStatus(String status) {
+    public CustomExceptionResponse setStatus(String status) {
         this.status = status;
         return this;
     }
