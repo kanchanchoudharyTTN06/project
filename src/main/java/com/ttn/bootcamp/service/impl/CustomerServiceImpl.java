@@ -1,5 +1,6 @@
 package com.ttn.bootcamp.service.impl;
 
+import com.ttn.bootcamp.Utility;
 import com.ttn.bootcamp.domains.User.Customer;
 import com.ttn.bootcamp.domains.User.Role;
 import com.ttn.bootcamp.dto.User.CustomerDto;
@@ -13,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -29,11 +30,19 @@ public class CustomerServiceImpl implements CustomerService {
         if (!customerDto.getPassword().equals(customerDto.getConfirmPassword())) {
             throw new GenericException("Confirm password didn't matched", HttpStatus.BAD_REQUEST);
         }
+        // throws exception if email already registered
+        userService.checkForEmailExist(customerDto.getEmail());
+
         Role role = roleRepository.findByAuthority("ROLE_" + UserRole.CUSTOMER);
-        customerDto.setRoleList(Arrays.asList(role));
+        customerDto.setRoleList(Collections.singletonList(role));
+
         Customer customer = customerDto.toCustomerEntity();
+        customer.setPassword(Utility.encrypt(customer.getPassword()));
         customerDto = customerRepository.save(customer).toCustomerDto();
+
+        // send account activation link
         userService.accountActivationHandler(customer);
+
         return customerDto;
     }
 }

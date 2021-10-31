@@ -78,8 +78,14 @@ public class UserServiceImpl implements UserService {
         return "Congratulations! " + user.getFirstName() + ", your account is activated.";
     }
 
-    public AuthToken createAuthToken(User user) {
+    private AuthToken createAuthToken(User user) {
         AuthToken authToken = new AuthToken(user);
         return tokenRepository.save(authToken);
+    }
+
+    @Override
+    public void checkForEmailExist(String email) throws GenericException {
+        if (Objects.nonNull(userRepository.findByEmail(email)))
+            throw new GenericException("Email id already registered.", HttpStatus.BAD_REQUEST);
     }
 }

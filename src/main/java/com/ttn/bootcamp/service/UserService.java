@@ -15,4 +15,6 @@ public interface UserService {
     UserDto getUserById(int id);
 
     String activateUserAccount(String token) throws GenericException;
+
+    void checkForEmailExist(String email) throws GenericException;
 }
