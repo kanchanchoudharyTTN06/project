@@ -7,12 +7,10 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class RoleDto {
-
     private long id;
     private String authority;
     private List<UserDto> userList = new ArrayList<>();

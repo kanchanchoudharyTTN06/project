@@ -17,12 +17,6 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping("/register")
-    public ResponseEntity<Object> userRegistration(@Valid @RequestBody UserDto userDto) throws GenericException {
-        UserDto user = userService.registerUser(userDto);
-        return new ResponseEntity<>(user, HttpStatus.OK);
-    }
-
     @GetMapping("/activate/account")
     public ResponseEntity<Object> activateUser(@RequestParam("token") String token) throws GenericException {
         String msg = userService.activateUserAccount(token);

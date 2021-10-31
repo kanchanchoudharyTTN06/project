@@ -32,23 +32,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     TokenRepository tokenRepository;
 
-    //PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @Override
-    public UserDto registerUser(UserDto userDto) throws GenericException {
-        if (!userDto.getPassword().equals(userDto.getConfirmPassword())) {
-            throw new GenericException("Confirm password didn't matched", HttpStatus.BAD_REQUEST);
-        }
-        Role role = roleRepository.findByAuthority("ROLE_" + UserRole.getUserRole(userDto.getUserType()).name());
-        userDto.setRoleList(Arrays.asList(role));
-        //userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-
-        User user = userDto.toUserEntity();
-        userDto = userRepository.save(user).toUserDto();
-        accountActivationHandler(user);
-        return userDto;
-    }
-
-    private void accountActivationHandler(User user) {
+    public void accountActivationHandler(User user) {
         AuthToken authToken = createAuthToken(user);
 
         String body = "<html>\n" +
