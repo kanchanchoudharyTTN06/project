@@ -20,6 +20,6 @@ public class Role {
     private long id;
     private String authority;
 
-    @ManyToMany(mappedBy = "roleList")
-    private List<User> userList;
+    /*@ManyToMany(mappedBy = "roleList")
+    private List<User> userList;*/
 }
