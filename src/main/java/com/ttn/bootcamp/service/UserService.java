@@ -12,7 +12,7 @@ public interface UserService {
 
     List<UserDto> getAllUsers();
 
-    UserDto getUserById(int id);
+    UserDto getUserById(long id);
 
     String activateUserAccount(String token) throws GenericException;
 

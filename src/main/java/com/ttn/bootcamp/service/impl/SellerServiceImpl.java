@@ -8,6 +8,7 @@ import com.ttn.bootcamp.enums.UserRole;
 import com.ttn.bootcamp.exceptions.GenericException;
 import com.ttn.bootcamp.repository.RoleRepository;
 import com.ttn.bootcamp.repository.SellerRepository;
+import com.ttn.bootcamp.service.EmailService;
 import com.ttn.bootcamp.service.SellerService;
 import com.ttn.bootcamp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ public class SellerServiceImpl implements SellerService {
     RoleRepository roleRepository;
     @Autowired
     UserService userService;
+    @Autowired
+    EmailService emailService;
 
     @Override
     public SellerDto registerUser(SellerDto sellerDto) throws GenericException {
@@ -41,9 +44,17 @@ public class SellerServiceImpl implements SellerService {
         seller.setPassword(Utility.encrypt(seller.getPassword()));
         sellerDto = sellerRepository.save(seller).toSellerDto();
 
-        // send account activation link
-        userService.accountActivationHandler(seller);
+        // send account creation mail
+        accountCreationEmailHandler(seller);
 
         return sellerDto;
+    }
+
+    private void accountCreationEmailHandler(Seller seller) {
+        String body = "<html>\n" +
+                "    <body>Dear " + seller.getFirstName() + ",<br><br>Your account has been created, waiting for approval.</body>\n" +
+                "</html>";
+        String subject = "Congratulations! Account created";
+        emailService.sendEmail(seller.getEmail(), subject, body);
     }
 }
