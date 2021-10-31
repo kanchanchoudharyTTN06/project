@@ -1,9 +1,7 @@
 package com.ttn.bootcamp.service.impl;
 
-import com.ttn.bootcamp.domains.User.Role;
 import com.ttn.bootcamp.domains.User.User;
 import com.ttn.bootcamp.dto.User.UserDto;
-import com.ttn.bootcamp.enums.UserRole;
 import com.ttn.bootcamp.exceptions.GenericException;
 import com.ttn.bootcamp.repository.AddressRepository;
 import com.ttn.bootcamp.repository.RoleRepository;
@@ -15,10 +13,12 @@ import com.ttn.bootcamp.token.AuthToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -75,7 +75,17 @@ public class UserServiceImpl implements UserService {
         User user = authToken.getUser();
         user.setActive(true);
         userRepository.save(user);
+        tokenRepository.deleteByUser(user);
+        accountActivationConfirmationHandler(user);
         return "Congratulations! " + user.getFirstName() + ", your account is activated.";
+    }
+
+    private void accountActivationConfirmationHandler(User user) {
+        String body = "<html>\n" +
+                "    <body>Dear " + user.getFirstName() + ",<br><br>Your account has been activated successfully.</body>\n" +
+                "</html>";
+        String subject = "Congratulations!";
+        emailService.sendEmail(user.getEmail(), subject, body);
     }
 
     private AuthToken createAuthToken(User user) {
