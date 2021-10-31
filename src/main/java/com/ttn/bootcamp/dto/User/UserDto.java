@@ -1,12 +1,11 @@
 package com.ttn.bootcamp.dto.User;
 
-import com.ttn.bootcamp.domains.User.Address;
-import com.ttn.bootcamp.domains.User.Role;
 import com.ttn.bootcamp.domains.User.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -45,23 +44,11 @@ public class UserDto {
     private boolean isExpired = false;
     private int invalidAttemptCount;
     private Date lockTime;
-    private List<Role> roleList = new ArrayList<>();
-    private List<Address> addressList;
+    private List<RoleDto> roleList = new ArrayList<>();
+    private List<AddressDto> addressList;
 
     public User toUserEntity() {
-        return new User().builder()
-                .email(this.email)
-                .firstName(this.firstName)
-                .middleName(this.middleName)
-                .lastName(this.lastName)
-                .password(this.password)
-                .isDeleted(this.isDeleted)
-                .isActive(this.isActive)
-                .isLocked(this.isLocked)
-                .isExpired(this.isExpired)
-                .roleList(this.roleList)
-                .invalidAttemptCount(this.invalidAttemptCount)
-                .addressList(this.addressList)
-                .build();
+        ModelMapper mapper = new ModelMapper();
+        return mapper.map(this, User.class);
     }
 }

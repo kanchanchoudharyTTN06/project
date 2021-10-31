@@ -1,8 +1,10 @@
 package com.ttn.bootcamp.dto.User;
 
+import com.ttn.bootcamp.domains.User.Address;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 
 @Data
 @AllArgsConstructor
@@ -16,4 +18,9 @@ public class AddressDto {
     private int zipCode;
     private String label;
     private UserDto user;
+
+    public Address toAddressEntity() {
+        ModelMapper mapper = new ModelMapper();
+        return mapper.map(this, Address.class);
+    }
 }

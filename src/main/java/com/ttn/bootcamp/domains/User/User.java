@@ -1,10 +1,13 @@
 package com.ttn.bootcamp.domains.User;
 
+import com.ttn.bootcamp.dto.User.AddressDto;
+import com.ttn.bootcamp.dto.User.RoleDto;
 import com.ttn.bootcamp.dto.User.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -16,7 +19,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
-@Builder
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,21 +44,7 @@ public class User {
     private List<Address> addressList;
 
     public UserDto toUserDto() {
-        return new UserDto().builder()
-                .id(Long.valueOf(this.id))
-                .email(this.email)
-                .firstName(this.firstName)
-                .middleName(this.middleName)
-                .lastName(this.lastName)
-                .password(this.password)
-                .isDeleted(this.isDeleted)
-                .isActive(this.isActive)
-                .isLocked(this.isLocked)
-                .isExpired(this.isExpired)
-                .invalidAttemptCount(this.invalidAttemptCount)
-                .addressList(this.addressList)
-                .roleList(this.roleList)
-                .confirmPassword(this.password)
-                .build();
+        ModelMapper mapper = new ModelMapper();
+        return mapper.map(this, UserDto.class);
     }
 }

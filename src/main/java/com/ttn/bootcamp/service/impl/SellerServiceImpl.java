@@ -35,10 +35,9 @@ public class SellerServiceImpl implements SellerService {
         // throws exception if email already registered
         userService.checkForEmailExist(sellerDto.getEmail());
 
-        Role role = roleRepository.findByAuthority("ROLE_" + UserRole.SELLER);
-        sellerDto.setRoleList(Collections.singletonList(role));
-
         Seller seller = sellerDto.toSellerEntity();
+        Role role = roleRepository.findByAuthority("ROLE_" + UserRole.SELLER);
+        seller.setRoleList(Collections.singletonList(role));
         seller.setPassword(Utility.encrypt(seller.getPassword()));
         sellerDto = sellerRepository.save(seller).toSellerDto();
 

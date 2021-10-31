@@ -1,8 +1,10 @@
 package com.ttn.bootcamp.domains.User;
 
+import com.ttn.bootcamp.dto.User.AddressDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;
 
@@ -24,4 +26,9 @@ public class Address {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    public AddressDto toAddressDto() {
+        ModelMapper mapper = new ModelMapper();
+        return mapper.map(this, AddressDto.class);
+    }
 }

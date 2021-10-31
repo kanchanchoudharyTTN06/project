@@ -33,10 +33,9 @@ public class CustomerServiceImpl implements CustomerService {
         // throws exception if email already registered
         userService.checkForEmailExist(customerDto.getEmail());
 
-        Role role = roleRepository.findByAuthority("ROLE_" + UserRole.CUSTOMER);
-        customerDto.setRoleList(Collections.singletonList(role));
-
         Customer customer = customerDto.toCustomerEntity();
+        Role role = roleRepository.findByAuthority("ROLE_" + UserRole.CUSTOMER);
+        customer.setRoleList(Collections.singletonList(role));
         customer.setPassword(Utility.encrypt(customer.getPassword()));
         customerDto = customerRepository.save(customer).toCustomerDto();
 
