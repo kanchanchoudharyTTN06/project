@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFilter;
 
 @JsonFilter("Filter")
 public class AddressDto {
-    private int id;
+    private long id;
     private String city;
     private String state;
     private String country;
@@ -13,11 +13,11 @@ public class AddressDto {
     private String label;
     private UserDto user;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

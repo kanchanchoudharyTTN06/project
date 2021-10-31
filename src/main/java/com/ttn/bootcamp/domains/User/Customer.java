@@ -11,11 +11,11 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@PrimaryKeyJoinColumn(name = "id")
+@PrimaryKeyJoinColumn
 public class Customer extends User {
-    @ElementCollection
-    @CollectionTable(name = "customer_contacts", joinColumns = @JoinColumn(name = "customer_id", referencedColumnName = "id"))
-    private List<Long> contactList;
+    //@ElementCollection
+    //@CollectionTable(name = "customer_contacts", joinColumns = @JoinColumn(name = "customer_id", referencedColumnName = "id"))
+    private long contact;
 
     /*@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<ProductReview> productReviewList;

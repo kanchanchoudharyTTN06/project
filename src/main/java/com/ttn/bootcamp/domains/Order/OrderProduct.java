@@ -29,16 +29,16 @@ public class OrderProduct
     @Column(columnDefinition = "json")
     private String productVariationMetadata; //metadata
 
-    @ManyToOne(optional = false)
+    /*@ManyToOne(optional = false)
     @JoinColumn(name = "order_id")
-    private Order order;
+    private Order order;*/
 
     /*@OneToOne(optional = false)
     @JoinColumn(name = "product_variation_id")
     private ProductVariation productVariation;*/
 
 
-    @OneToOne(mappedBy = "orderProduct", cascade = CascadeType.ALL)
-    private OrderStatus orderStatus;
+    /*@OneToOne(mappedBy = "orderProduct", cascade = CascadeType.ALL)
+    private OrderStatus orderStatus;*/
 
 }

@@ -18,5 +18,5 @@ public class CustomerDto extends UserDto {
 
     @Pattern(regexp = "^(\\+\\d{1,3}[- ]?)?\\d{10}$")
     @NotBlank(message = "Phone Number is mandatory")
-    private List<Long> contactList;
+    private long contact;
 }

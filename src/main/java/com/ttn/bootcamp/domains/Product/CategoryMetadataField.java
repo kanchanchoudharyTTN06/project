@@ -18,11 +18,11 @@ public class CategoryMetadataField {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
-    @Column(unique = true)
+    //@Column(unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "categoryMetadataField", cascade = CascadeType.ALL)
-    private List<CategoryMetadataFieldValues> categoryMetadataFieldValues = new ArrayList<>();
+    /*@OneToMany(mappedBy = "categoryMetadataField", cascade = CascadeType.ALL)
+    private List<CategoryMetadataFieldValues> categoryMetadataFieldValues = new ArrayList<>();*/
 }

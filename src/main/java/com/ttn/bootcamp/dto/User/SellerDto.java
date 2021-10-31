@@ -20,7 +20,7 @@ public class SellerDto extends UserDto {
     private String gst;
     @Pattern(regexp = "^(\\+\\d{1,3}[- ]?)?\\d{10}$")
     @NotBlank(message = "Phone Number is mandatory")
-    private List<Long> contactList;
+    private long contact;
     @NotBlank
     @Size(min = 3, message = ("Company Name should have at least 3 characters"))
     private String companyName;

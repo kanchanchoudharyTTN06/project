@@ -31,11 +31,11 @@ public class Order
     /*@OneToMany(mappedBy = "order" , cascade = CascadeType.ALL)
     private List<Address> customerAddressList;*/
 
-    @ManyToOne
+   /* @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderProduct> orderProductList = new ArrayList<>();
+    private List<OrderProduct> orderProductList = new ArrayList<>();*/
 
 }

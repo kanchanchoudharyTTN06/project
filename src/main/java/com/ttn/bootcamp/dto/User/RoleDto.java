@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class RoleDto {
 
-    private int id;
+    private long id;
     private String authority;
     private List<UserDto> userList = new ArrayList<>();
 }

@@ -16,7 +16,7 @@ public class CategoryMetadataFieldValues {
     private CategoryMetadataFieldKey categoryMetadataFieldKey;
     private String name;
 
-    @ManyToOne
+    /*@ManyToOne
     @MapsId("categoryMetadataFieldId")
     @JoinColumn(name = "category_metadata_field_id", referencedColumnName = "id")
     private CategoryMetadataField categoryMetadataField;
@@ -24,5 +24,5 @@ public class CategoryMetadataFieldValues {
     @ManyToOne
     @MapsId("categoryId")
     @JoinColumn(name = "category_id", referencedColumnName = "id")
-    private Category category;
+    private Category category;*/
 }

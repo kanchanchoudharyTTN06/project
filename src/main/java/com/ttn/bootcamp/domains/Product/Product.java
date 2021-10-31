@@ -26,7 +26,7 @@ public class Product {
     private boolean Is_Active = false;
     private boolean Is_Deleted = false;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    /*@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "seller_id", referencedColumnName = "id")
     private Seller seller;
 
@@ -38,6 +38,6 @@ public class Product {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
-    private Category category;
+    private Category category;*/
 
 }

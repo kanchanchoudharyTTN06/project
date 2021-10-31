@@ -28,7 +28,7 @@ import java.util.List;
 @Builder
 public class UserDto {
 
-    private int id;
+    private long id;
     @NotBlank(message = "Email is mandatory")
     @Email(message = "Invalid email")
     @Column(unique = true)

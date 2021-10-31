@@ -19,7 +19,7 @@ public class Category {
     private int id;
     private String name;
 
-    @OneToMany(mappedBy = "category")
+    /*@OneToMany(mappedBy = "category")
     private List<Product> productList;
 
     @ManyToOne
@@ -27,5 +27,5 @@ public class Category {
     private ParentCategory parentCategory;
 
     @OneToMany(mappedBy = "category")
-    private List<CategoryMetadataFieldValues> categoryMetadataFieldValuesList;
+    private List<CategoryMetadataFieldValues> categoryMetadataFieldValuesList;*/
 }

@@ -22,8 +22,8 @@ public class OrderStatus
     private String toStatus;
 
     //unidirectional
-    @OneToOne
+    /*@OneToOne
     @MapsId
     @JoinColumn(name = "order_product_id")
-    private OrderProduct orderProduct;
+    private OrderProduct orderProduct;*/
 }

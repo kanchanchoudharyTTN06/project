@@ -22,7 +22,7 @@ public class Cart
     private int quantity;
     private boolean isWishlistItem;
 
-    @ManyToOne
+    /*@ManyToOne
     @MapsId("customerId")
     @JoinColumn(name = "customer_id")
     private Customer customer;
@@ -30,5 +30,5 @@ public class Cart
     @ManyToOne
     @MapsId("productVariationId")
     @JoinColumn(name = "product_variation_id")
-    private ProductVariation productVariation;
+    private ProductVariation productVariation;*/
 }

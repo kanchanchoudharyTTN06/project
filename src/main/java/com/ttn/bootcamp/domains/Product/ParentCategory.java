@@ -19,8 +19,8 @@ public class ParentCategory
 
     private String name;
 
-    @OneToMany(mappedBy = "parentCategory")
-    private List<Category> categoryList;
+    /*@OneToMany(mappedBy = "parentCategory")
+    private List<Category> categoryList;*/
 
     public ParentCategory(String name)
     {

@@ -11,12 +11,12 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@PrimaryKeyJoinColumn(name = "id")
+@PrimaryKeyJoinColumn
 public class Seller extends User {
     private String gst;
-    @ElementCollection
-    @CollectionTable(name = "seller_contacts", joinColumns = @JoinColumn(name = "seller_id", referencedColumnName = "id"))
-    private List<Long> contactList;
+    /*@ElementCollection
+    @CollectionTable(name = "seller_contacts", joinColumns = @JoinColumn(name = "seller_id", referencedColumnName = "id"))*/
+    private long contact;
     private String companyName;
     /*@OneToMany(mappedBy = "seller")
     private List<Product> productList;*/

@@ -20,7 +20,7 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private String email;
     private String firstName;
     private String middleName;
@@ -43,7 +43,7 @@ public class User {
 
     public UserDto toUserDto() {
         return new UserDto().builder()
-                .id(this.id)
+                .id(Long.valueOf(this.id))
                 .email(this.email)
                 .firstName(this.firstName)
                 .middleName(this.middleName)
