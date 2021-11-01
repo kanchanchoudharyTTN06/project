@@ -1,5 +1,6 @@
 package com.ttn.bootcamp.service.impl;
 
+import com.ttn.bootcamp.domains.User.Customer;
 import com.ttn.bootcamp.util.Utility;
 import com.ttn.bootcamp.domains.User.Role;
 import com.ttn.bootcamp.domains.User.Seller;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.List;
 
 @Service
 public class SellerServiceImpl implements SellerService {
@@ -55,5 +57,9 @@ public class SellerServiceImpl implements SellerService {
                 "</html>";
         String subject = "Congratulations! Account created";
         emailService.sendEmail(seller.getEmail(), subject, body);
+    }
+
+    public List<Seller> findAllSellers() {
+        return sellerRepository.findAll();
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.List;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -43,5 +44,9 @@ public class CustomerServiceImpl implements CustomerService {
         userService.accountActivationHandler(customer);
 
         return customerDto;
+    }
+
+    public List<Customer> findAllCustomers() {
+        return customerRepository.findAll();
     }
 }
