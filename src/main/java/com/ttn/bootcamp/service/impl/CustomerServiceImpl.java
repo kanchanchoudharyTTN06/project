@@ -1,6 +1,6 @@
 package com.ttn.bootcamp.service.impl;
 
-import com.ttn.bootcamp.Utility;
+import com.ttn.bootcamp.util.Utility;
 import com.ttn.bootcamp.domains.User.Customer;
 import com.ttn.bootcamp.domains.User.Role;
 import com.ttn.bootcamp.dto.User.CustomerDto;

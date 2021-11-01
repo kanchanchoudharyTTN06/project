@@ -1,14 +1,12 @@
 package com.ttn.bootcamp.token;
 
-import com.ttn.bootcamp.Utility;
+import com.ttn.bootcamp.ApplicationConstants;
+import com.ttn.bootcamp.util.Utility;
 
-import java.sql.Timestamp;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.UUID;
 
 public class AccountActivationToken {
-    private String uuid;
+    private String secreteCode;
     private long userId;
     private long creationDate;
 
@@ -16,17 +14,16 @@ public class AccountActivationToken {
     }
 
     public AccountActivationToken(long userId) {
-        this.uuid = UUID.randomUUID().toString();
         this.userId = userId;
         this.creationDate = new Date().getTime();
     }
 
-    public String getUuid() {
-        return uuid;
+    public String getSecreteCode() {
+        return secreteCode;
     }
 
-    public AccountActivationToken setUuid(String uuid) {
-        this.uuid = uuid;
+    public AccountActivationToken setSecreteCode(String secreteCode) {
+        this.secreteCode = secreteCode;
         return this;
     }
 
@@ -50,7 +47,7 @@ public class AccountActivationToken {
 
     public String getToken() {
         StringBuilder sb = new StringBuilder();
-        sb.append(uuid).append("|").append(creationDate).append("|").append(userId);
+        sb.append(ApplicationConstants.SECRETE_CODE).append("|").append(creationDate).append("|").append(userId);
         return Utility.encrypt(sb.toString());
     }
 
@@ -61,12 +58,12 @@ public class AccountActivationToken {
             return null;
         }
         return new AccountActivationToken()
-                .setUuid(props[0])
+                .setSecreteCode(props[0])
                 .setCreationDate(Long.parseLong(props[1]))
                 .setUserId(Long.parseLong(props[2]));
     }
 
-    public boolean isValidToken(int validationMinute) {
+    public boolean isNotExpired(int validationMinute) {
         long oneMinuteInMS = 60000;
         long currentTime = new Date().getTime();
         long createdTime = this.creationDate;

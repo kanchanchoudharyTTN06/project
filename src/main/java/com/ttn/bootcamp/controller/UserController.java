@@ -2,6 +2,7 @@ package com.ttn.bootcamp.controller;
 
 import com.ttn.bootcamp.dto.User.UserDto;
 import com.ttn.bootcamp.exceptions.GenericException;
+import com.ttn.bootcamp.model.ResetPassword;
 import com.ttn.bootcamp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,4 +35,23 @@ public class UserController {
         UserDto user = userService.getUserById(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
+
+    @PostMapping("/send/activation/link")
+    public ResponseEntity<Object> reSendActivationLink(@RequestBody ResetPassword resetPassword) throws GenericException {
+        String response = userService.reSendActivationLink(resetPassword.getEmail());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/forgot/password")
+    public ResponseEntity<Object> forgotPassword(@RequestBody ResetPassword resetPassword) throws GenericException {
+        String status = userService.forgotPassword(resetPassword.getEmail());
+        return new ResponseEntity<>(status, HttpStatus.OK);
+    }
+
+    @PostMapping("/reset/password")
+    public ResponseEntity<Object> resetPassword(@Valid @RequestBody ResetPassword resetPassword) throws GenericException {
+        String status = userService.resetPassword(resetPassword);
+        return new ResponseEntity<>(status, HttpStatus.OK);
+    }
+
 }

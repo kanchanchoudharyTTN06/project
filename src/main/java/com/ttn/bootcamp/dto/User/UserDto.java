@@ -34,7 +34,8 @@ public class UserDto {
     @Size(min = 3, message = "Last Name should have at least 3 characters")
     private String lastName;
     @NotBlank(message = "Password is mandatory")
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$",
+            message = "Password must contains uppercase, special character and digit of minimum length 8")
     private String password;
     @NotBlank(message = "Confirm Password is mandatory")
     private String confirmPassword;

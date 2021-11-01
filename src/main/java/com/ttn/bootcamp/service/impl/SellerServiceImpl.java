@@ -1,6 +1,6 @@
 package com.ttn.bootcamp.service.impl;
 
-import com.ttn.bootcamp.Utility;
+import com.ttn.bootcamp.util.Utility;
 import com.ttn.bootcamp.domains.User.Role;
 import com.ttn.bootcamp.domains.User.Seller;
 import com.ttn.bootcamp.dto.User.SellerDto;
@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 @Service

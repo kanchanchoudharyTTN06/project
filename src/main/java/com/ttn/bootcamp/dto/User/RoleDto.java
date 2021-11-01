@@ -15,7 +15,7 @@ import java.util.List;
 public class RoleDto {
     private long id;
     private String authority;
-    private List<UserDto> userList = new ArrayList<>();
+    //private List<UserDto> userList = new ArrayList<>();
 
     public Role toRoleEntity() {
         ModelMapper mapper = new ModelMapper();
