@@ -23,9 +23,9 @@ public class Address {
     private int zipCode;
     private String label;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+   /* @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    private User user;*/
 
     public AddressDto toAddressDto() {
         ModelMapper mapper = new ModelMapper();
