@@ -44,4 +44,11 @@ public class AdminServiceImpl implements AdminService {
         long id = Long.parseLong(entry.stream().iterator().next().getValue());
         return userService.activateUserAccountByAdmin(id);
     }
+
+    @Override
+    public String deActivateUser(Map<String, String> request) throws GenericException {
+        Set<Map.Entry<String, String>> entry = request.entrySet();
+        long id = Long.parseLong(entry.stream().iterator().next().getValue());
+        return userService.deActivateUserAccountByAdmin(id);
+    }
 }

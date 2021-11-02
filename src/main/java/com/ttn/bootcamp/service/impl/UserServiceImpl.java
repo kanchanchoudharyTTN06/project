@@ -96,6 +96,27 @@ public class UserServiceImpl implements UserService {
         throw new GenericException("No content found", HttpStatus.NOT_FOUND);
     }
 
+    public String deActivateUserAccountByAdmin(long id) throws GenericException {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            if (!user.get().isActive())
+                return SUCCESS_RESPONSE;
+            user.get().setActive(false);
+            userRepository.save(user.get());
+            accountDeActivationConfirmationHandler(user.get());
+            return SUCCESS_RESPONSE;
+        }
+        throw new GenericException("No content found", HttpStatus.NOT_FOUND);
+    }
+
+    private void accountDeActivationConfirmationHandler(User user) {
+        String body = "<html>\n" +
+                "    <body>Dear " + user.getFirstName() + ",<br><br>Your account has been de-activated.</body>\n" +
+                "</html>";
+        String subject = "Account Deactivated!";
+        emailService.sendEmail(user.getEmail(), subject, body);
+    }
+
     private void checkForTokenValidityAndExpiry(AccountActivationToken accountActivationToken, int expiryMinute) throws GenericException {
         if (Objects.isNull(accountActivationToken) ||
                 !ApplicationConstants.SECRETE_CODE.equals(accountActivationToken.getSecreteCode()))

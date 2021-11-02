@@ -31,9 +31,27 @@ public class AdminController {
         return new ResponseEntity<>(seller, HttpStatus.OK);
     }
 
-    @PatchMapping("/activate/users")
-    public ResponseEntity<Object> activateUserAccount(@RequestBody Map<String, String> request) throws GenericException {
+    @PatchMapping("/activate/seller")
+    public ResponseEntity<Object> activateSellerAccount(@RequestBody Map<String, String> request) throws GenericException {
         String response = adminService.activateUser(request);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PatchMapping("/activate/customer")
+    public ResponseEntity<Object> activateCustomerAccount(@RequestBody Map<String, String> request) throws GenericException {
+        String response = adminService.activateUser(request);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PatchMapping("/deactivate/seller")
+    public ResponseEntity<Object> deActivateSellerAccount(@RequestBody Map<String, String> request) throws GenericException {
+        String response = adminService.deActivateUser(request);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PatchMapping("/deactivate/customer")
+    public ResponseEntity<Object> deActivateCustomerAccount(@RequestBody Map<String, String> request) throws GenericException {
+        String response = adminService.deActivateUser(request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

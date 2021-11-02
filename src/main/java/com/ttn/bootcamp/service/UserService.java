@@ -28,4 +28,6 @@ public interface UserService {
     String resetPassword(ResetPassword resetPassword) throws GenericException;
 
     String reSendActivationLink(String email) throws GenericException;
+
+    String deActivateUserAccountByAdmin(long id) throws GenericException;
 }

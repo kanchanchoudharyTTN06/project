@@ -13,4 +13,6 @@ public interface AdminService {
     List<Seller> getAllSellers() throws GenericException;
 
     String activateUser(Map<String, String> request) throws GenericException;
+
+    String deActivateUser(Map<String, String> request) throws GenericException;
 }
