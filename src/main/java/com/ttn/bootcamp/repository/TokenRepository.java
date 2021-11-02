@@ -6,12 +6,14 @@ import com.ttn.bootcamp.token.AuthToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface TokenRepository extends JpaRepository<AuthToken, Integer> {
 
-    AuthToken findByToken(String confirmationToken);
+    Optional<AuthToken> findByToken(String confirmationToken);
 
-    AuthToken findTokenByUserId(int id);
+    Optional<AuthToken> findTokenByUserId(long userId);
 
     void deleteByUser(User user);
 }

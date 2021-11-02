@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SellerServiceImpl implements SellerService {
@@ -40,8 +41,8 @@ public class SellerServiceImpl implements SellerService {
         userService.checkForEmailExist(sellerDto.getEmail());
 
         Seller seller = sellerDto.toSellerEntity();
-        Role role = roleRepository.findByAuthority("ROLE_" + UserRole.SELLER);
-        seller.setRoleList(Collections.singletonList(role));
+        Optional<Role> role = roleRepository.findByAuthority("ROLE_" + UserRole.SELLER);
+        role.ifPresent(value -> seller.setRoleList(Collections.singletonList(value)));
         seller.setPassword(Utility.encrypt(seller.getPassword()));
         sellerDto = sellerRepository.save(seller).toSellerDto();
 

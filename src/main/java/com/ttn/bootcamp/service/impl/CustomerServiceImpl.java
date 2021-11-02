@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -35,8 +36,8 @@ public class CustomerServiceImpl implements CustomerService {
         userService.checkForEmailExist(customerDto.getEmail());
 
         Customer customer = customerDto.toCustomerEntity();
-        Role role = roleRepository.findByAuthority("ROLE_" + UserRole.CUSTOMER);
-        customer.setRoleList(Collections.singletonList(role));
+        Optional<Role> role = roleRepository.findByAuthority("ROLE_" + UserRole.CUSTOMER);
+        role.ifPresent(value -> customer.setRoleList(Collections.singletonList(value)));
         customer.setPassword(Utility.encrypt(customer.getPassword()));
         customerDto = customerRepository.save(customer).toCustomerDto();
 

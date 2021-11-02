@@ -107,12 +107,12 @@ public class UserServiceImpl implements UserService {
         if (!Utility.isValidEmail(email))
             throw new GenericException("Invalid email", HttpStatus.BAD_REQUEST);
 
-        User user = userRepository.findByEmail(email);
-        if (Objects.isNull(user))
+        Optional<User> user = userRepository.findByEmail(email);
+        if (!user.isPresent())
             throw new GenericException("Email id not found in database.", HttpStatus.BAD_REQUEST);
-        if (!user.isActive())
+        if (!user.get().isActive())
             throw new GenericException("Your account is not active.", HttpStatus.INTERNAL_SERVER_ERROR);
-        forgotPasswordHandler(user);
+        forgotPasswordHandler(user.get());
         return "{\"status\":\"success\"}";
     }
 
@@ -128,8 +128,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String resetPassword(ResetPassword resetPassword) throws GenericException {
-        User user = userRepository.findByEmail(resetPassword.getEmail());
-        if (Objects.isNull(user))
+        Optional<User> user = userRepository.findByEmail(resetPassword.getEmail());
+        if (!user.isPresent())
             throw new GenericException("Email id not found in database", HttpStatus.BAD_REQUEST);
 
         AccountActivationToken accountActivationToken =
@@ -140,10 +140,10 @@ public class UserServiceImpl implements UserService {
         if (!resetPassword.getPassword().equals(resetPassword.getConfirmPassword()))
             throw new GenericException("Confirm password didn't matched", HttpStatus.BAD_REQUEST);
 
-        user.setPassword(Utility.encrypt(resetPassword.getPassword()));
-        userRepository.save(user);
+        user.get().setPassword(Utility.encrypt(resetPassword.getPassword()));
+        userRepository.save(user.get());
 
-        passwordUpdateConfirmationEmailHandler(user);
+        passwordUpdateConfirmationEmailHandler(user.get());
 
         return "{\"status\":\"success\"}";
     }
@@ -161,14 +161,14 @@ public class UserServiceImpl implements UserService {
         if (!Utility.isValidEmail(email))
             throw new GenericException("Invalid email", HttpStatus.BAD_REQUEST);
 
-        User user = userRepository.findByEmail(email);
-        if (Objects.isNull(user)) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (!user.isPresent()) {
             throw new GenericException(email + " is not registered with us.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        if (user.isActive()) {
+        if (user.get().isActive()) {
             return "Your account is already active.";
         }
-        accountActivationHandler(user);
+        accountActivationHandler(user.get());
         return "{\"status\":\"success\"}";
     }
 }
