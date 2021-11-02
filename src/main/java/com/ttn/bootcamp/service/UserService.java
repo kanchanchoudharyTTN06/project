@@ -19,6 +19,8 @@ public interface UserService {
 
     String activateUserAccount(String token) throws GenericException;
 
+    String activateUserAccountByAdmin(long id) throws GenericException;
+
     void checkForEmailExist(String email) throws GenericException;
 
     String forgotPassword(String email) throws GenericException;

@@ -30,6 +30,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private TokenRepository tokenRepository;
 
+    private static final String SUCCESS_RESPONSE = "{\"status\":\"success\"}";
+    private static final String ERROR_RESPONSE = "{\"status\":\"error\"}";
+
     @Override
     public void accountActivationHandler(User user) {
         AccountActivationToken accountActivationToken = new AccountActivationToken(user.getId());
@@ -65,11 +68,28 @@ public class UserServiceImpl implements UserService {
 
         checkForTokenValidityAndExpiry(accountActivationToken, 180);
 
-        User user = userRepository.getById(accountActivationToken.getUserId());
-        user.setActive(true);
-        userRepository.save(user);
-        accountActivationConfirmationHandler(user);
-        return "Congratulations! " + user.getFirstName() + ", your account is activated.";
+        Optional<User> user = userRepository.findById(accountActivationToken.getUserId());
+        if (user.isPresent()) {
+            user.get().setActive(true);
+            userRepository.save(user.get());
+            accountActivationConfirmationHandler(user.get());
+            return "Congratulations! " + user.get().getFirstName() + ", your account is activated.";
+        }
+        return ERROR_RESPONSE;
+    }
+
+    @Override
+    public String activateUserAccountByAdmin(long id) throws GenericException {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            if (user.get().isActive())
+                return SUCCESS_RESPONSE;
+            user.get().setActive(true);
+            userRepository.save(user.get());
+            accountActivationConfirmationHandler(user.get());
+            return SUCCESS_RESPONSE;
+        }
+        throw new GenericException("User not found", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private void checkForTokenValidityAndExpiry(AccountActivationToken accountActivationToken, int expiryMinute) throws GenericException {
@@ -98,7 +118,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void checkForEmailExist(String email) throws GenericException {
-        if (Objects.nonNull(userRepository.findByEmail(email)))
+        if (userRepository.findByEmail(email).isPresent())
             throw new GenericException("Email id already registered.", HttpStatus.BAD_REQUEST);
     }
 
