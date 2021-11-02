@@ -3,6 +3,7 @@ package com.ttn.bootcamp.controller;
 import com.ttn.bootcamp.domains.User.Customer;
 import com.ttn.bootcamp.domains.User.Seller;
 import com.ttn.bootcamp.exceptions.GenericException;
+import com.ttn.bootcamp.service.AdminService;
 import com.ttn.bootcamp.service.CustomerService;
 import com.ttn.bootcamp.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,20 +20,17 @@ import java.util.List;
 public class AdminController {
 
     @Autowired
-    private CustomerService customerService;
-
-    @Autowired
-    private SellerService sellerService;
+    AdminService adminService;
 
     @GetMapping("/all/customers")
     public ResponseEntity<Object> getAllCustomers() {
-        List<Customer> customer = customerService.findAllCustomers();
+        List<Customer> customer = adminService.getAllCustomers();
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
     @GetMapping("/all/sellers")
     public ResponseEntity<Object> getAllSellers() {
-        List<Seller> seller = sellerService.findAllSellers();
+        List<Seller> seller = adminService.getAllSellers();
         return new ResponseEntity<>(seller, HttpStatus.OK);
     }
 }
