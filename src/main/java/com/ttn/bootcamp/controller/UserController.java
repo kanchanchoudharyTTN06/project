@@ -25,13 +25,13 @@ public class UserController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<Object> getAllUsers() {
+    public ResponseEntity<Object> getAllUsers() throws GenericException {
         List<UserDto> users = userService.getAllUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getUserById(@PathVariable("id") int id) {
+    public ResponseEntity<Object> getUserById(@PathVariable("id") int id) throws GenericException {
         UserDto user = userService.getUserById(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }

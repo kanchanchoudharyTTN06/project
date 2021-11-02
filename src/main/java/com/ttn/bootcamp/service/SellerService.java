@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface SellerService {
     SellerDto registerUser(SellerDto sellerDto) throws GenericException;
-    List<Seller> findAllSellers();
+    List<Seller> findAllSellers() throws GenericException;
 }

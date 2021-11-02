@@ -46,8 +46,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getAllUsers() {
+    public List<UserDto> getAllUsers() throws GenericException {
         List<User> users = userRepository.findAll();
+        if (users.isEmpty())
+            throw new GenericException("No content found", HttpStatus.NOT_FOUND);
         List<UserDto> userDtos = new ArrayList<>();
         for (User user : users) {
             userDtos.add(user.toUserDto());
@@ -56,9 +58,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserById(long id) {
+    public UserDto getUserById(long id) throws GenericException {
         Optional<User> userOptional = userRepository.findById(id);
-        return userOptional.map(User::toUserDto).orElse(null);
+        if (userOptional.isPresent())
+            return userOptional.get().toUserDto();
+        throw new GenericException("No content found", HttpStatus.NOT_FOUND);
     }
 
     @Override
@@ -75,7 +79,7 @@ public class UserServiceImpl implements UserService {
             accountActivationConfirmationHandler(user.get());
             return "Congratulations! " + user.get().getFirstName() + ", your account is activated.";
         }
-        return ERROR_RESPONSE;
+        throw new GenericException("No content found", HttpStatus.NOT_FOUND);
     }
 
     @Override
@@ -89,7 +93,7 @@ public class UserServiceImpl implements UserService {
             accountActivationConfirmationHandler(user.get());
             return SUCCESS_RESPONSE;
         }
-        throw new GenericException("User not found", HttpStatus.INTERNAL_SERVER_ERROR);
+        throw new GenericException("No content found", HttpStatus.NOT_FOUND);
     }
 
     private void checkForTokenValidityAndExpiry(AccountActivationToken accountActivationToken, int expiryMinute) throws GenericException {
@@ -129,7 +133,7 @@ public class UserServiceImpl implements UserService {
 
         Optional<User> user = userRepository.findByEmail(email);
         if (!user.isPresent())
-            throw new GenericException("Email id not found in database.", HttpStatus.BAD_REQUEST);
+            throw new GenericException("No content found", HttpStatus.NOT_FOUND);
         if (!user.get().isActive())
             throw new GenericException("Your account is not active.", HttpStatus.INTERNAL_SERVER_ERROR);
         forgotPasswordHandler(user.get());
@@ -150,7 +154,7 @@ public class UserServiceImpl implements UserService {
     public String resetPassword(ResetPassword resetPassword) throws GenericException {
         Optional<User> user = userRepository.findByEmail(resetPassword.getEmail());
         if (!user.isPresent())
-            throw new GenericException("Email id not found in database", HttpStatus.BAD_REQUEST);
+            throw new GenericException("Email id not found in database", HttpStatus.NOT_FOUND);
 
         AccountActivationToken accountActivationToken =
                 AccountActivationToken.getAccountActivationTokenBean(resetPassword.getToken());
@@ -183,7 +187,7 @@ public class UserServiceImpl implements UserService {
 
         Optional<User> user = userRepository.findByEmail(email);
         if (!user.isPresent()) {
-            throw new GenericException(email + " is not registered with us.", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new GenericException("No content found", HttpStatus.NOT_FOUND);
         }
         if (user.get().isActive()) {
             return "Your account is already active.";

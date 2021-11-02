@@ -20,13 +20,13 @@ public class AdminController {
     AdminService adminService;
 
     @GetMapping("/all/customers")
-    public ResponseEntity<Object> getAllCustomers() {
+    public ResponseEntity<Object> getAllCustomers() throws GenericException {
         List<Customer> customer = adminService.getAllCustomers();
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
     @GetMapping("/all/sellers")
-    public ResponseEntity<Object> getAllSellers() {
+    public ResponseEntity<Object> getAllSellers() throws GenericException {
         List<Seller> seller = adminService.getAllSellers();
         return new ResponseEntity<>(seller, HttpStatus.OK);
     }

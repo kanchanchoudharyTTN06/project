@@ -29,12 +29,12 @@ public class AdminServiceImpl implements AdminService {
     UserService userService;
 
     @Override
-    public List<Customer> getAllCustomers() {
+    public List<Customer> getAllCustomers() throws GenericException {
         return customerService.findAllCustomers();
     }
 
     @Override
-    public List<Seller> getAllSellers() {
+    public List<Seller> getAllSellers() throws GenericException {
         return sellerService.findAllSellers();
     }
 

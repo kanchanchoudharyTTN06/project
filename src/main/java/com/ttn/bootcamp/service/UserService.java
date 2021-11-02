@@ -13,9 +13,9 @@ public interface UserService {
 
     void accountActivationHandler(User user);
 
-    List<UserDto> getAllUsers();
+    List<UserDto> getAllUsers() throws GenericException;
 
-    UserDto getUserById(long id);
+    UserDto getUserById(long id) throws GenericException;
 
     String activateUserAccount(String token) throws GenericException;
 

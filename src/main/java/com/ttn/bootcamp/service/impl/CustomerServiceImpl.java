@@ -47,7 +47,10 @@ public class CustomerServiceImpl implements CustomerService {
         return customerDto;
     }
 
-    public List<Customer> findAllCustomers() {
-        return customerRepository.findAll();
+    public List<Customer> findAllCustomers() throws GenericException {
+        List<Customer> customers = customerRepository.findAll();
+        if (customers.isEmpty())
+            throw new GenericException("No content found", HttpStatus.NOT_FOUND);
+        return customers;
     }
 }

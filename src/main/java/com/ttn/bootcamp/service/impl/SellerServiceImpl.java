@@ -60,7 +60,10 @@ public class SellerServiceImpl implements SellerService {
         emailService.sendEmail(seller.getEmail(), subject, body);
     }
 
-    public List<Seller> findAllSellers() {
-        return sellerRepository.findAll();
+    public List<Seller> findAllSellers() throws GenericException {
+        List<Seller> sellers = sellerRepository.findAll();
+        if(sellers.isEmpty())
+            throw new GenericException("No content found", HttpStatus.NOT_FOUND);
+        return sellers;
     }
 }

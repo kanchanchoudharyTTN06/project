@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface AdminService {
-    List<Customer> getAllCustomers();
+    List<Customer> getAllCustomers() throws GenericException;
 
-    List<Seller> getAllSellers();
+    List<Seller> getAllSellers() throws GenericException;
 
     String activateUser(Map<String, String> request) throws GenericException;
 }
