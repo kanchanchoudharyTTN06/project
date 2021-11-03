@@ -6,22 +6,25 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-public class User implements UserDetails {
+public class AppUser implements UserDetails {
 
     private String username;
     private String password;
+    private Boolean isEnabled;
+    private Boolean isAccountNonLocked;
+    List<GrantAuthorityImpl> grantAuthorities;
 
-    List<GrantAuthorityImpl> grantAuthorityList;
-
-    public User(String username, String password, List<GrantAuthorityImpl> grantAuthorityList) {
+    public AppUser(String username, String password, Boolean isEnabled, Boolean isAccountNonLocked, List<GrantAuthorityImpl> grantAuthorities) {
         this.username = username;
         this.password = password;
-        this.grantAuthorityList = grantAuthorityList;
+        this.isEnabled = isEnabled;
+        this.isAccountNonLocked = isAccountNonLocked;
+        this.grantAuthorities = grantAuthorities;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return grantAuthorityList;
+        return grantAuthorities;
     }
 
     @Override
