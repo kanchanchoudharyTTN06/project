@@ -3,10 +3,7 @@ package com.ttn.bootcamp.domains.User;
 import com.ttn.bootcamp.dto.User.AddressDto;
 import com.ttn.bootcamp.dto.User.RoleDto;
 import com.ttn.bootcamp.dto.User.UserDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;
@@ -15,9 +12,11 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Data
+//@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User {
     @Id

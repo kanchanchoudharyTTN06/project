@@ -51,6 +51,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
+                .antMatchers("/oauth/token/*").anonymous()
                 .antMatchers("/users/*").anonymous()
                 .antMatchers("/users/send/activation/link").permitAll()
                 .antMatchers("/users/forgot/password").permitAll()

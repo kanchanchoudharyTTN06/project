@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@Transactional
 public class UserDao {
     private UserRepository userRepository;
 
@@ -21,19 +22,18 @@ public class UserDao {
         this.userRepository = userRepository;
     }
 
-    @Transactional
     AppUser loadUserByUsername(String email)
     {
         Optional<User> user = userRepository.findByEmail(email); //because emails are unique
-        if(email != null)
+        if(user.isPresent())
         {
             List<GrantAuthorityImpl> grantAuthorityList = new ArrayList<>();
-            List<Role> roles = user.getRoleList();
+            List<Role> roles = user.get().getRoleList();
             for(Role role : roles)
             {
                 grantAuthorityList.add(new GrantAuthorityImpl(role.getAuthority()));
             }
-            return  new AppUser(user.getEmail(), user.getPassword(), user.isIs_Active(), user.isAccountNotLocked(), grantAuthorityList);
+            return  new AppUser(user.get().getEmail(), user.get().getPassword(), user.get().isActive(), user.get().isLocked(), grantAuthorityList);
         }
         else
         {

@@ -7,6 +7,8 @@ import com.ttn.bootcamp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,12 +26,12 @@ public class Bootstrap implements ApplicationRunner {
     @Transactional
     public void run(ApplicationArguments args) throws Exception {
         if (userRepository.count() < 1) {
-            //PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             User admin = new User();
             admin.setFirstName("Kanchan");
             admin.setLastName("Choudhary");
             admin.setEmail("kanchan.choudhary@tothenew.com");
-            admin.setPassword("kanchan06");
+            admin.setPassword(passwordEncoder.encode("kanchan06"));
             admin.setActive(true);
             admin.setDeleted(false);
 
