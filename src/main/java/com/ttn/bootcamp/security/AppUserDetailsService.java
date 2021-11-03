@@ -1,6 +1,7 @@
 package com.ttn.bootcamp.security;
 
 
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,15 +12,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class AppUserDetailsService implements UserDetailsService {
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
+    private UserDao userDao;
 
     @Autowired
-    UserDao userDao;
+    public AppUserDetailsService(PasswordEncoder passwordEncoder, UserDao userDao) {
+        this.passwordEncoder = passwordEncoder;
+        this.userDao = userDao;
+    }
 
+    @SneakyThrows
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        UserDetails userDetails = userDao.loadUserByUsername(email);
-        return userDetails;
+        return userDao.loadUserByUsername(email);
     }
 }

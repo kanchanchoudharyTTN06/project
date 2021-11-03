@@ -5,9 +5,7 @@ import com.ttn.bootcamp.dto.User.UserDto;
 import com.ttn.bootcamp.exceptions.GenericException;
 import com.ttn.bootcamp.model.ResetPassword;
 
-import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 public interface UserService {
 

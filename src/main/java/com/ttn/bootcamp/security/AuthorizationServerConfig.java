@@ -20,19 +20,20 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 @Configuration
 @EnableAuthorizationServer
-public class AuthorizationServerConfig  extends AuthorizationServerConfigurerAdapter {
+public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
     private AuthenticationManager authenticationManager;
 
-    @Autowired
     private UserDetailsService userDetailsService;
 
-    public AuthorizationServerConfig() {
+    @Autowired
+    public AuthorizationServerConfig(PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, UserDetailsService userDetailsService) {
         super();
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.userDetailsService = userDetailsService;
     }
 
     @Bean
@@ -48,34 +49,20 @@ public class AuthorizationServerConfig  extends AuthorizationServerConfigurerAda
     public void configure(final AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints.tokenStore(tokenStore()).userDetailsService(userDetailsService)
                 .authenticationManager(authenticationManager);
-                //.accessTokenConverter(accessTokenConverter());
     }
 
-   /* @Bean
-    JwtAccessTokenConverter accessTokenConverter(){
-        JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
-        jwtAccessTokenConverter.setSigningKey("1234");
-        return jwtAccessTokenConverter;
-    }*/
-
-   /* @Bean
+    @Bean
     public TokenStore tokenStore() {
-        return new JwtTokenStore(accessTokenConverter());
-    }*/
-
-   @Bean
-    public TokenStore tokenStore() {
-       return new InMemoryTokenStore();
-   }
+        return new InMemoryTokenStore();
+    }
 
 
     @Override
     public void configure(final ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
-                .withClient("live-test")
-                .secret(passwordEncoder.encode("abcde"))
+                .withClient("live")
+                .secret(passwordEncoder.encode("bootcamp"))
                 .authorizedGrantTypes("password", "refresh_token")
-
                 .refreshTokenValiditySeconds(30 * 24 * 3600)
                 .scopes("app")
                 .accessTokenValiditySeconds(7 * 24 * 60);

@@ -21,11 +21,11 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
-    @Autowired
-    UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
 
-    public ResourceServerConfig() {
+    public ResourceServerConfig(UserDetailsService userDetailsService) {
         super();
+        this.userDetailsService = userDetailsService;
     }
 
     @Bean
@@ -60,7 +60,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/admin/**").hasAnyRole("ADMIN")
                 .antMatchers("/sellers/**").hasAnyRole("SELLER")
                 .antMatchers("/customers/**").hasAnyRole("CUSTOMER")
-                .antMatchers("/doLogout").hasAnyRole("ADMIN", "CUSTOMER","SELLER")
+                .antMatchers("/doLogout").hasAnyRole("ADMIN", "CUSTOMER", "SELLER")
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
