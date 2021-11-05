@@ -17,8 +17,12 @@ import javax.mail.internet.MimeMessage;
 @EnableAsync
 @Service
 public class EmailServiceImpl implements EmailService {
-    @Autowired
     private JavaMailSender javaMailSender;
+
+    @Autowired
+    public EmailServiceImpl(JavaMailSender javaMailSender) {
+        this.javaMailSender = javaMailSender;
+    }
 
     @Async
     @Override

@@ -20,12 +20,16 @@ import java.util.Optional;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
+    private CustomerRepository customerRepository;
+    private RoleRepository roleRepository;
+    private UserService userService;
+
     @Autowired
-    CustomerRepository customerRepository;
-    @Autowired
-    RoleRepository roleRepository;
-    @Autowired
-    UserService userService;
+    public CustomerServiceImpl(CustomerRepository customerRepository, RoleRepository roleRepository, UserService userService) {
+        this.customerRepository = customerRepository;
+        this.roleRepository = roleRepository;
+        this.userService = userService;
+    }
 
     @Override
     public CustomerDto registerUser(CustomerDto customerDto) throws GenericException {

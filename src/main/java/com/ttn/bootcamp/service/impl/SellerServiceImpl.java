@@ -1,6 +1,5 @@
 package com.ttn.bootcamp.service.impl;
 
-import com.ttn.bootcamp.domains.User.Customer;
 import com.ttn.bootcamp.util.Utility;
 import com.ttn.bootcamp.domains.User.Role;
 import com.ttn.bootcamp.domains.User.Seller;
@@ -22,14 +21,18 @@ import java.util.Optional;
 
 @Service
 public class SellerServiceImpl implements SellerService {
+    private SellerRepository sellerRepository;
+    private RoleRepository roleRepository;
+    private UserService userService;
+    private EmailService emailService;
+
     @Autowired
-    SellerRepository sellerRepository;
-    @Autowired
-    RoleRepository roleRepository;
-    @Autowired
-    UserService userService;
-    @Autowired
-    EmailService emailService;
+    public SellerServiceImpl(SellerRepository sellerRepository, RoleRepository roleRepository, UserService userService, EmailService emailService) {
+        this.sellerRepository = sellerRepository;
+        this.roleRepository = roleRepository;
+        this.userService = userService;
+        this.emailService = emailService;
+    }
 
     @Override
     public SellerDto registerUser(SellerDto sellerDto) throws GenericException {
@@ -62,7 +65,7 @@ public class SellerServiceImpl implements SellerService {
 
     public List<Seller> findAllSellers() throws GenericException {
         List<Seller> sellers = sellerRepository.findAll();
-        if(sellers.isEmpty())
+        if (sellers.isEmpty())
             throw new GenericException("No content found", HttpStatus.NOT_FOUND);
         return sellers;
     }

@@ -19,14 +19,16 @@ import java.util.Set;
 @Service
 public class AdminServiceImpl implements AdminService {
 
-    @Autowired
     private CustomerService customerService;
-
-    @Autowired
     private SellerService sellerService;
+    private UserService userService;
 
     @Autowired
-    UserService userService;
+    public AdminServiceImpl(CustomerService customerService, SellerService sellerService, UserService userService) {
+        this.customerService = customerService;
+        this.sellerService = sellerService;
+        this.userService = userService;
+    }
 
     @Override
     public List<Customer> getAllCustomers() throws GenericException {

@@ -23,15 +23,19 @@ import java.util.*;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-    @Autowired
     private UserRepository userRepository;
-    @Autowired
     private EmailService emailService;
-    @Autowired
     private TokenRepository tokenRepository;
 
     private static final String SUCCESS_RESPONSE = "{\"status\":\"success\"}";
     private static final String ERROR_RESPONSE = "{\"status\":\"error\"}";
+
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository, EmailService emailService, TokenRepository tokenRepository) {
+        this.userRepository = userRepository;
+        this.emailService = emailService;
+        this.tokenRepository = tokenRepository;
+    }
 
     @Override
     public void accountActivationHandler(User user) {
@@ -158,7 +162,7 @@ public class UserServiceImpl implements UserService {
         if (!user.get().isActive())
             throw new GenericException("Your account is not active.", HttpStatus.INTERNAL_SERVER_ERROR);
         forgotPasswordHandler(user.get());
-        return "{\"status\":\"success\"}";
+        return SUCCESS_RESPONSE;
     }
 
     private void forgotPasswordHandler(User user) {
@@ -190,7 +194,7 @@ public class UserServiceImpl implements UserService {
 
         passwordUpdateConfirmationEmailHandler(user.get());
 
-        return "{\"status\":\"success\"}";
+        return SUCCESS_RESPONSE;
     }
 
     private void passwordUpdateConfirmationEmailHandler(User user) {
@@ -214,6 +218,6 @@ public class UserServiceImpl implements UserService {
             return "Your account is already active.";
         }
         accountActivationHandler(user.get());
-        return "{\"status\":\"success\"}";
+        return SUCCESS_RESPONSE;
     }
 }
