@@ -2,6 +2,7 @@ package com.ttn.bootcamp.controller;
 
 import com.ttn.bootcamp.dto.User.SellerDto;
 import com.ttn.bootcamp.exceptions.GenericException;
+import com.ttn.bootcamp.model.ResetPassword;
 import com.ttn.bootcamp.security.AppUser;
 import com.ttn.bootcamp.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +32,15 @@ public class SellerController {
         return new ResponseEntity<>(sellerDto, HttpStatus.OK);
     }
 
-    @PatchMapping
+    @PatchMapping("/update/profile")
     public ResponseEntity<Object> updateProfile(Authentication authentication, @RequestBody Map<String, Object> requestMap) throws GenericException {
         SellerDto sellerDto = sellerService.updateProfile((AppUser) authentication.getPrincipal(), requestMap);
         return new ResponseEntity<>(sellerDto, HttpStatus.OK);
+    }
+
+    @PatchMapping("/update/password")
+    public ResponseEntity<Object> updatePassword(Authentication authentication, @RequestBody ResetPassword resetPassword) throws GenericException {
+        String response = sellerService.updatePassword((AppUser) authentication.getPrincipal(), resetPassword);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

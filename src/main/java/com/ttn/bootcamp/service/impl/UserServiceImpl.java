@@ -18,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.Valid;
 import java.util.*;
 
 @Service
@@ -194,6 +195,23 @@ public class UserServiceImpl implements UserService {
         passwordUpdateConfirmationEmailHandler(user.get());
 
         return "{\"status\":\"success\"}";
+    }
+
+    @Override
+    public String updatePassword(@Valid ResetPassword resetPassword) throws GenericException {
+        if (!resetPassword.getPassword().equals(resetPassword.getConfirmPassword()))
+            throw new GenericException("Confirm password didn't matched", HttpStatus.BAD_REQUEST);
+
+        Optional<User> user = userRepository.findByEmail(resetPassword.getEmail());
+        if (user.isPresent()) {
+            user.get().setPassword(passwordEncoder.encode(resetPassword.getPassword()));
+            userRepository.save(user.get());
+
+            passwordUpdateConfirmationEmailHandler(user.get());
+
+            return SUCCESS_RESPONSE;
+        }
+        throw new GenericException("No content found", HttpStatus.NOT_FOUND);
     }
 
     private void passwordUpdateConfirmationEmailHandler(User user) {

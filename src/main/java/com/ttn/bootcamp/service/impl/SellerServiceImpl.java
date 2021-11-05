@@ -1,5 +1,6 @@
 package com.ttn.bootcamp.service.impl;
 
+import com.ttn.bootcamp.model.ResetPassword;
 import com.ttn.bootcamp.security.AppUser;
 import com.ttn.bootcamp.domains.User.Role;
 import com.ttn.bootcamp.domains.User.Seller;
@@ -90,5 +91,12 @@ public class SellerServiceImpl implements SellerService {
             return sellerRepository.save(sellerDto.toSellerEntity()).toSellerDto();
         }
         throw new GenericException("No content found", HttpStatus.NOT_FOUND);
+    }
+
+    @Override
+    public String updatePassword(AppUser user, ResetPassword resetPassword) throws GenericException {
+        resetPassword.setEmail(user.getUsername());
+        resetPassword.setToken("not-applicable");
+        return userService.updatePassword(resetPassword);
     }
 }
