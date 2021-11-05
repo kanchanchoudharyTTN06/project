@@ -1,7 +1,9 @@
 package com.ttn.bootcamp.service.impl;
 
 import com.ttn.bootcamp.ApplicationConstants;
+import com.ttn.bootcamp.dto.User.AddressDto;
 import com.ttn.bootcamp.model.ResetPassword;
+import com.ttn.bootcamp.repository.AddressRepository;
 import com.ttn.bootcamp.util.Utility;
 import com.ttn.bootcamp.domains.User.User;
 import com.ttn.bootcamp.dto.User.UserDto;
@@ -28,17 +30,16 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private EmailService emailService;
     private TokenRepository tokenRepository;
-    @Autowired
-    BCryptPasswordEncoder passwordEncoder;
-
-    private static final String SUCCESS_RESPONSE = "{\"status\":\"success\"}";
-    private static final String ERROR_RESPONSE = "{\"status\":\"error\"}";
+    private BCryptPasswordEncoder passwordEncoder;
+    private AddressRepository addressRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, EmailService emailService, TokenRepository tokenRepository) {
+    public UserServiceImpl(UserRepository userRepository, EmailService emailService, TokenRepository tokenRepository, BCryptPasswordEncoder passwordEncoder, AddressRepository addressRepository) {
         this.userRepository = userRepository;
         this.emailService = emailService;
         this.tokenRepository = tokenRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.addressRepository = addressRepository;
     }
 
     @Override
@@ -95,11 +96,11 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
             if (user.get().isActive())
-                return SUCCESS_RESPONSE;
+                return ApplicationConstants.SUCCESS_RESPONSE;
             user.get().setActive(true);
             userRepository.save(user.get());
             accountActivationConfirmationHandler(user.get());
-            return SUCCESS_RESPONSE;
+            return ApplicationConstants.SUCCESS_RESPONSE;
         }
         throw new GenericException("No content found", HttpStatus.NOT_FOUND);
     }
@@ -108,11 +109,11 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
             if (!user.get().isActive())
-                return SUCCESS_RESPONSE;
+                return ApplicationConstants.SUCCESS_RESPONSE;
             user.get().setActive(false);
             userRepository.save(user.get());
             accountDeActivationConfirmationHandler(user.get());
-            return SUCCESS_RESPONSE;
+            return ApplicationConstants.SUCCESS_RESPONSE;
         }
         throw new GenericException("No content found", HttpStatus.NOT_FOUND);
     }
@@ -166,7 +167,7 @@ public class UserServiceImpl implements UserService {
         if (!user.get().isActive())
             throw new GenericException("Your account is not active.", HttpStatus.INTERNAL_SERVER_ERROR);
         forgotPasswordHandler(user.get());
-        return SUCCESS_RESPONSE;
+        return ApplicationConstants.SUCCESS_RESPONSE;
     }
 
     private void forgotPasswordHandler(User user) {
@@ -198,7 +199,7 @@ public class UserServiceImpl implements UserService {
 
         passwordUpdateConfirmationEmailHandler(user.get());
 
-        return SUCCESS_RESPONSE;
+        return ApplicationConstants.SUCCESS_RESPONSE;
     }
 
     @Override
@@ -213,7 +214,7 @@ public class UserServiceImpl implements UserService {
 
             passwordUpdateConfirmationEmailHandler(user.get());
 
-            return SUCCESS_RESPONSE;
+            return ApplicationConstants.SUCCESS_RESPONSE;
         }
         throw new GenericException("No content found", HttpStatus.NOT_FOUND);
     }
@@ -239,6 +240,19 @@ public class UserServiceImpl implements UserService {
             return "Your account is already active.";
         }
         accountActivationHandler(user.get());
-        return SUCCESS_RESPONSE;
+        return ApplicationConstants.SUCCESS_RESPONSE;
+    }
+
+    @Override
+    public UserDto getUserByEmail(String email) throws GenericException {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isPresent())
+            return user.get().toUserDto();
+        throw new GenericException("No content found", HttpStatus.NOT_FOUND);
+    }
+
+    @Override
+    public List<AddressDto> getAddressesByUserEmail(String email) throws GenericException {
+        return getUserByEmail(email).getAddressList();
     }
 }

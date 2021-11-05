@@ -1,9 +1,8 @@
 package com.ttn.bootcamp.service.impl;
 
+import com.ttn.bootcamp.ApplicationConstants;
 import com.ttn.bootcamp.domains.User.Address;
-import com.ttn.bootcamp.domains.User.Seller;
 import com.ttn.bootcamp.dto.User.AddressDto;
-import com.ttn.bootcamp.dto.User.SellerDto;
 import com.ttn.bootcamp.exceptions.GenericException;
 import com.ttn.bootcamp.repository.AddressRepository;
 import com.ttn.bootcamp.service.AddressService;
@@ -22,6 +21,7 @@ public class AddressServiceImpl implements AddressService {
 
     private AddressRepository addressRepository;
 
+    @Autowired
     public AddressServiceImpl(AddressRepository addressRepository) {
         this.addressRepository = addressRepository;
     }
@@ -39,5 +39,16 @@ public class AddressServiceImpl implements AddressService {
             return addressRepository.save(addressDto.toAddressEntity()).toAddressDto();
         }
         throw new GenericException("No content found", HttpStatus.NOT_FOUND);
+    }
+
+    @Override
+    public String deleteAddress(long id) {
+        addressRepository.deleteById(id);
+        return ApplicationConstants.SUCCESS_RESPONSE;
+    }
+
+    @Override
+    public AddressDto addAddress(AddressDto addressDto) {
+        return addressRepository.save(addressDto.toAddressEntity()).toAddressDto();
     }
 }

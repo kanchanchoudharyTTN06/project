@@ -93,11 +93,13 @@ public class SellerServiceImpl implements SellerService {
         Optional<Seller> seller = sellerRepository.findByEmail(user.getUsername());
         if (seller.isPresent()) {
             SellerDto sellerDto = seller.get().toSellerDto();
+            List<AddressDto> addressDtos = sellerDto.getAddressList();
             requestMap.forEach((key, value) -> {
                 Field field = ReflectionUtils.findField(SellerDto.class, key);
                 Objects.requireNonNull(field).setAccessible(true);
                 ReflectionUtils.setField(field, sellerDto, value);
             });
+            sellerDto.setAddressList(addressDtos);
             return sellerRepository.save(sellerDto.toSellerEntity()).toSellerDto();
         }
         throw new GenericException("No content found", HttpStatus.NOT_FOUND);

@@ -7,4 +7,8 @@ import java.util.Map;
 
 public interface AddressService {
     AddressDto updateAddress(long id, Map<String, Object> map) throws GenericException;
+
+    String deleteAddress(long id);
+
+    AddressDto addAddress(AddressDto addressDto);
 }

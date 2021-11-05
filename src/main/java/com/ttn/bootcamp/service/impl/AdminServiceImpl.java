@@ -8,12 +8,10 @@ import com.ttn.bootcamp.service.CustomerService;
 import com.ttn.bootcamp.service.SellerService;
 import com.ttn.bootcamp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 @Service

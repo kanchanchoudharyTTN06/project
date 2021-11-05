@@ -1,6 +1,7 @@
 package com.ttn.bootcamp.service;
 
 import com.ttn.bootcamp.domains.User.User;
+import com.ttn.bootcamp.dto.User.AddressDto;
 import com.ttn.bootcamp.dto.User.UserDto;
 import com.ttn.bootcamp.exceptions.GenericException;
 import com.ttn.bootcamp.model.ResetPassword;
@@ -30,4 +31,8 @@ public interface UserService {
     String reSendActivationLink(String email) throws GenericException;
 
     String deActivateUserAccountByAdmin(long id) throws GenericException;
+
+    UserDto getUserByEmail(String email) throws GenericException;
+
+    List<AddressDto> getAddressesByUserEmail(String email) throws GenericException;
 }

@@ -17,7 +17,7 @@ public class AddressDto {
     private String addressLine;
     private int zipCode;
     private String label;
-    //private UserDto user;
+    private UserDto user;
 
     public Address toAddressEntity() {
         ModelMapper mapper = new ModelMapper();

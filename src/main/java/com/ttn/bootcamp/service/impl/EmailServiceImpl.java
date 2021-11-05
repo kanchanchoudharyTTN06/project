@@ -1,9 +1,6 @@
 package com.ttn.bootcamp.service.impl;
 
-import com.ttn.bootcamp.domains.User.User;
-import com.ttn.bootcamp.repository.TokenRepository;
 import com.ttn.bootcamp.service.EmailService;
-import com.ttn.bootcamp.token.AuthToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
