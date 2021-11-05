@@ -6,6 +6,7 @@ import com.ttn.bootcamp.exceptions.GenericException;
 import com.ttn.bootcamp.security.AppUser;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SellerService {
     SellerDto registerUser(SellerDto sellerDto) throws GenericException;
@@ -13,4 +14,6 @@ public interface SellerService {
     List<Seller> findAllSellers() throws GenericException;
 
     SellerDto getSellerProfile(AppUser user) throws GenericException;
+
+    SellerDto updateProfile(AppUser user, Map<String, Object> requestMap) throws GenericException;
 }

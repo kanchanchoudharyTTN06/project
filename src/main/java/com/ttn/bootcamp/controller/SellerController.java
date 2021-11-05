@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/sellers")
@@ -24,10 +25,15 @@ public class SellerController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/profile")
-    @ResponseBody
-    public ResponseEntity<Object> currentUserName(Authentication authentication) throws GenericException {
-        SellerDto sellerDto = sellerService.getSellerProfile((AppUser)authentication.getPrincipal());
+    @GetMapping("/profile")
+    public ResponseEntity<Object> getProfile(Authentication authentication) throws GenericException {
+        SellerDto sellerDto = sellerService.getSellerProfile((AppUser) authentication.getPrincipal());
+        return new ResponseEntity<>(sellerDto, HttpStatus.OK);
+    }
+
+    @PatchMapping
+    public ResponseEntity<Object> updateProfile(Authentication authentication, @RequestBody Map<String, Object> requestMap) throws GenericException {
+        SellerDto sellerDto = sellerService.updateProfile((AppUser) authentication.getPrincipal(), requestMap);
         return new ResponseEntity<>(sellerDto, HttpStatus.OK);
     }
 }

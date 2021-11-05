@@ -15,10 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.lang.reflect.Field;
+import java.util.*;
 
 @Service
 public class SellerServiceImpl implements SellerService {
@@ -72,8 +72,23 @@ public class SellerServiceImpl implements SellerService {
     @Override
     public SellerDto getSellerProfile(AppUser user) throws GenericException {
         Optional<Seller> seller = sellerRepository.findByEmail(user.getUsername());
-        if(seller.isPresent())
+        if (seller.isPresent())
             return seller.get().toSellerDto();
+        throw new GenericException("No content found", HttpStatus.NOT_FOUND);
+    }
+
+    @Override
+    public SellerDto updateProfile(AppUser user, Map<String, Object> requestMap) throws GenericException {
+        Optional<Seller> seller = sellerRepository.findByEmail(user.getUsername());
+        if (seller.isPresent()) {
+            SellerDto sellerDto = seller.get().toSellerDto();
+            requestMap.forEach((key, value) -> {
+                Field field = ReflectionUtils.findField(SellerDto.class, key);
+                Objects.requireNonNull(field).setAccessible(true);
+                ReflectionUtils.setField(field, sellerDto, value);
+            });
+            return sellerRepository.save(sellerDto.toSellerEntity()).toSellerDto();
+        }
         throw new GenericException("No content found", HttpStatus.NOT_FOUND);
     }
 }
