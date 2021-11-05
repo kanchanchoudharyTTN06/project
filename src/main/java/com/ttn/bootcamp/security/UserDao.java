@@ -33,7 +33,7 @@ public class UserDao {
             }
             return new AppUser(user.get().getEmail(), user.get().getPassword(), user.get().isActive(), user.get().isLocked(), grantAuthorityList);
         } else {
-            throw new GenericException("username or password is incorrect.", HttpStatus.UNAUTHORIZED);
+            throw new GenericException("username is incorrect.", HttpStatus.UNAUTHORIZED);
         }
     }
 }

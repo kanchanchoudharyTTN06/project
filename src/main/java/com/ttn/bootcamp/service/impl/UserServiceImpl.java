@@ -14,9 +14,11 @@ import com.ttn.bootcamp.token.AccountActivationToken;
 import com.ttn.bootcamp.token.AuthToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.Valid;
 import java.util.*;
 
 @Service
@@ -26,6 +28,8 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private EmailService emailService;
     private TokenRepository tokenRepository;
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
 
     private static final String SUCCESS_RESPONSE = "{\"status\":\"success\"}";
     private static final String ERROR_RESPONSE = "{\"status\":\"error\"}";
@@ -189,12 +193,29 @@ public class UserServiceImpl implements UserService {
         if (!resetPassword.getPassword().equals(resetPassword.getConfirmPassword()))
             throw new GenericException("Confirm password didn't matched", HttpStatus.BAD_REQUEST);
 
-        user.get().setPassword(Utility.encrypt(resetPassword.getPassword()));
+        user.get().setPassword(passwordEncoder.encode(resetPassword.getPassword()));
         userRepository.save(user.get());
 
         passwordUpdateConfirmationEmailHandler(user.get());
 
         return SUCCESS_RESPONSE;
+    }
+
+    @Override
+    public String updatePassword(@Valid ResetPassword resetPassword) throws GenericException {
+        if (!resetPassword.getPassword().equals(resetPassword.getConfirmPassword()))
+            throw new GenericException("Confirm password didn't matched", HttpStatus.BAD_REQUEST);
+
+        Optional<User> user = userRepository.findByEmail(resetPassword.getEmail());
+        if (user.isPresent()) {
+            user.get().setPassword(passwordEncoder.encode(resetPassword.getPassword()));
+            userRepository.save(user.get());
+
+            passwordUpdateConfirmationEmailHandler(user.get());
+
+            return SUCCESS_RESPONSE;
+        }
+        throw new GenericException("No content found", HttpStatus.NOT_FOUND);
     }
 
     private void passwordUpdateConfirmationEmailHandler(User user) {

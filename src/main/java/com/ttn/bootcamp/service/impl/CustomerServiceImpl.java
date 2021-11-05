@@ -1,6 +1,5 @@
 package com.ttn.bootcamp.service.impl;
 
-import com.ttn.bootcamp.util.Utility;
 import com.ttn.bootcamp.domains.User.Customer;
 import com.ttn.bootcamp.domains.User.Role;
 import com.ttn.bootcamp.dto.User.CustomerDto;
@@ -12,6 +11,7 @@ import com.ttn.bootcamp.service.CustomerService;
 import com.ttn.bootcamp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -23,12 +23,14 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerRepository customerRepository;
     private RoleRepository roleRepository;
     private UserService userService;
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository, RoleRepository roleRepository, UserService userService) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, RoleRepository roleRepository, UserService userService, BCryptPasswordEncoder passwordEncoder) {
         this.customerRepository = customerRepository;
         this.roleRepository = roleRepository;
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -42,7 +44,7 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = customerDto.toCustomerEntity();
         Optional<Role> role = roleRepository.findByAuthority("ROLE_" + UserRole.CUSTOMER);
         role.ifPresent(value -> customer.setRoleList(Collections.singletonList(value)));
-        customer.setPassword(Utility.encrypt(customer.getPassword()));
+        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
         customerDto = customerRepository.save(customer).toCustomerDto();
 
         // send account activation link
