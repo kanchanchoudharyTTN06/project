@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface CustomerService {
     CustomerDto registerUser(CustomerDto customerDto) throws GenericException;
-    List <Customer> findAllCustomers() throws GenericException;
+
+    List<Customer> findAllCustomers() throws GenericException;
 }

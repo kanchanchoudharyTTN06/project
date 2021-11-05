@@ -12,6 +12,7 @@ import com.ttn.bootcamp.service.CustomerService;
 import com.ttn.bootcamp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -26,6 +27,8 @@ public class CustomerServiceImpl implements CustomerService {
     RoleRepository roleRepository;
     @Autowired
     UserService userService;
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public CustomerDto registerUser(CustomerDto customerDto) throws GenericException {
@@ -38,7 +41,7 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = customerDto.toCustomerEntity();
         Optional<Role> role = roleRepository.findByAuthority("ROLE_" + UserRole.CUSTOMER);
         role.ifPresent(value -> customer.setRoleList(Collections.singletonList(value)));
-        customer.setPassword(Utility.encrypt(customer.getPassword()));
+        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
         customerDto = customerRepository.save(customer).toCustomerDto();
 
         // send account activation link

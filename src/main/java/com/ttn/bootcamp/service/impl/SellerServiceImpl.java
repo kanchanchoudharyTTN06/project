@@ -1,7 +1,6 @@
 package com.ttn.bootcamp.service.impl;
 
-import com.ttn.bootcamp.domains.User.Customer;
-import com.ttn.bootcamp.util.Utility;
+import com.ttn.bootcamp.security.AppUser;
 import com.ttn.bootcamp.domains.User.Role;
 import com.ttn.bootcamp.domains.User.Seller;
 import com.ttn.bootcamp.dto.User.SellerDto;
@@ -14,6 +13,7 @@ import com.ttn.bootcamp.service.SellerService;
 import com.ttn.bootcamp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -30,6 +30,8 @@ public class SellerServiceImpl implements SellerService {
     UserService userService;
     @Autowired
     EmailService emailService;
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public SellerDto registerUser(SellerDto sellerDto) throws GenericException {
@@ -43,7 +45,7 @@ public class SellerServiceImpl implements SellerService {
         Seller seller = sellerDto.toSellerEntity();
         Optional<Role> role = roleRepository.findByAuthority("ROLE_" + UserRole.SELLER);
         role.ifPresent(value -> seller.setRoleList(Collections.singletonList(value)));
-        seller.setPassword(Utility.encrypt(seller.getPassword()));
+        seller.setPassword(passwordEncoder.encode(seller.getPassword()));
         sellerDto = sellerRepository.save(seller).toSellerDto();
 
         // send account creation mail
@@ -62,8 +64,16 @@ public class SellerServiceImpl implements SellerService {
 
     public List<Seller> findAllSellers() throws GenericException {
         List<Seller> sellers = sellerRepository.findAll();
-        if(sellers.isEmpty())
+        if (sellers.isEmpty())
             throw new GenericException("No content found", HttpStatus.NOT_FOUND);
         return sellers;
+    }
+
+    @Override
+    public SellerDto getSellerProfile(AppUser user) throws GenericException {
+        Optional<Seller> seller = sellerRepository.findByEmail(user.getUsername());
+        if(seller.isPresent())
+            return seller.get().toSellerDto();
+        throw new GenericException("No content found", HttpStatus.NOT_FOUND);
     }
 }

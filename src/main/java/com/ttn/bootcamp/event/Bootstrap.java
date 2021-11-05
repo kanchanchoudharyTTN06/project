@@ -22,11 +22,13 @@ public class Bootstrap implements ApplicationRunner {
     @Autowired
     RoleRepository roleRepository;
 
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
+
     @Override
     @Transactional
     public void run(ApplicationArguments args) throws Exception {
         if (userRepository.count() < 1) {
-            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             User admin = new User();
             admin.setFirstName("Kanchan");
             admin.setLastName("Choudhary");

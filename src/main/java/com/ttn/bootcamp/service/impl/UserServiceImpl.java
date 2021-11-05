@@ -14,6 +14,7 @@ import com.ttn.bootcamp.token.AccountActivationToken;
 import com.ttn.bootcamp.token.AuthToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,8 @@ public class UserServiceImpl implements UserService {
     private EmailService emailService;
     @Autowired
     private TokenRepository tokenRepository;
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
 
     private static final String SUCCESS_RESPONSE = "{\"status\":\"success\"}";
     private static final String ERROR_RESPONSE = "{\"status\":\"error\"}";
@@ -185,7 +188,7 @@ public class UserServiceImpl implements UserService {
         if (!resetPassword.getPassword().equals(resetPassword.getConfirmPassword()))
             throw new GenericException("Confirm password didn't matched", HttpStatus.BAD_REQUEST);
 
-        user.get().setPassword(Utility.encrypt(resetPassword.getPassword()));
+        user.get().setPassword(passwordEncoder.encode(resetPassword.getPassword()));
         userRepository.save(user.get());
 
         passwordUpdateConfirmationEmailHandler(user.get());
