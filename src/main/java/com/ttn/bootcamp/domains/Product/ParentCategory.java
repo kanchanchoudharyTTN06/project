@@ -1,4 +1,4 @@
-package com.ttn.bootcamp.domains.Product;
+/*package com.ttn.bootcamp.domains.Product;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,11 +19,11 @@ public class ParentCategory
 
     private String name;
 
-    /*@OneToMany(mappedBy = "parentCategory")
-    private List<Category> categoryList;*/
+    @OneToMany(mappedBy = "parentCategory")
+    private List<Category> categoryList;
 
     public ParentCategory(String name)
     {
         this.name = name;
     }
-}
+}*/

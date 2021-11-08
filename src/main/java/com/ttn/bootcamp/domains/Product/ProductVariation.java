@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonFilter("Filter")
+//@JsonFilter("Filter")
 public class ProductVariation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,11 +28,11 @@ public class ProductVariation {
     @Column(columnDefinition = "json")
     private String metadata;
 
-   /* @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
-    @OneToMany(mappedBy = "productVariation", cascade = CascadeType.ALL)
+    /*@OneToMany(mappedBy = "productVariation", cascade = CascadeType.ALL)
     private List<Cart> carts = new ArrayList<>();*/
 
 }

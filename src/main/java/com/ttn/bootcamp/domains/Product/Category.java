@@ -12,20 +12,20 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonFilter("Filter")
+//@JsonFilter("Filter")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private String name;
 
-    /*@OneToMany(mappedBy = "category")
+   /* @OneToMany(mappedBy = "category")
     private List<Product> productList;
-
+*/
     @ManyToOne
     @JoinColumn(name = "parent_category_id", referencedColumnName = "id")
-    private ParentCategory parentCategory;
+    private Category parentCategory;
 
-    @OneToMany(mappedBy = "category")
+   /* @OneToMany(mappedBy = "category")
     private List<CategoryMetadataFieldValues> categoryMetadataFieldValuesList;*/
 }

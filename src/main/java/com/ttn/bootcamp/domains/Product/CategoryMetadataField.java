@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@JsonFilter("Filter")
+//@JsonFilter("Filter")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

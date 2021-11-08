@@ -1,5 +1,6 @@
 package com.ttn.bootcamp.domains.User;
 
+import com.ttn.bootcamp.domains.Product.Product;
 import com.ttn.bootcamp.dto.User.SellerDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,6 +28,6 @@ public class Seller extends User {
         ModelMapper mapper = new ModelMapper();
         return mapper.map(this, SellerDto.class);
     }
-    /*@OneToMany(mappedBy = "seller")
-    private List<Product> productList;*/
+    @OneToMany(mappedBy = "seller")
+    private List<Product> productList;
 }
