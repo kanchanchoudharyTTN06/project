@@ -1,20 +1,18 @@
-package com.ttn.bootcamp.domains.Product;
+package com.ttn.bootcamp.dto.Product;
 
+import com.ttn.bootcamp.domains.Product.Category;
+import com.ttn.bootcamp.domains.Product.ProductVariation;
 import com.ttn.bootcamp.domains.User.Seller;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.util.List;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ProductDto {
     private long id;
     private String name;
     private String description;
@@ -24,18 +22,10 @@ public class Product {
     private boolean Is_Active = false;
     private boolean Is_Deleted = false;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "seller_id", referencedColumnName = "id")
     private Seller seller;
 
-    /*@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<ProductReview> productReviewList;*/
-
-    @OneToMany(mappedBy = "product")
     private List<ProductVariation> productVariationList;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
 }

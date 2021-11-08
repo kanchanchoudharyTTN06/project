@@ -1,5 +1,6 @@
-package com.ttn.bootcamp.domains.Product;
+package com.ttn.bootcamp.dto.Product;
 
+import com.ttn.bootcamp.domains.Product.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,13 +8,10 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductVariation {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ProductVariationDto {
     private int id;
     private int quantityAvailable;
     private int price;
@@ -23,11 +21,6 @@ public class ProductVariation {
     @Column(columnDefinition = "json")
     private String metadata;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
-
-    /*@OneToMany(mappedBy = "productVariation", cascade = CascadeType.ALL)
-    private List<Cart> carts = new ArrayList<>();*/
 
 }
