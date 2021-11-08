@@ -2,7 +2,6 @@ package com.ttn.bootcamp.controller;
 
 import com.ttn.bootcamp.dto.User.AddressDto;
 import com.ttn.bootcamp.dto.User.CustomerDto;
-import com.ttn.bootcamp.dto.User.SellerDto;
 import com.ttn.bootcamp.exceptions.GenericException;
 import com.ttn.bootcamp.model.ResetPassword;
 import com.ttn.bootcamp.security.AppUser;
@@ -25,13 +24,13 @@ public class CustomerController {
 
     @PostMapping("/register")
     public ResponseEntity<Object> userRegistration(@Valid @RequestBody CustomerDto customerDto) throws GenericException {
-        CustomerDto user = customerService.registerUser(customerDto);
+        CustomerDto user = customerService.registerCustomer(customerDto);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping("/profile")
     public ResponseEntity<Object> getProfile(Authentication authentication) throws GenericException {
-        CustomerDto customerDto = customerService.getSellerProfile((AppUser) authentication.getPrincipal());
+        CustomerDto customerDto = customerService.getCustomerProfile((AppUser) authentication.getPrincipal());
         return new ResponseEntity<>(customerDto, HttpStatus.OK);
     }
 

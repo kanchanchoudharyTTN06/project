@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Map;
 
 public interface CustomerService {
-    CustomerDto registerUser(CustomerDto customerDto) throws GenericException;
+    CustomerDto registerCustomer(CustomerDto customerDto) throws GenericException;
 
     List<Customer> findAllCustomers() throws GenericException;
 
-    CustomerDto getSellerProfile(AppUser user) throws GenericException;
+    CustomerDto getCustomerProfile(AppUser user) throws GenericException;
 
     CustomerDto updateProfile(AppUser user, Map<String, Object> requestMap) throws GenericException;
 

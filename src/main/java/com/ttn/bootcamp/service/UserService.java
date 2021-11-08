@@ -12,6 +12,8 @@ public interface UserService {
 
     void accountActivationHandler(User user);
 
+    void userAccountLockedEmailHandler(User user);
+
     List<UserDto> getAllUsers() throws GenericException;
 
     UserDto getUserById(long id) throws GenericException;

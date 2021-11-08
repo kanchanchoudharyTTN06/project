@@ -41,7 +41,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDto registerUser(CustomerDto customerDto) throws GenericException {
+    public CustomerDto registerCustomer(CustomerDto customerDto) throws GenericException {
         if (!customerDto.getPassword().equals(customerDto.getConfirmPassword())) {
             throw new GenericException("Confirm password didn't matched", HttpStatus.BAD_REQUEST);
         }
@@ -53,13 +53,13 @@ public class CustomerServiceImpl implements CustomerService {
         role.ifPresent(value -> customer.setRoleList(Collections.singletonList(value)));
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
 
+        customerDto = customerRepository.save(customer).toCustomerDto();
+
         List<Address> addresses = customer.getAddressList();
         for (Address address : addresses) {
             address.setUser(customer);
             addressService.addAddress(address.toAddressDto());
         }
-
-        customerDto = customerRepository.save(customer).toCustomerDto();
 
         // send account activation link
         userService.accountActivationHandler(customer);
@@ -75,7 +75,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDto getSellerProfile(AppUser user) throws GenericException {
+    public CustomerDto getCustomerProfile(AppUser user) throws GenericException {
         Optional<Customer> customer = customerRepository.findByEmail(user.getUsername());
         if (customer.isPresent())
             return customer.get().toCustomerDto();
