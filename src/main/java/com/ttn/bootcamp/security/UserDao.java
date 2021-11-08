@@ -4,6 +4,7 @@ import com.ttn.bootcamp.domains.User.Role;
 import com.ttn.bootcamp.domains.User.User;
 import com.ttn.bootcamp.exceptions.GenericException;
 import com.ttn.bootcamp.repository.UserRepository;
+import com.ttn.bootcamp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,11 +19,13 @@ public class UserDao {
 
     private UserRepository userRepository;
     private BCryptPasswordEncoder passwordEncoder;
+    private UserService userService;
 
     @Autowired
-    public UserDao(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserDao(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, UserService userService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userService = userService;
     }
 
     AppUser loadUserByUsername(String email, String password) throws GenericException {
@@ -33,15 +36,17 @@ public class UserDao {
             for (Role role : roles) {
                 grantAuthorityList.add(new GrantAuthorityImpl(role.getAuthority()));
             }
-            if (Objects.nonNull(password) && !user.get().getPassword().equals(passwordEncoder.encode(password))) {
+            if (Objects.nonNull(password) && !passwordEncoder.matches(password, user.get().getPassword())) {
                 user.get().setInvalidAttemptCount(user.get().getInvalidAttemptCount() + 1);
-                if (user.get().getInvalidAttemptCount() == 3)
+                if (user.get().getInvalidAttemptCount() == 3) {
                     user.get().setLocked(true);
-                userRepository.save(user.get());
+                    userService.userAccountLockedEmailHandler(user.get());
+                }
             } else {
                 user.get().setInvalidAttemptCount(0);
                 user.get().setLocked(false);
             }
+            userRepository.save(user.get());
 
             return new AppUser(user.get().getEmail(), user.get().getPassword(), user.get().isActive(), user.get().isLocked(), grantAuthorityList);
         } else {

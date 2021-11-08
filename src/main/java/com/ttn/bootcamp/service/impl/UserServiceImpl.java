@@ -55,6 +55,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void userAccountLockedEmailHandler(User user) {
+        String body = "<html>\n" +
+                "    <body>Dear " + user.getFirstName() + ",<br><br>Your account has locked because of 3 successive invalid attempt.</body>\n" +
+                "</html>";
+        String subject = "Your Account has Locked!";
+        emailService.sendEmail(user.getEmail(), subject, body);
+    }
+
+    @Override
     public List<UserDto> getAllUsers() throws GenericException {
         List<User> users = userRepository.findAll();
         if (users.isEmpty())
