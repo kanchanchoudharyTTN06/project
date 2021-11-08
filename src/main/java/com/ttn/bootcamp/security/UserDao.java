@@ -31,6 +31,13 @@ public class UserDao {
     AppUser loadUserByUsername(String email, String password) throws GenericException {
         Optional<User> user = userRepository.findByEmail(email); //because emails are unique
         if (user.isPresent()) {
+            if (!user.get().isActive()) {
+                throw new GenericException("Account is not active", HttpStatus.UNAUTHORIZED);
+            }
+            if (user.get().isLocked()) {
+                throw new GenericException("Account is locked", HttpStatus.UNAUTHORIZED);
+            }
+
             List<GrantAuthorityImpl> grantAuthorityList = new ArrayList<>();
             List<Role> roles = user.get().getRoleList();
             for (Role role : roles) {
