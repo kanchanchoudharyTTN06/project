@@ -1,5 +1,6 @@
 package com.ttn.bootcamp.service.impl;
 
+import com.ttn.bootcamp.domains.User.Address;
 import com.ttn.bootcamp.dto.User.AddressDto;
 import com.ttn.bootcamp.model.ResetPassword;
 import com.ttn.bootcamp.security.AppUser;
@@ -45,7 +46,7 @@ public class SellerServiceImpl implements SellerService {
 
 
     @Override
-    public SellerDto registerUser(SellerDto sellerDto) throws GenericException {
+    public SellerDto registerSeller(SellerDto sellerDto) throws GenericException {
         if (!sellerDto.getPassword().equals(sellerDto.getConfirmPassword())) {
             throw new GenericException("Confirm password didn't matched", HttpStatus.BAD_REQUEST);
         }
@@ -57,7 +58,14 @@ public class SellerServiceImpl implements SellerService {
         Optional<Role> role = roleRepository.findByAuthority("ROLE_" + UserRole.SELLER);
         role.ifPresent(value -> seller.setRoleList(Collections.singletonList(value)));
         seller.setPassword(passwordEncoder.encode(seller.getPassword()));
+
         sellerDto = sellerRepository.save(seller).toSellerDto();
+
+        List<Address> addresses = seller.getAddressList();
+        for (Address address : addresses) {
+            address.setUser(seller);
+            addressService.addAddress(address.toAddressDto());
+        }
 
         // send account creation mail
         accountCreationEmailHandler(seller);
