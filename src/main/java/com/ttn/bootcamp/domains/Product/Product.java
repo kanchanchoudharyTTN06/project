@@ -1,6 +1,5 @@
 package com.ttn.bootcamp.domains.Product;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
 import com.ttn.bootcamp.domains.User.Seller;
 import lombok.AllArgsConstructor;
 import lombok.Data;
