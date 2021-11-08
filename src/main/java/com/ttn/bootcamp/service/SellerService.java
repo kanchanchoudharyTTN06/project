@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface SellerService {
-    SellerDto registerUser(SellerDto sellerDto) throws GenericException;
+    SellerDto registerSeller(SellerDto sellerDto) throws GenericException;
 
     List<Seller> findAllSellers() throws GenericException;
 

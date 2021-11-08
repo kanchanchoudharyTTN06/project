@@ -23,7 +23,7 @@ public class SellerController {
 
     @PostMapping("/register")
     public ResponseEntity<Object> userRegistration(@Valid @RequestBody SellerDto sellerDto) throws GenericException {
-        SellerDto user = sellerService.registerUser(sellerDto);
+        SellerDto user = sellerService.registerSeller(sellerDto);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
