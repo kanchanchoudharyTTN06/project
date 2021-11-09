@@ -1,5 +1,6 @@
 package com.ttn.bootcamp.domains.User;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ttn.bootcamp.dto.User.AddressDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,6 +24,7 @@ public class Address {
     private int zipCode;
     private String label;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;

@@ -1,20 +1,19 @@
-package com.ttn.bootcamp.domains.Product;
+package com.ttn.bootcamp.dto.Product;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryMetadataField {
+public class CategoryMetadataFieldDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(unique = true)
     private String name;
 
     /*@OneToMany(mappedBy = "categoryMetadataField", cascade = CascadeType.ALL)

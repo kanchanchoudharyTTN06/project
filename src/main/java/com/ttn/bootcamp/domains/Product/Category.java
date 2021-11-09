@@ -1,6 +1,5 @@
 package com.ttn.bootcamp.domains.Product;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-//@JsonFilter("Filter")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
