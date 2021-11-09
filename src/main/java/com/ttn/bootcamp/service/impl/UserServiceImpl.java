@@ -92,6 +92,8 @@ public class UserServiceImpl implements UserService {
 
         Optional<User> user = userRepository.findById(accountActivationToken.getUserId());
         if (user.isPresent()) {
+            if (user.get().isActive())
+                return "Your account is already active.";
             user.get().setActive(true);
             userRepository.save(user.get());
             accountActivationConfirmationHandler(user.get());
