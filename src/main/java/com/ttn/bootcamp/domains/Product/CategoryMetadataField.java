@@ -1,10 +1,13 @@
 package com.ttn.bootcamp.domains.Product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -17,6 +20,11 @@ public class CategoryMetadataField {
     private long id;
     private String name;
 
-    /*@OneToMany(mappedBy = "categoryMetadataField", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToMany(mappedBy = "categoryMetadataField", cascade = CascadeType.ALL)
+    private List<CategoryMetadataFieldValues> categoryMetadataFieldValues;
+
+    /*@JsonIgnore
+    @OneToMany(mappedBy = "categoryMetadataField", cascade = CascadeType.ALL)
     private List<CategoryMetadataFieldValues> categoryMetadataFieldValues = new ArrayList<>();*/
 }

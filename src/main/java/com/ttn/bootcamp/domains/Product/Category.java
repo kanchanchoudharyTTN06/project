@@ -1,5 +1,6 @@
 package com.ttn.bootcamp.domains.Product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,13 +18,25 @@ public class Category {
     private long id;
     private String name;
 
-   /* @OneToMany(mappedBy = "category")
+    @JsonIgnore
+    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL)
+    private List<Category> childCategories;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "parent_category_id")
+    private Category parentCategory;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Product> productList;
-*/
-    @ManyToOne
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private List<CategoryMetadataFieldValues> categoryMetadataFieldValuesList;
+
+
+   /* @ManyToOne
     @JoinColumn(name = "parent_category_id", referencedColumnName = "id")
     private Category parentCategory;
 
-   /* @OneToMany(mappedBy = "category")
-    private List<CategoryMetadataFieldValues> categoryMetadataFieldValuesList;*/
+    @OneToOne(mappedBy = "category", cascade = CascadeType.ALL)
+    Product product;*/
 }

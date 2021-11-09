@@ -5,18 +5,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryMetadataFieldValues {
+public class CategoryMetadataFieldValues implements Serializable {
 
-    @EmbeddedId
+    /*@EmbeddedId
     private CategoryMetadataFieldKey categoryMetadataFieldKey;
     private String name;
 
-    /*@ManyToOne
+    @ManyToOne
     @MapsId("categoryMetadataFieldId")
     @JoinColumn(name = "category_metadata_field_id", referencedColumnName = "id")
     private CategoryMetadataField categoryMetadataField;
@@ -25,4 +26,16 @@ public class CategoryMetadataFieldValues {
     @MapsId("categoryId")
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;*/
+
+    @Id
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    @Id
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "category_metadata_field_id")
+    private CategoryMetadataField categoryMetadataField;
+
+    private String valuesList;
 }
