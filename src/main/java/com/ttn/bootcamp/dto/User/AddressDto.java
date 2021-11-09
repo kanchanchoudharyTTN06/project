@@ -1,5 +1,6 @@
 package com.ttn.bootcamp.dto.User;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ttn.bootcamp.domains.User.Address;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +18,7 @@ public class AddressDto {
     private String addressLine;
     private int zipCode;
     private String label;
+    @JsonIgnore
     private UserDto user;
 
     public Address toAddressEntity() {
