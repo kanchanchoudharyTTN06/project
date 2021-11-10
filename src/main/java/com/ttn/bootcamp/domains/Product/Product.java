@@ -1,9 +1,12 @@
 package com.ttn.bootcamp.domains.Product;
 
 import com.ttn.bootcamp.domains.User.Seller;
+import com.ttn.bootcamp.dto.Product.CategoryDto;
+import com.ttn.bootcamp.dto.Product.ProductDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;
 import java.util.List;
@@ -37,5 +40,10 @@ public class Product {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
+
+    public ProductDto toProductDto() {
+        ModelMapper mapper = new ModelMapper();
+        return mapper.map(this, ProductDto.class);
+    }
 
 }

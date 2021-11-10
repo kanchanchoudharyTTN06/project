@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ttn.bootcamp.domains.Product.Category;
 import com.ttn.bootcamp.domains.Product.CategoryMetadataFieldValues;
 import com.ttn.bootcamp.domains.Product.Product;
+import com.ttn.bootcamp.domains.User.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 
 import java.util.List;
 
@@ -25,4 +27,9 @@ public class CategoryDto {
     private List<Product> productList;
 
     private List<CategoryMetadataFieldValues> categoryMetadataFieldValuesList;
+
+    public Category toCategoryEntity() {
+        ModelMapper mapper = new ModelMapper();
+        return mapper.map(this, Category.class);
+    }
 }

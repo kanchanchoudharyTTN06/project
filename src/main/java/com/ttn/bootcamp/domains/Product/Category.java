@@ -1,9 +1,12 @@
 package com.ttn.bootcamp.domains.Product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ttn.bootcamp.dto.Product.CategoryDto;
+import com.ttn.bootcamp.dto.User.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;
 import java.util.List;
@@ -31,6 +34,11 @@ public class Category {
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<CategoryMetadataFieldValues> categoryMetadataFieldValuesList;
+
+    public CategoryDto toCategoryDto() {
+        ModelMapper mapper = new ModelMapper();
+        return mapper.map(this, CategoryDto.class);
+    }
 
 
    /* @ManyToOne

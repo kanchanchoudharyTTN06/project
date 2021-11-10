@@ -1,10 +1,13 @@
 package com.ttn.bootcamp.dto.Product;
 
+import com.ttn.bootcamp.domains.Product.CategoryMetadataField;
 import com.ttn.bootcamp.domains.Product.Product;
+import com.ttn.bootcamp.domains.Product.ProductVariation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
+import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;
 
@@ -22,5 +25,10 @@ public class ProductVariationDto {
     private String metadata;
 
     private Product product;
+
+    public ProductVariation toProductVariationEntity() {
+        ModelMapper mapper = new ModelMapper();
+        return mapper.map(this, ProductVariation.class);
+    }
 
 }
