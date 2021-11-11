@@ -1,5 +1,6 @@
 package com.ttn.bootcamp.controller;
 
+import com.ttn.bootcamp.dto.Product.ProductDto;
 import com.ttn.bootcamp.dto.User.AddressDto;
 import com.ttn.bootcamp.dto.User.SellerDto;
 import com.ttn.bootcamp.exceptions.GenericException;
@@ -13,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.Map;
 
 @RestController
@@ -50,5 +52,11 @@ public class SellerController {
                                                 @RequestParam("id") long id) throws GenericException {
         AddressDto address = sellerService.updateAddress(id, map, (AppUser) authentication.getPrincipal());
         return new ResponseEntity<>(address, HttpStatus.OK);
+    }
+
+    @PostMapping("/seller/addProduct")
+    public ResponseEntity<Object> addProduct(@RequestBody ProductDto productDto, Principal principal)
+    {
+        return null;
     }
 }

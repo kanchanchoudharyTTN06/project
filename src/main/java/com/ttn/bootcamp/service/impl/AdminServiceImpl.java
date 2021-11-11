@@ -1,12 +1,12 @@
 package com.ttn.bootcamp.service.impl;
 
+import com.ttn.bootcamp.domains.Product.Category;
+import com.ttn.bootcamp.domains.Product.CategoryMetadataField;
 import com.ttn.bootcamp.domains.User.Customer;
 import com.ttn.bootcamp.domains.User.Seller;
+import com.ttn.bootcamp.dto.Product.CategoryDto;
 import com.ttn.bootcamp.exceptions.GenericException;
-import com.ttn.bootcamp.service.AdminService;
-import com.ttn.bootcamp.service.CustomerService;
-import com.ttn.bootcamp.service.SellerService;
-import com.ttn.bootcamp.service.UserService;
+import com.ttn.bootcamp.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +20,16 @@ public class AdminServiceImpl implements AdminService {
     private CustomerService customerService;
     private SellerService sellerService;
     private UserService userService;
+    private CategoryMetadataFieldService categoryMetadataFieldService;
+    private CategoryService categoryService;
 
     @Autowired
-    public AdminServiceImpl(CustomerService customerService, SellerService sellerService, UserService userService) {
+    public AdminServiceImpl(CustomerService customerService, SellerService sellerService, UserService userService, CategoryMetadataFieldService categoryMetadataFieldService, CategoryService categoryService) {
         this.customerService = customerService;
         this.sellerService = sellerService;
         this.userService = userService;
+        this.categoryMetadataFieldService = categoryMetadataFieldService;
+        this.categoryService = categoryService;
     }
 
     @Override
@@ -50,5 +54,20 @@ public class AdminServiceImpl implements AdminService {
         Set<Map.Entry<String, String>> entry = request.entrySet();
         long id = Long.parseLong(entry.stream().iterator().next().getValue());
         return userService.deActivateUserAccountByAdmin(id);
+    }
+
+    @Override
+    public List<CategoryMetadataField> getAllCategoryMetadataFields() throws GenericException {
+        return categoryMetadataFieldService.findAllCategoryMetadataFields();
+    }
+
+    @Override
+    public List<Category> getAllCategory() throws GenericException {
+        return categoryService.findAllCategory();
+    }
+
+    @Override
+    public CategoryDto updateCategory(CategoryDto categoryDto) throws GenericException {
+        return null;
     }
 }

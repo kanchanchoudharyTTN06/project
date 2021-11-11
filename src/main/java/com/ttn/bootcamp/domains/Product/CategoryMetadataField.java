@@ -2,14 +2,12 @@ package com.ttn.bootcamp.domains.Product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ttn.bootcamp.dto.Product.CategoryMetadataFieldDto;
-import com.ttn.bootcamp.dto.User.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity

@@ -1,8 +1,6 @@
 package com.ttn.bootcamp.domains.Product;
 
-import com.ttn.bootcamp.dto.Product.CategoryDto;
 import com.ttn.bootcamp.dto.Product.CategoryMetadataFieldValuesDto;
-import com.ttn.bootcamp.dto.User.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
