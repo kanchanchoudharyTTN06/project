@@ -20,7 +20,7 @@ public class CategoryDto {
     private String name;
 
     /*@JsonIgnore
-    private List<Category> childCategories;*/
+    private List<CategoryDto> childCategories;*/
 
     private CategoryDto parentCategory;
 

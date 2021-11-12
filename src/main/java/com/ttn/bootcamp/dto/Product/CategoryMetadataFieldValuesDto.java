@@ -16,8 +16,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryMetadataFieldValuesDto implements Serializable {
-    /*private Category category;
-    private CategoryMetadataField categoryMetadataField;*/
+    /*private CategoryDto category;
+    private CategoryMetadataFieldDto categoryMetadataField;*/
 
     //Doubt in Key
     private CategoryMetadataFieldKey categoryMetadataFieldKey;

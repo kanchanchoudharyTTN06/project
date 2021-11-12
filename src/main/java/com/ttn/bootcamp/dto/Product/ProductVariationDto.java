@@ -24,7 +24,7 @@ public class ProductVariationDto {
     @Column(columnDefinition = "json")
     private String metadata;
 
-    private Product product;
+    private ProductDto product;
 
     public ProductVariation toProductVariationEntity() {
         ModelMapper mapper = new ModelMapper();
