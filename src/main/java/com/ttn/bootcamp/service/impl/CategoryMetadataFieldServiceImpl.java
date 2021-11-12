@@ -31,7 +31,7 @@ public class CategoryMetadataFieldServiceImpl implements CategoryMetadataFieldSe
 
     @Override
     public CategoryMetadataFieldDto addCategoryMetadataField(CategoryMetadataFieldDto categoryMetadataFieldDto) throws GenericException {
-        categoryMetadataFieldService.checkForMetadataFieldExist(categoryMetadataFieldDto.getName());
+        checkForMetadataFieldExist(categoryMetadataFieldDto.getName());
 
         CategoryMetadataField categoryMetadataField = categoryMetadataFieldDto.toCategoryMetadataFieldEntity();
         categoryMetadataFieldDto = categoryMetadataFieldRepository.save(categoryMetadataField).toCategoryMetadataFieldDto();

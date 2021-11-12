@@ -54,7 +54,7 @@ public class SellerController {
         return new ResponseEntity<>(address, HttpStatus.OK);
     }
 
-    @PostMapping("/seller/addProduct")
+    @PostMapping("/add/product")
     public ResponseEntity<Object> addProduct(@RequestBody ProductDto productDto, Principal principal)
     {
         return null;
