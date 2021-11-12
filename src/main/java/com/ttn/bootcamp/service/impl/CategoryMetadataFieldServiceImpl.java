@@ -14,24 +14,22 @@ import java.util.List;
 
 @Service
 public class CategoryMetadataFieldServiceImpl implements CategoryMetadataFieldService {
+
     private CategoryMetadataFieldRepository categoryMetadataFieldRepository;
-    private CategoryMetadataFieldService categoryMetadataFieldService;
 
     @Autowired
-    public CategoryMetadataFieldServiceImpl(CategoryMetadataFieldRepository categoryMetadataFieldRepository, CategoryMetadataFieldService categoryMetadataFieldService) {
+    public CategoryMetadataFieldServiceImpl(CategoryMetadataFieldRepository categoryMetadataFieldRepository) {
         this.categoryMetadataFieldRepository = categoryMetadataFieldRepository;
-        this.categoryMetadataFieldService = categoryMetadataFieldService;
     }
 
-    @Override
-    public void checkForMetadataFieldExist(String name) throws GenericException {
+    private void checkForMetadataFieldExist(String name) throws GenericException {
         if (categoryMetadataFieldRepository.findByName(name).isPresent())
             throw new GenericException("Metadata Field already exist.", HttpStatus.BAD_REQUEST);
     }
 
     @Override
     public CategoryMetadataFieldDto addCategoryMetadataField(CategoryMetadataFieldDto categoryMetadataFieldDto) throws GenericException {
-        categoryMetadataFieldService.checkForMetadataFieldExist(categoryMetadataFieldDto.getName());
+        checkForMetadataFieldExist(categoryMetadataFieldDto.getName());
 
         CategoryMetadataField categoryMetadataField = categoryMetadataFieldDto.toCategoryMetadataFieldEntity();
         categoryMetadataFieldDto = categoryMetadataFieldRepository.save(categoryMetadataField).toCategoryMetadataFieldDto();
