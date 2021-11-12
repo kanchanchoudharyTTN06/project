@@ -1,7 +1,6 @@
 package com.ttn.bootcamp.service.impl;
 
 import com.ttn.bootcamp.domains.Product.Category;
-import com.ttn.bootcamp.domains.Product.CategoryMetadataField;
 import com.ttn.bootcamp.dto.Product.CategoryDto;
 import com.ttn.bootcamp.exceptions.GenericException;
 import com.ttn.bootcamp.repository.CategoryRepository;
@@ -15,23 +14,20 @@ import java.util.List;
 @Service
 public class CategoryServiceImpl implements CategoryService {
     private CategoryRepository categoryRepository;
-    private CategoryService categoryService;
 
     @Autowired
-    public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryService categoryService) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
-        this.categoryService = categoryService;
     }
 
-    @Override
-    public void checkForCategoryExist(String name) throws GenericException {
+    private void checkForCategoryExist(String name) throws GenericException {
         if (categoryRepository.findByName(name).isPresent())
             throw new GenericException("Category already exist.", HttpStatus.BAD_REQUEST);
     }
 
     @Override
     public CategoryDto addCategory(CategoryDto categoryDto) throws GenericException {
-        categoryService.checkForCategoryExist(categoryDto.getName());
+        checkForCategoryExist(categoryDto.getName());
 
         Category category = categoryDto.toCategoryEntity();
         categoryDto = categoryRepository.save(category).toCategoryDto();
