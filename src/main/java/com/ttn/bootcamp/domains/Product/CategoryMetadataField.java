@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Data
@@ -21,16 +20,15 @@ public class CategoryMetadataField {
     private long id;
     private String name;
 
-    @JsonIgnore
+    /*@JsonIgnore
     @OneToMany(mappedBy = "categoryMetadataField", cascade = CascadeType.ALL)
-    private List<CategoryMetadataFieldValues> categoryMetadataFieldValues;
+    private List<CategoryMetadataFieldValues> categoryMetadataFieldValues;*/
+    /*@JsonIgnore
+    @OneToMany(mappedBy = "categoryMetadataField", cascade = CascadeType.ALL)
+    private List<CategoryMetadataFieldValues> categoryMetadataFieldValues = new ArrayList<>();*/
 
     public CategoryMetadataFieldDto toCategoryMetadataFieldDto() {
         ModelMapper mapper = new ModelMapper();
         return mapper.map(this, CategoryMetadataFieldDto.class);
     }
-
-    /*@JsonIgnore
-    @OneToMany(mappedBy = "categoryMetadataField", cascade = CascadeType.ALL)
-    private List<CategoryMetadataFieldValues> categoryMetadataFieldValues = new ArrayList<>();*/
 }

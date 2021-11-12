@@ -32,19 +32,11 @@ public class Category {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Product> productList;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<CategoryMetadataFieldValues> categoryMetadataFieldValuesList;
+    /*@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private List<CategoryMetadataFieldValues> categoryMetadataFieldValuesList;*/
 
     public CategoryDto toCategoryDto() {
         ModelMapper mapper = new ModelMapper();
         return mapper.map(this, CategoryDto.class);
     }
-
-
-   /* @ManyToOne
-    @JoinColumn(name = "parent_category_id", referencedColumnName = "id")
-    private Category parentCategory;
-
-    @OneToOne(mappedBy = "category", cascade = CascadeType.ALL)
-    Product product;*/
 }

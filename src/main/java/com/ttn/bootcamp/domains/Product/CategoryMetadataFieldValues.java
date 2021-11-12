@@ -16,11 +16,11 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class CategoryMetadataFieldValues implements Serializable {
 
-    /*@EmbeddedId
+    @EmbeddedId
     private CategoryMetadataFieldKey categoryMetadataFieldKey;
-    private String name;
+    private String valuesList;
 
-    @ManyToOne
+    /*@ManyToOne
     @MapsId("categoryMetadataFieldId")
     @JoinColumn(name = "category_metadata_field_id", referencedColumnName = "id")
     private CategoryMetadataField categoryMetadataField;
@@ -30,7 +30,7 @@ public class CategoryMetadataFieldValues implements Serializable {
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;*/
 
-    @Id
+    /*@Id
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
@@ -40,9 +40,7 @@ public class CategoryMetadataFieldValues implements Serializable {
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_metadata_field_id")
-    private CategoryMetadataField categoryMetadataField;
-
-    private String valuesList;
+    private CategoryMetadataField categoryMetadataField;*/
 
     public CategoryMetadataFieldValuesDto toCategoryMetadataFieldValuesDto() {
         ModelMapper mapper = new ModelMapper();

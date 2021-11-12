@@ -19,14 +19,14 @@ public class CategoryDto {
     private long id;
     private String name;
 
-    /*//@JsonIgnore
+    /*@JsonIgnore
     private List<Category> childCategories;*/
 
     private CategoryDto parentCategory;
 
     private List<ProductDto> productList;
 
-    private List<CategoryMetadataFieldValuesDto> categoryMetadataFieldValuesList;
+    //private List<CategoryMetadataFieldValuesDto> categoryMetadataFieldValuesList;
 
     public Category toCategoryEntity() {
         ModelMapper mapper = new ModelMapper();
