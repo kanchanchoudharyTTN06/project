@@ -1,7 +1,7 @@
 package com.ttn.bootcamp.domains.Product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ttn.bootcamp.domains.User.Seller;
-import com.ttn.bootcamp.dto.Product.CategoryDto;
 import com.ttn.bootcamp.dto.Product.ProductDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,6 +34,7 @@ public class Product {
     /*@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductReview> productReviewList;*/
 
+    @JsonIgnore
     @OneToMany(mappedBy = "product")
     private List<ProductVariation> productVariationList;
 

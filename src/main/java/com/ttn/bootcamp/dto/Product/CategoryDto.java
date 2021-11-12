@@ -22,11 +22,11 @@ public class CategoryDto {
     /*//@JsonIgnore
     private List<Category> childCategories;*/
 
-    private Category parentCategory;
+    private CategoryDto parentCategory;
 
-    private List<Product> productList;
+    private List<ProductDto> productList;
 
-    private List<CategoryMetadataFieldValues> categoryMetadataFieldValuesList;
+    private List<CategoryMetadataFieldValuesDto> categoryMetadataFieldValuesList;
 
     public Category toCategoryEntity() {
         ModelMapper mapper = new ModelMapper();

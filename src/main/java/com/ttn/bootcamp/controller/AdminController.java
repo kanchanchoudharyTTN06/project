@@ -1,5 +1,6 @@
 package com.ttn.bootcamp.controller;
 
+import com.google.gson.Gson;
 import com.ttn.bootcamp.domains.Product.Category;
 import com.ttn.bootcamp.domains.Product.CategoryMetadataField;
 import com.ttn.bootcamp.domains.User.Customer;
@@ -70,10 +71,9 @@ public class AdminController {
     }
 
     @PostMapping("/add/categorymetadatafield")
-    public ResponseEntity<Object> addNewCategoryMetadataField(@RequestBody CategoryMetadataFieldDto categoryMetadataFieldDto) throws GenericException
-    {
+    public ResponseEntity<Object> addNewCategoryMetadataField(@RequestBody CategoryMetadataFieldDto categoryMetadataFieldDto) throws GenericException {
         CategoryMetadataFieldDto categoryMetadataFieldDtos = categoryMetadataFieldService.addCategoryMetadataField(categoryMetadataFieldDto);
-        return new ResponseEntity<>(categoryMetadataFieldDtos, HttpStatus.OK);
+        return new ResponseEntity<>(new Gson().toJson(categoryMetadataFieldDtos), HttpStatus.OK);
     }
 
     @GetMapping("/all/categorymetadatafields")
@@ -83,10 +83,9 @@ public class AdminController {
     }
 
     @PostMapping("/add/category")
-    public ResponseEntity<Object> addNewCategory(@RequestBody CategoryDto categoryDto) throws GenericException
-    {
+    public ResponseEntity<Object> addNewCategory(@RequestBody CategoryDto categoryDto) throws GenericException {
         CategoryDto categoryDtos = categoryService.addCategory(categoryDto);
-        return new ResponseEntity<>(categoryDtos, HttpStatus.OK);
+        return new ResponseEntity<>(new Gson().toJson(categoryDtos), HttpStatus.OK);
     }
 
     @GetMapping("/all/categories")
@@ -97,8 +96,7 @@ public class AdminController {
 
     @Transactional
     @PutMapping("/update/category")
-    public ResponseEntity<Object> updateCategory(@Valid @RequestBody CategoryDto categoryDto) throws GenericException
-    {
+    public ResponseEntity<Object> updateCategory(@Valid @RequestBody CategoryDto categoryDto) throws GenericException {
         CategoryDto categoryDtos = adminService.updateCategory(categoryDto);
         return new ResponseEntity<>(categoryDtos, HttpStatus.OK);
     }
