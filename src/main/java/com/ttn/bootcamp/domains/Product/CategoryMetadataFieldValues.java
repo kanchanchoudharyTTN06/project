@@ -1,5 +1,6 @@
 package com.ttn.bootcamp.domains.Product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ttn.bootcamp.dto.Product.CategoryMetadataFieldValuesDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,11 +31,13 @@ public class CategoryMetadataFieldValues implements Serializable {
     private Category category;*/
 
     @Id
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
     private Category category;
 
     @Id
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_metadata_field_id")
     private CategoryMetadataField categoryMetadataField;
