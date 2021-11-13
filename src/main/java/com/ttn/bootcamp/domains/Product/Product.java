@@ -22,17 +22,14 @@ public class Product {
     private String name;
     private String description;
     private String brand;
-    private boolean Is_Cancellable;
-    private boolean Is_Returnable;
-    private boolean Is_Active = false;
-    private boolean Is_Deleted = false;
+    private boolean isCancellable = false;
+    private boolean isReturnable = false;
+    private boolean isActive = false;
+    private boolean isDeleted = false;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "seller_id", referencedColumnName = "id")
     private Seller seller;
-
-    /*@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<ProductReview> productReviewList;*/
 
     @JsonIgnore
     @OneToMany(mappedBy = "product")
@@ -41,6 +38,9 @@ public class Product {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
+
+    /*@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<ProductReview> productReviewList;*/
 
     public ProductDto toProductDto() {
         ModelMapper mapper = new ModelMapper();

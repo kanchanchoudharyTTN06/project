@@ -6,6 +6,7 @@ import com.ttn.bootcamp.dto.User.SellerDto;
 import com.ttn.bootcamp.exceptions.GenericException;
 import com.ttn.bootcamp.model.ResetPassword;
 import com.ttn.bootcamp.security.AppUser;
+import com.ttn.bootcamp.service.ProductService;
 import com.ttn.bootcamp.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.security.Principal;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -22,6 +23,8 @@ import java.util.Map;
 public class SellerController {
     @Autowired
     SellerService sellerService;
+    @Autowired
+    private ProductService productService;
 
     @PostMapping("/register")
     public ResponseEntity<Object> userRegistration(@Valid @RequestBody SellerDto sellerDto) throws GenericException {
@@ -55,8 +58,14 @@ public class SellerController {
     }
 
     @PostMapping("/add/product")
-    public ResponseEntity<Object> addProduct(@RequestBody ProductDto productDto, Principal principal)
-    {
-        return null;
+    public ResponseEntity<Object> addProduct(@Valid @RequestBody ProductDto productDto, Authentication authentication) throws GenericException {
+        ProductDto productDtos = productService.addProduct(productDto,(AppUser) authentication.getPrincipal());
+        return new ResponseEntity<>(productDtos, HttpStatus.OK);
+    }
+
+    @GetMapping("/all/products")
+    public ResponseEntity<Object> getAllProducts(Authentication authentication) throws GenericException {
+        List<ProductDto> productDto = productService.getAllProducts((AppUser) authentication.getPrincipal());
+        return new ResponseEntity<>(productDto, HttpStatus.OK);
     }
 }
