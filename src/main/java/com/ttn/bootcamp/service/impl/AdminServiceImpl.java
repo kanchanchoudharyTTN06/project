@@ -5,6 +5,8 @@ import com.ttn.bootcamp.domains.Product.CategoryMetadataField;
 import com.ttn.bootcamp.domains.User.Customer;
 import com.ttn.bootcamp.domains.User.Seller;
 import com.ttn.bootcamp.dto.Product.CategoryDto;
+import com.ttn.bootcamp.dto.Product.CategoryMetadataFieldDto;
+import com.ttn.bootcamp.dto.Product.CategoryMetadataFieldValuesDto;
 import com.ttn.bootcamp.exceptions.GenericException;
 import com.ttn.bootcamp.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +23,16 @@ public class AdminServiceImpl implements AdminService {
     private UserService userService;
     private CategoryMetadataFieldService categoryMetadataFieldService;
     private CategoryService categoryService;
+    private CategoryMetadataFieldValueService categoryMetadataFieldValueService;
 
     @Autowired
-    public AdminServiceImpl(CustomerService customerService, SellerService sellerService, UserService userService, CategoryMetadataFieldService categoryMetadataFieldService, CategoryService categoryService) {
+    public AdminServiceImpl(CustomerService customerService, SellerService sellerService, UserService userService, CategoryMetadataFieldService categoryMetadataFieldService, CategoryService categoryService, CategoryMetadataFieldValueService categoryMetadataFieldValueService) {
         this.customerService = customerService;
         this.sellerService = sellerService;
         this.userService = userService;
         this.categoryMetadataFieldService = categoryMetadataFieldService;
         this.categoryService = categoryService;
+        this.categoryMetadataFieldValueService = categoryMetadataFieldValueService;
     }
 
     @Override
@@ -72,6 +76,26 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public CategoryDto updateCategory(CategoryDto categoryDto) throws GenericException {
-        return null;
+        return categoryService.updateCategory(categoryDto).toCategoryDto();
+    }
+
+    @Override
+    public CategoryDto getCategory(long id) throws GenericException {
+        return categoryService.findById(id).toCategoryDto();
+    }
+
+    @Override
+    public CategoryMetadataFieldValuesDto addOrUpdateCategoryMetadataFieldValues(CategoryMetadataFieldValuesDto categoryMetadataFieldValuesDto) throws GenericException {
+        return categoryMetadataFieldValueService.addOrUpdateCategoryMetadataFieldValues(categoryMetadataFieldValuesDto);
+    }
+
+    @Override
+    public CategoryDto addCategory(CategoryDto categoryDto) throws GenericException {
+        return categoryService.addCategory(categoryDto);
+    }
+
+    @Override
+    public CategoryMetadataFieldDto addCategoryMetadataField(CategoryMetadataFieldDto categoryMetadataFieldDto) throws GenericException {
+        return categoryMetadataFieldService.addCategoryMetadataField(categoryMetadataFieldDto);
     }
 }

@@ -9,6 +9,8 @@ import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -43,7 +45,8 @@ public class CategoryMetadataFieldValues implements Serializable {
     private CategoryMetadataField categoryMetadataField;*/
 
     public CategoryMetadataFieldValuesDto toCategoryMetadataFieldValuesDto() {
-        ModelMapper mapper = new ModelMapper();
-        return mapper.map(this, CategoryMetadataFieldValuesDto.class);
+        return new CategoryMetadataFieldValuesDto(this.categoryMetadataFieldKey.getCategoryMetadataFieldId(),
+                this.getCategoryMetadataFieldKey().getCategoryId(),
+                Arrays.stream(this.valuesList.split(",")).collect(Collectors.toSet()));
     }
 }

@@ -10,4 +10,6 @@ public interface CategoryMetadataFieldService {
     CategoryMetadataFieldDto addCategoryMetadataField(CategoryMetadataFieldDto categoryMetadataFieldDto) throws GenericException;
 
     List<CategoryMetadataField> findAllCategoryMetadataFields() throws GenericException;
+
+    CategoryMetadataField findById(long categoryMetadataFieldId) throws GenericException;
 }

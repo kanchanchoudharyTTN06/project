@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -19,12 +20,7 @@ public class CategoryMetadataFieldValuesDto implements Serializable {
     /*private CategoryDto category;
     private CategoryMetadataFieldDto categoryMetadataField;*/
 
-    //Doubt in Key
-    private CategoryMetadataFieldKey categoryMetadataFieldKey;
-    private String valuesList;
-
-    public CategoryMetadataFieldValues toCategoryMetadataFieldValuesEntity() {
-        ModelMapper mapper = new ModelMapper();
-        return mapper.map(this, CategoryMetadataFieldValues.class);
-    }
+    private long categoryMetadataFieldId;
+    private long categoryId;
+    private Set<String> valuesList;
 }

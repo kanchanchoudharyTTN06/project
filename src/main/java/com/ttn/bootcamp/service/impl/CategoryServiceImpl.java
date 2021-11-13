@@ -1,7 +1,10 @@
 package com.ttn.bootcamp.service.impl;
 
 import com.ttn.bootcamp.domains.Product.Category;
+import com.ttn.bootcamp.domains.Product.CategoryMetadataFieldKey;
+import com.ttn.bootcamp.domains.Product.CategoryMetadataFieldValues;
 import com.ttn.bootcamp.dto.Product.CategoryDto;
+import com.ttn.bootcamp.dto.Product.CategoryMetadataFieldValuesDto;
 import com.ttn.bootcamp.exceptions.GenericException;
 import com.ttn.bootcamp.repository.CategoryRepository;
 import com.ttn.bootcamp.service.CategoryService;
@@ -11,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -58,5 +62,28 @@ public class CategoryServiceImpl implements CategoryService {
         if (category.isEmpty())
             throw new GenericException("No content found", HttpStatus.NOT_FOUND);
         return category;
+    }
+
+    @Override
+    public Category findById(long id) throws GenericException {
+        Optional<Category> categoryOptional = categoryRepository.findById(id);
+        if (categoryOptional.isPresent())
+            return categoryOptional.get();
+        throw new GenericException("No Category found.", HttpStatus.NOT_FOUND);
+    }
+
+    @Override
+    public Category updateCategory(CategoryDto categoryDto) throws GenericException {
+        if (categoryDto.getId() == 0)
+            throw new GenericException("Category id is mandatory", HttpStatus.INTERNAL_SERVER_ERROR);
+        Category category = categoryDto.toCategoryEntity();
+        if (Objects.nonNull(category.getParentCategory()) && category.getParentCategory().getId() != 0) {
+            Category parent = getParentCategory(category.getParentCategory().getId());
+            category.setParentCategory(parent);
+        } else if (StringUtils.isNotBlank(category.getParentCategory().getName())) {
+            Category parent = categoryRepository.save(category.getParentCategory());
+            category.setParentCategory(parent);
+        }
+        return categoryRepository.save(category);
     }
 }

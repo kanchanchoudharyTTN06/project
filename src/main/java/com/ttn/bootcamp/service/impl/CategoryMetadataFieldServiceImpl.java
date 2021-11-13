@@ -1,7 +1,6 @@
 package com.ttn.bootcamp.service.impl;
 
 import com.ttn.bootcamp.domains.Product.CategoryMetadataField;
-import com.ttn.bootcamp.domains.User.Customer;
 import com.ttn.bootcamp.dto.Product.CategoryMetadataFieldDto;
 import com.ttn.bootcamp.exceptions.GenericException;
 import com.ttn.bootcamp.repository.CategoryMetadataFieldRepository;
@@ -11,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryMetadataFieldServiceImpl implements CategoryMetadataFieldService {
@@ -41,6 +41,14 @@ public class CategoryMetadataFieldServiceImpl implements CategoryMetadataFieldSe
         if (categoryMetadataFields.isEmpty())
             throw new GenericException("No content found", HttpStatus.NOT_FOUND);
         return categoryMetadataFields;
+    }
+
+    @Override
+    public CategoryMetadataField findById(long categoryMetadataFieldId) throws GenericException {
+        Optional<CategoryMetadataField> categoryMetadataField = categoryMetadataFieldRepository.findById(categoryMetadataFieldId);
+        if (categoryMetadataField.isPresent())
+            return categoryMetadataField.get();
+        throw new GenericException("No CategoryMetadataField found", HttpStatus.NOT_FOUND);
     }
 
 }

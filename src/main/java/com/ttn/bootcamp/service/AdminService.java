@@ -4,6 +4,8 @@ import com.ttn.bootcamp.domains.Product.CategoryMetadataField;
 import com.ttn.bootcamp.domains.User.Customer;
 import com.ttn.bootcamp.domains.User.Seller;
 import com.ttn.bootcamp.dto.Product.CategoryDto;
+import com.ttn.bootcamp.dto.Product.CategoryMetadataFieldDto;
+import com.ttn.bootcamp.dto.Product.CategoryMetadataFieldValuesDto;
 import com.ttn.bootcamp.exceptions.GenericException;
 
 import java.util.List;
@@ -23,4 +25,12 @@ public interface AdminService {
     List<CategoryDto> getAllCategory() throws GenericException;
 
     CategoryDto updateCategory(CategoryDto categoryDto) throws GenericException;
+
+    CategoryDto getCategory(long id) throws GenericException;
+
+    CategoryMetadataFieldValuesDto addOrUpdateCategoryMetadataFieldValues(CategoryMetadataFieldValuesDto categoryMetadataFieldValuesDto) throws GenericException;
+
+    CategoryDto addCategory(CategoryDto categoryDto) throws GenericException;
+
+    CategoryMetadataFieldDto addCategoryMetadataField(CategoryMetadataFieldDto categoryMetadataFieldDto) throws GenericException;
 }

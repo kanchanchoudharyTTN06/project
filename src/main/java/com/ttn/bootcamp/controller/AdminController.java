@@ -1,24 +1,19 @@
 package com.ttn.bootcamp.controller;
 
 import com.google.gson.Gson;
-import com.ttn.bootcamp.domains.Product.Category;
 import com.ttn.bootcamp.domains.Product.CategoryMetadataField;
 import com.ttn.bootcamp.domains.User.Customer;
 import com.ttn.bootcamp.domains.User.Seller;
 import com.ttn.bootcamp.dto.Product.CategoryDto;
 import com.ttn.bootcamp.dto.Product.CategoryMetadataFieldDto;
-import com.ttn.bootcamp.dto.User.CustomerDto;
+import com.ttn.bootcamp.dto.Product.CategoryMetadataFieldValuesDto;
 import com.ttn.bootcamp.exceptions.GenericException;
-import com.ttn.bootcamp.security.AppUser;
 import com.ttn.bootcamp.service.AdminService;
-import com.ttn.bootcamp.service.CategoryMetadataFieldService;
-import com.ttn.bootcamp.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -27,12 +22,12 @@ import java.util.Map;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @Autowired
     private AdminService adminService;
+
     @Autowired
-    private CategoryService categoryService;
-    @Autowired
-    private CategoryMetadataFieldService categoryMetadataFieldService;
+    public AdminController(AdminService adminService) {
+        this.adminService = adminService;
+    }
 
     @GetMapping("/all/customers")
     public ResponseEntity<Object> getAllCustomers() throws GenericException {
@@ -72,7 +67,7 @@ public class AdminController {
 
     @PostMapping("/add/categorymetadatafield")
     public ResponseEntity<Object> addNewCategoryMetadataField(@Valid @RequestBody CategoryMetadataFieldDto categoryMetadataFieldDto) throws GenericException {
-        CategoryMetadataFieldDto categoryMetadataFieldDtos = categoryMetadataFieldService.addCategoryMetadataField(categoryMetadataFieldDto);
+        CategoryMetadataFieldDto categoryMetadataFieldDtos = adminService.addCategoryMetadataField(categoryMetadataFieldDto);
         return new ResponseEntity<>(new Gson().toJson(categoryMetadataFieldDtos), HttpStatus.OK);
     }
 
@@ -84,7 +79,7 @@ public class AdminController {
 
     @PostMapping("/add/category")
     public ResponseEntity<Object> addCategory(@Valid @RequestBody CategoryDto categoryDto) throws GenericException {
-        CategoryDto categoryDtos = categoryService.addCategory(categoryDto);
+        CategoryDto categoryDtos = adminService.addCategory(categoryDto);
         return new ResponseEntity<>(new Gson().toJson(categoryDtos), HttpStatus.OK);
     }
 
@@ -94,10 +89,27 @@ public class AdminController {
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
-    @Transactional
+    @GetMapping("/categories/{id}")
+    public ResponseEntity<Object> getCategory(@PathVariable("id") long id) throws GenericException {
+        CategoryDto category = adminService.getCategory(id);
+        return new ResponseEntity<>(category, HttpStatus.OK);
+    }
+
     @PutMapping("/update/category")
     public ResponseEntity<Object> updateCategory(@Valid @RequestBody CategoryDto categoryDto) throws GenericException {
         CategoryDto categoryDtos = adminService.updateCategory(categoryDto);
-        return new ResponseEntity<>(categoryDtos, HttpStatus.OK);
+        return new ResponseEntity<>(new Gson().toJson(categoryDtos), HttpStatus.OK);
+    }
+
+    @PostMapping("/add/category/metadata/fieldvalues")
+    public ResponseEntity<Object> addCategoryMetadataFieldValues(@RequestBody CategoryMetadataFieldValuesDto categoryMetadataFieldValuesDto) throws GenericException {
+        CategoryMetadataFieldValuesDto response = adminService.addOrUpdateCategoryMetadataFieldValues(categoryMetadataFieldValuesDto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PutMapping("/update/category/metadata/fieldvalues")
+    public ResponseEntity<Object> updateCategoryMetadataFieldValues(@RequestBody CategoryMetadataFieldValuesDto categoryMetadataFieldValuesDto) throws GenericException {
+        CategoryMetadataFieldValuesDto response = adminService.addOrUpdateCategoryMetadataFieldValues(categoryMetadataFieldValuesDto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
