@@ -19,8 +19,8 @@ public class CategoryDto {
     private long id;
     private String name;
 
-    /*//@JsonIgnore
-    private List<Category> childCategories;*/
+    /*@JsonIgnore
+    private List<CategoryDto> childCategories;*/
 
     private CategoryDto parentCategory;
 

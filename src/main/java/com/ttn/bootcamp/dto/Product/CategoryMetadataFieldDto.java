@@ -17,9 +17,10 @@ import java.util.List;
 public class CategoryMetadataFieldDto {
 
     private long id;
+
     private String name;
 
-    private List<CategoryMetadataFieldValues> categoryMetadataFieldValues;
+    //private List<CategoryMetadataFieldValuesDto> categoryMetadataFieldValues;
 
     /*@OneToMany(mappedBy = "categoryMetadataField", cascade = CascadeType.ALL)
     private List<CategoryMetadataFieldValues> categoryMetadataFieldValues = new ArrayList<>();*/

@@ -5,6 +5,7 @@ import com.ttn.bootcamp.domains.Product.CategoryMetadataField;
 import com.ttn.bootcamp.domains.Product.Product;
 import com.ttn.bootcamp.domains.Product.ProductVariation;
 import com.ttn.bootcamp.domains.User.Seller;
+import com.ttn.bootcamp.dto.User.SellerDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,11 +26,11 @@ public class ProductDto {
     private boolean Is_Active = false;
     private boolean Is_Deleted = false;
 
-    private Seller seller;
+    private SellerDto seller;
 
-    private List<ProductVariation> productVariationList;
+    private List<ProductVariationDto> productVariationList;
 
-    private Category category;
+    private CategoryDto category;
 
     public Product toProductEntity() {
         ModelMapper mapper = new ModelMapper();

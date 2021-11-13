@@ -9,15 +9,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryMetadataFieldValuesDto implements Serializable {
+    /*private CategoryDto category;
+    private CategoryMetadataFieldDto categoryMetadataField;*/
+
+    //Doubt in Key
     private CategoryMetadataFieldKey categoryMetadataFieldKey;
-    //private Category category;
-    //private CategoryMetadataField categoryMetadataField;
     private String valuesList;
 
     public CategoryMetadataFieldValues toCategoryMetadataFieldValuesEntity() {

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
@@ -13,6 +14,10 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class CategoryMetadataFieldKey implements Serializable
 {
-    private Integer categoryMetadataFieldId;
-    private Integer categoryId;
+    @Column(name = "CategoryMetadataField_Id", nullable = false)
+    private long categoryMetadataFieldId;
+
+    @Column(name = "Category_Id", nullable = false)
+    private long categoryId;
 }
+
