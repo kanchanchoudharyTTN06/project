@@ -71,7 +71,7 @@ public class AdminController {
     }
 
     @PostMapping("/add/categorymetadatafield")
-    public ResponseEntity<Object> addNewCategoryMetadataField(@RequestBody CategoryMetadataFieldDto categoryMetadataFieldDto) throws GenericException {
+    public ResponseEntity<Object> addNewCategoryMetadataField(@Valid @RequestBody CategoryMetadataFieldDto categoryMetadataFieldDto) throws GenericException {
         CategoryMetadataFieldDto categoryMetadataFieldDtos = categoryMetadataFieldService.addCategoryMetadataField(categoryMetadataFieldDto);
         return new ResponseEntity<>(new Gson().toJson(categoryMetadataFieldDtos), HttpStatus.OK);
     }
@@ -83,14 +83,14 @@ public class AdminController {
     }
 
     @PostMapping("/add/category")
-    public ResponseEntity<Object> addCategory(@RequestBody CategoryDto categoryDto) throws GenericException {
+    public ResponseEntity<Object> addCategory(@Valid @RequestBody CategoryDto categoryDto) throws GenericException {
         CategoryDto categoryDtos = categoryService.addCategory(categoryDto);
         return new ResponseEntity<>(new Gson().toJson(categoryDtos), HttpStatus.OK);
     }
 
     @GetMapping("/all/categories")
     public ResponseEntity<Object> getAllCategory() throws GenericException {
-        List<Category> categories = adminService.getAllCategory();
+        List<CategoryDto> categories = adminService.getAllCategory();
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 

@@ -2,14 +2,12 @@ package com.ttn.bootcamp.dto.Product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ttn.bootcamp.domains.Product.Category;
-import com.ttn.bootcamp.domains.Product.CategoryMetadataFieldValues;
-import com.ttn.bootcamp.domains.Product.Product;
-import com.ttn.bootcamp.domains.User.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Data
@@ -17,13 +15,12 @@ import java.util.List;
 @AllArgsConstructor
 public class CategoryDto {
     private long id;
+    @NotBlank(message = "Category name is mandatory")
     private String name;
 
-    /*@JsonIgnore
-    private List<CategoryDto> childCategories;*/
-
+    @JsonIgnore
+    private List<CategoryDto> childCategories;
     private CategoryDto parentCategory;
-
     private List<ProductDto> productList;
 
     //private List<CategoryMetadataFieldValuesDto> categoryMetadataFieldValuesList;

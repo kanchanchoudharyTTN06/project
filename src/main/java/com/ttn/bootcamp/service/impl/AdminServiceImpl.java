@@ -10,9 +10,8 @@ import com.ttn.bootcamp.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -62,8 +61,13 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<Category> getAllCategory() throws GenericException {
-        return categoryService.findAllCategory();
+    public List<CategoryDto> getAllCategory() throws GenericException {
+        List<Category> categories = categoryService.findAllCategory();
+        if (Objects.nonNull(categories) && !categories.isEmpty()) {
+            return categories.stream().map(Category::toCategoryDto)
+                    .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
     }
 
     @Override

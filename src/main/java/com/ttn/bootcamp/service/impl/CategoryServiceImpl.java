@@ -5,11 +5,11 @@ import com.ttn.bootcamp.dto.Product.CategoryDto;
 import com.ttn.bootcamp.exceptions.GenericException;
 import com.ttn.bootcamp.repository.CategoryRepository;
 import com.ttn.bootcamp.service.CategoryService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,9 +22,8 @@ public class CategoryServiceImpl implements CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    private void checkForCategoryExist(String name) throws GenericException {
-        if (categoryRepository.findByName(name).isPresent())
-            throw new GenericException("Category already exist.", HttpStatus.BAD_REQUEST);
+    private boolean checkForCategoryExist(String name) throws GenericException {
+        return categoryRepository.findByName(name).isPresent();
     }
 
     private Category getParentCategory(long id) throws GenericException {
@@ -37,18 +36,20 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto addCategory(CategoryDto categoryDto) throws GenericException {
-        checkForCategoryExist(categoryDto.getName());
+        if (checkForCategoryExist(categoryDto.getName()))
+            throw new GenericException("Category already exist.", HttpStatus.BAD_REQUEST);
 
         Category category = categoryDto.toCategoryEntity();
 
         if (category.getParentCategory().getId() != 0) {
             Category parent = getParentCategory(category.getParentCategory().getId());
             category.setParentCategory(parent);
+        } else if (StringUtils.isBlank(categoryDto.getParentCategory().getName())) {
+            throw new GenericException("Parent category name and id both can't be blank", HttpStatus.BAD_REQUEST);
+        } else if (checkForCategoryExist(categoryDto.getParentCategory().getName())) {
+            throw new GenericException("Parent category already exist.", HttpStatus.BAD_REQUEST);
         }
-
-        //category.setChildCategories(Collections.singletonList(category));
-        categoryDto = categoryRepository.save(category).toCategoryDto();
-        return categoryDto;
+        return categoryRepository.save(category).toCategoryDto();
     }
 
     @Override

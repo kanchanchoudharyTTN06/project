@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
 import javax.persistence.Column;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Data
@@ -17,7 +18,7 @@ import java.util.List;
 public class CategoryMetadataFieldDto {
 
     private long id;
-
+    @NotBlank(message = "Metadata field name is mandatory")
     private String name;
 
     //private List<CategoryMetadataFieldValuesDto> categoryMetadataFieldValues;

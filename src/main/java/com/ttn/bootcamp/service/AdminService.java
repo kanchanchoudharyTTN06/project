@@ -1,6 +1,5 @@
 package com.ttn.bootcamp.service;
 
-import com.ttn.bootcamp.domains.Product.Category;
 import com.ttn.bootcamp.domains.Product.CategoryMetadataField;
 import com.ttn.bootcamp.domains.User.Customer;
 import com.ttn.bootcamp.domains.User.Seller;
@@ -21,7 +20,7 @@ public interface AdminService {
 
     List<CategoryMetadataField> getAllCategoryMetadataFields() throws GenericException;
 
-    List<Category> getAllCategory() throws GenericException;
+    List<CategoryDto> getAllCategory() throws GenericException;
 
     CategoryDto updateCategory(CategoryDto categoryDto) throws GenericException;
 }

@@ -1,6 +1,5 @@
 package com.ttn.bootcamp.domains.Product;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ttn.bootcamp.dto.Product.CategoryDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,11 +19,9 @@ public class Category {
     private long id;
     private String name;
 
-    /*@JsonIgnore
     @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL)
-    private List<Category> childCategories;*/
+    private List<Category> childCategories;
 
-    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "parent_category_id")
     private Category parentCategory;
