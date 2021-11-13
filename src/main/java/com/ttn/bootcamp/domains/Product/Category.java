@@ -20,20 +20,20 @@ public class Category {
     private long id;
     private String name;
 
-    /*@JsonIgnore
+    //@JsonIgnore
     @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL)
-    private List<Category> childCategories;*/
+    private List<Category> childCategories;
 
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "parent_category_id")
+    @JoinColumn(name = "parent_category_id", referencedColumnName = "id")
     private Category parentCategory;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Product> productList;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<CategoryMetadataFieldValues> categoryMetadataFieldValuesList;
+   /* @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private List<CategoryMetadataFieldValues> categoryMetadataFieldValuesList;*/
 
     public CategoryDto toCategoryDto() {
         ModelMapper mapper = new ModelMapper();

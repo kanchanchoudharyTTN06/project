@@ -26,7 +26,7 @@ public class CategoryDto {
 
     private List<ProductDto> productList;
 
-    private List<CategoryMetadataFieldValuesDto> categoryMetadataFieldValuesList;
+    //private List<CategoryMetadataFieldValuesDto> categoryMetadataFieldValuesList;
 
     public Category toCategoryEntity() {
         ModelMapper mapper = new ModelMapper();

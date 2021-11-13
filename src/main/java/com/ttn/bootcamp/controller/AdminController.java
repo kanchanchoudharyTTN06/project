@@ -84,7 +84,7 @@ public class AdminController {
     }
 
     @PostMapping("/add/category")
-    public ResponseEntity<Object> addNewCategory(@RequestBody CategoryDto categoryDto) throws GenericException {
+    public ResponseEntity<Object> addCategory(@RequestBody CategoryDto categoryDto) throws GenericException {
         CategoryDto categoryDtos = categoryService.addCategory(categoryDto);
         return new ResponseEntity<>(new Gson().toJson(categoryDtos), HttpStatus.OK);
     }

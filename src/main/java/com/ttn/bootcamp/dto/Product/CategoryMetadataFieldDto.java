@@ -17,8 +17,6 @@ import java.util.List;
 public class CategoryMetadataFieldDto {
 
     private long id;
-
-    @Column(unique = true)
     private String name;
 
     private List<CategoryMetadataFieldValues> categoryMetadataFieldValues;

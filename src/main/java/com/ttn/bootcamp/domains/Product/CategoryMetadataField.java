@@ -19,10 +19,10 @@ public class CategoryMetadataField {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(unique = true)
     private String name;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "categoryMetadataField", cascade = CascadeType.ALL)
+    @OneToMany(/*mappedBy = "categoryMetadataField",*/ cascade = CascadeType.ALL)
     private List<CategoryMetadataFieldValues> categoryMetadataFieldValues;
 
     public CategoryMetadataFieldDto toCategoryMetadataFieldDto() {
