@@ -21,6 +21,7 @@ public class ProductVariation {
     private int quantityAvailable;
     private int price;
     private String image;
+    private boolean isActive = true;
 
     @Type(type = "json")
     @Column(columnDefinition = "json")

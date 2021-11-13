@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Data
@@ -18,19 +19,22 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductDto {
     private long id;
+    @NotBlank(message = "Name is mandatory")
     private String name;
     private String description;
+    @NotBlank(message = "Brand Name is mandatory")
     private String brand;
-    private boolean Is_Cancellable;
-    private boolean Is_Returnable;
-    private boolean Is_Active = false;
-    private boolean Is_Deleted = false;
+    private boolean isCancellable = false;
+    private boolean isReturnable = false;
+    private boolean isActive = false;
+    private boolean isDeleted = false;
+
+    @NotBlank(message = "Category Id is mandatory")
+    private long categoryId;
 
     private SellerDto seller;
 
     private List<ProductVariationDto> productVariationList;
-
-    private CategoryDto category;
 
     public Product toProductEntity() {
         ModelMapper mapper = new ModelMapper();
