@@ -9,6 +9,7 @@ import com.ttn.bootcamp.dto.Product.CategoryMetadataFieldDto;
 import com.ttn.bootcamp.dto.Product.CategoryMetadataFieldValuesDto;
 import com.ttn.bootcamp.exceptions.GenericException;
 import com.ttn.bootcamp.service.AdminService;
+import com.ttn.bootcamp.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +24,12 @@ import java.util.Map;
 public class AdminController {
 
     private AdminService adminService;
+    private ProductService productService;
 
     @Autowired
-    public AdminController(AdminService adminService) {
+    public AdminController(AdminService adminService, ProductService productService) {
         this.adminService = adminService;
+        this.productService = productService;
     }
 
     @GetMapping("/all/customers")
@@ -110,6 +113,12 @@ public class AdminController {
     @PutMapping("/update/category/metadata/fieldvalues")
     public ResponseEntity<Object> updateCategoryMetadataFieldValues(@RequestBody CategoryMetadataFieldValuesDto categoryMetadataFieldValuesDto) throws GenericException {
         CategoryMetadataFieldValuesDto response = adminService.addOrUpdateCategoryMetadataFieldValues(categoryMetadataFieldValuesDto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/activate/product/{id}")
+    public ResponseEntity<Object> activateProduct(@PathVariable("id") long id) throws GenericException {
+        String response = productService.activateProduct(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

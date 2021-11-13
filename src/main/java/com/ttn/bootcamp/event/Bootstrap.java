@@ -5,6 +5,7 @@ import com.ttn.bootcamp.domains.User.User;
 import com.ttn.bootcamp.repository.RoleRepository;
 import com.ttn.bootcamp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,14 +17,21 @@ import java.util.Arrays;
 
 @Component
 public class Bootstrap implements ApplicationRunner {
-    @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
+
+    private RoleRepository roleRepository;
+
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    RoleRepository roleRepository;
+    public Bootstrap(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
-    @Autowired
-    BCryptPasswordEncoder passwordEncoder;
+    @Value("${user.admin.email}")
+    private String adminEmail;
 
     @Override
     @Transactional
@@ -32,7 +40,7 @@ public class Bootstrap implements ApplicationRunner {
             User admin = new User();
             admin.setFirstName("Kanchan");
             admin.setLastName("Choudhary");
-            admin.setEmail("kanchan.choudhary@tothenew.com");
+            admin.setEmail(adminEmail);
             admin.setPassword(passwordEncoder.encode("kanchan06"));
             admin.setActive(true);
             admin.setDeleted(false);

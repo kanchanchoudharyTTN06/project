@@ -4,7 +4,6 @@ import com.ttn.bootcamp.domains.Product.CategoryMetadataFieldKey;
 import com.ttn.bootcamp.domains.Product.CategoryMetadataFieldValues;
 import com.ttn.bootcamp.dto.Product.CategoryMetadataFieldValuesDto;
 import com.ttn.bootcamp.exceptions.GenericException;
-import com.ttn.bootcamp.repository.CategoryMetadataFieldRepository;
 import com.ttn.bootcamp.repository.CategoryMetadataFieldValuesRepository;
 import com.ttn.bootcamp.service.CategoryMetadataFieldService;
 import com.ttn.bootcamp.service.CategoryMetadataFieldValueService;
@@ -13,18 +12,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-
 @Service
 public class CategoryMetadataFieldValueServiceImpl implements CategoryMetadataFieldValueService {
-    @Autowired
-    CategoryMetadataFieldValuesRepository categoryMetadataFieldValuesRepository;
+
+    private CategoryMetadataFieldValuesRepository categoryMetadataFieldValuesRepository;
+    private CategoryMetadataFieldService categoryMetadataFieldService;
+    private CategoryService categoryService;
 
     @Autowired
-    CategoryMetadataFieldService categoryMetadataFieldService;
-
-    @Autowired
-    CategoryService categoryService;
+    public CategoryMetadataFieldValueServiceImpl(CategoryMetadataFieldValuesRepository categoryMetadataFieldValuesRepository, CategoryMetadataFieldService categoryMetadataFieldService, CategoryService categoryService) {
+        this.categoryMetadataFieldValuesRepository = categoryMetadataFieldValuesRepository;
+        this.categoryMetadataFieldService = categoryMetadataFieldService;
+        this.categoryService = categoryService;
+    }
 
     @Override
     public CategoryMetadataFieldValuesDto addOrUpdateCategoryMetadataFieldValues(CategoryMetadataFieldValuesDto categoryMetadataFieldValuesDto) throws GenericException {

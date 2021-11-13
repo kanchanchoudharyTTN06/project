@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Data
@@ -28,8 +29,6 @@ public class ProductDto {
     private boolean isReturnable = false;
     private boolean isActive = false;
     private boolean isDeleted = false;
-
-    @NotBlank(message = "Category Id is mandatory")
     private long categoryId;
 
     private SellerDto seller;

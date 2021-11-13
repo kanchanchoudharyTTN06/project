@@ -10,4 +10,6 @@ public interface ProductService {
     ProductDto addProduct(ProductDto productDto, AppUser principal) throws GenericException;
 
     List<ProductDto> getAllProducts(AppUser principal) throws GenericException;
+
+    String activateProduct(long id) throws GenericException;
 }

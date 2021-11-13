@@ -1,5 +1,6 @@
 package com.ttn.bootcamp.domains.Product;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ttn.bootcamp.domains.User.Seller;
 import com.ttn.bootcamp.dto.Product.ProductDto;
@@ -15,6 +16,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonFilter("Filter")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,14 +29,16 @@ public class Product {
     private boolean isActive = false;
     private boolean isDeleted = false;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "seller_id", referencedColumnName = "id")
     private Seller seller;
 
-    @JsonIgnore
+    //@JsonIgnore
     @OneToMany(mappedBy = "product")
     private List<ProductVariation> productVariationList;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;

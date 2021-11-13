@@ -28,6 +28,6 @@ public class Seller extends User {
         ModelMapper mapper = new ModelMapper();
         return mapper.map(this, SellerDto.class);
     }
-    @OneToMany(mappedBy = "seller")
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
     private List<Product> productList;
 }

@@ -59,7 +59,7 @@ public class SellerController {
 
     @PostMapping("/add/product")
     public ResponseEntity<Object> addProduct(@Valid @RequestBody ProductDto productDto, Authentication authentication) throws GenericException {
-        ProductDto productDtos = productService.addProduct(productDto,(AppUser) authentication.getPrincipal());
+        ProductDto productDtos = productService.addProduct(productDto, (AppUser) authentication.getPrincipal());
         return new ResponseEntity<>(productDtos, HttpStatus.OK);
     }
 
