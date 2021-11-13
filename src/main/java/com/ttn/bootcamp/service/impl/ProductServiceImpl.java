@@ -120,6 +120,12 @@ public class ProductServiceImpl implements ProductService {
         throw new GenericException("No Product found", HttpStatus.NOT_FOUND);
     }
 
+    @Override
+    public String deleteProduct(AppUser principal, long id) {
+        productRepository.deleteById(id);
+        return ApplicationConstants.SUCCESS_RESPONSE;
+    }
+
     private void productActivationConfirmationEmailHandler(Product product) {
         String body = "<html>\n" +
                 "<body>Dear " + product.getSeller().getFirstName() + "<br><br> Your " + product.getName() +

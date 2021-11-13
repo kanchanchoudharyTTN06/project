@@ -12,4 +12,6 @@ public interface ProductService {
     List<ProductDto> getAllProducts(AppUser principal) throws GenericException;
 
     String activateProduct(long id) throws GenericException;
+
+    String deleteProduct(AppUser principal, long id);
 }

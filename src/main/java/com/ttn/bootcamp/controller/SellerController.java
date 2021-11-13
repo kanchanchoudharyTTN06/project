@@ -68,4 +68,10 @@ public class SellerController {
         List<ProductDto> productDto = productService.getAllProducts((AppUser) authentication.getPrincipal());
         return new ResponseEntity<>(productDto, HttpStatus.OK);
     }
+
+    @DeleteMapping("/product/{id}")
+    public ResponseEntity<Object> deleteProduct(Authentication authentication, @PathVariable("id") long id) {
+        String response = productService.deleteProduct((AppUser) authentication.getPrincipal(), id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
