@@ -25,14 +25,18 @@ import java.util.Map;
 @RestController
 @RequestMapping("/sellers")
 public class SellerController {
-    @Autowired
-    SellerService sellerService;
-    @Autowired
+    private SellerService sellerService;
     private ProductService productService;
+    private CategoryService categoryService;
+    private ProductVariationService productVariationService;
+
     @Autowired
-    CategoryService categoryService;
-    @Autowired
-    ProductVariationService productVariationService;
+    public SellerController(SellerService sellerService, ProductService productService, CategoryService categoryService, ProductVariationService productVariationService) {
+        this.sellerService = sellerService;
+        this.productService = productService;
+        this.categoryService = categoryService;
+        this.productVariationService = productVariationService;
+    }
 
     @PostMapping("/register")
     public ResponseEntity<Object> userRegistration(@Valid @RequestBody SellerDto sellerDto) throws GenericException {

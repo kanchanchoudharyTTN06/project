@@ -33,7 +33,7 @@ public class ProductDto {
     private long categoryId;
     private long sellerId;
 
-    private List<ProductVariation> productVariationList;
+    private List<ProductVariationDto> productVariationList;
 
     public Product toProductEntity() {
         ModelMapper mapper = new ModelMapper();

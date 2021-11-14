@@ -27,4 +27,6 @@ public interface ProductService {
     Product getProductById(long id) throws GenericException;
 
     String deactivateProduct(long id) throws GenericException;
+
+    List<ProductDto> getSimilarProductsForId(long id) throws GenericException;
 }

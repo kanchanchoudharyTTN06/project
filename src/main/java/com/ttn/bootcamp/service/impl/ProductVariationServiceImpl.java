@@ -27,12 +27,14 @@ import java.util.stream.Collectors;
 @Transactional
 public class ProductVariationServiceImpl implements ProductVariationService {
 
+    private ProductVariationRepository productVariationRepository;
+    private ProductService productService;
+
     @Autowired
-    private ProductRepository productRepository;
-    @Autowired
-    ProductVariationRepository productVariationRepository;
-    @Autowired
-    ProductService productService;
+    public ProductVariationServiceImpl(ProductVariationRepository productVariationRepository, ProductService productService) {
+        this.productVariationRepository = productVariationRepository;
+        this.productService = productService;
+    }
 
     @Override
     public ProductVariationDto addOrUpdateProductVariation(ProductVariationDto productVariationDto) throws GenericException {

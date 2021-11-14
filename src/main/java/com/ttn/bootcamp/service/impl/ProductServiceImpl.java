@@ -187,6 +187,16 @@ public class ProductServiceImpl implements ProductService {
         throw new GenericException("No Product found", HttpStatus.NOT_FOUND);
     }
 
+    @Override
+    public List<ProductDto> getSimilarProductsForId(long id) throws GenericException {
+        Optional<Product> product = productRepository.findById(id);
+        if (product.isPresent() && !product.get().isDeleted()) {
+            List<Product> productList = productRepository.findByNameOrBrandAndIsDeleted(product.get().getName(), product.get().getBrand(), false);
+            return productList.stream().map(Product::toProductDto).collect(Collectors.toList());
+        }
+        throw new GenericException("No product found", HttpStatus.NOT_FOUND);
+    }
+
     private void productActivationConfirmationEmailHandler(Product product) {
         String body = "<html>\n" +
                 "<body>Dear " + product.getSeller().getFirstName() + "<br><br> Your product " + product.getName() +

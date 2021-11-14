@@ -16,4 +16,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<List<Product>> findBySeller(Seller seller);
 
     List<Product> findAllByIsDeleted(boolean flag);
+
+    List<Product> findByNameOrBrandAndIsDeleted(String name, String brand, boolean flag);
 }

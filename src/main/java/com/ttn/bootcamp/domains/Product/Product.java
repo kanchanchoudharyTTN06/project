@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ttn.bootcamp.domains.User.Seller;
 import com.ttn.bootcamp.dto.Product.ProductDto;
+import com.ttn.bootcamp.dto.Product.ProductVariationDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -47,9 +49,12 @@ public class Product {
     private List<ProductReview> productReviewList;*/
 
     public ProductDto toProductDto() {
+        List<ProductVariationDto> productVariationDtos = this.productVariationList
+                .stream()
+                .map(ProductVariation::toProductVariationDto)
+                .collect(Collectors.toList());
         return new ProductDto(this.id, this.name, this.description, this.brand, this.isCancellable,
                 this.isReturnable, this.isActive, this.isDeleted, this.category.getId(),
-                this.seller.getId(), this.productVariationList);
+                this.seller.getId(), productVariationDtos);
     }
-
 }

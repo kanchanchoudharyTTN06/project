@@ -31,7 +31,6 @@ public class UserServiceImpl implements UserService {
     private EmailService emailService;
     private TokenRepository tokenRepository;
     private BCryptPasswordEncoder passwordEncoder;
-    private AddressRepository addressRepository;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, EmailService emailService, TokenRepository tokenRepository, BCryptPasswordEncoder passwordEncoder, AddressRepository addressRepository) {
@@ -39,7 +38,6 @@ public class UserServiceImpl implements UserService {
         this.emailService = emailService;
         this.tokenRepository = tokenRepository;
         this.passwordEncoder = passwordEncoder;
-        this.addressRepository = addressRepository;
     }
 
     @Override

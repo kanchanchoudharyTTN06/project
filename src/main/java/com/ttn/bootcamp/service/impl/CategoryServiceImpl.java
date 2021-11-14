@@ -1,10 +1,9 @@
 package com.ttn.bootcamp.service.impl;
 
 import com.ttn.bootcamp.domains.Product.Category;
-import com.ttn.bootcamp.domains.Product.CategoryMetadataFieldKey;
-import com.ttn.bootcamp.domains.Product.CategoryMetadataFieldValues;
+import com.ttn.bootcamp.domains.Product.Product;
 import com.ttn.bootcamp.dto.Product.CategoryDto;
-import com.ttn.bootcamp.dto.Product.CategoryMetadataFieldValuesDto;
+import com.ttn.bootcamp.dto.Product.ProductDto;
 import com.ttn.bootcamp.exceptions.GenericException;
 import com.ttn.bootcamp.repository.CategoryRepository;
 import com.ttn.bootcamp.service.CategoryService;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -85,5 +85,16 @@ public class CategoryServiceImpl implements CategoryService {
             category.setParentCategory(parent);
         }
         return categoryRepository.save(category);
+    }
+
+    @Override
+    public List<ProductDto> getProductsInCategory(long id) throws GenericException {
+        Optional<Category> category = categoryRepository.findById(id);
+        if (category.isPresent()) {
+            List<Product> productList = category.get().getProductList();
+            List<Product> activeProducts = productList.stream().filter(p -> !p.isDeleted()).collect(Collectors.toList());
+            return activeProducts.stream().map(Product::toProductDto).collect(Collectors.toList());
+        }
+        throw new GenericException("No category found", HttpStatus.NOT_FOUND);
     }
 }

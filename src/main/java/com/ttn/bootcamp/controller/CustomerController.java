@@ -1,11 +1,8 @@
 package com.ttn.bootcamp.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ser.FilterProvider;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.ttn.bootcamp.domains.Product.Category;
+import com.ttn.bootcamp.domains.Product.Product;
+import com.ttn.bootcamp.dto.Product.ProductDto;
 import com.ttn.bootcamp.dto.User.AddressDto;
 import com.ttn.bootcamp.dto.User.CustomerDto;
 import com.ttn.bootcamp.exceptions.GenericException;
@@ -13,27 +10,31 @@ import com.ttn.bootcamp.model.ResetPassword;
 import com.ttn.bootcamp.security.AppUser;
 import com.ttn.bootcamp.service.CategoryService;
 import com.ttn.bootcamp.service.CustomerService;
+import com.ttn.bootcamp.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/customers")
 public class CustomerController {
-    @Autowired
     private CustomerService customerService;
-    @Autowired
     private CategoryService categoryService;
+    private ProductService productService;
+
+    @Autowired
+    public CustomerController(CustomerService customerService, CategoryService categoryService, ProductService productService) {
+        this.customerService = customerService;
+        this.categoryService = categoryService;
+        this.productService = productService;
+    }
 
     @PostMapping("/register")
     public ResponseEntity<Object> userRegistration(@Valid @RequestBody CustomerDto customerDto) throws GenericException {
@@ -94,5 +95,23 @@ public class CustomerController {
             Category category = categoryService.findById(id.get());
             return new ResponseEntity<>(category, HttpStatus.OK);
         }
+    }
+
+    @GetMapping("/products/{id}")
+    public ResponseEntity<Object> getProductById(@PathVariable("id") long id) throws GenericException {
+        Product product = productService.getProductById(id);
+        return new ResponseEntity<>(product.toProductDto(), HttpStatus.OK);
+    }
+
+    @GetMapping("/categories/{id}/products")
+    public ResponseEntity<Object> getProductsInCategory(@PathVariable("id") long id) throws GenericException {
+        List<ProductDto> products = categoryService.getProductsInCategory(id);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @GetMapping("/products/{id}/similarproducts")
+    public ResponseEntity<Object> getSimilarProducts(@PathVariable("id") long id) throws GenericException {
+        List<ProductDto> productDtos = productService.getSimilarProductsForId(id);
+        return new ResponseEntity<>(productDtos, HttpStatus.OK);
     }
 }
