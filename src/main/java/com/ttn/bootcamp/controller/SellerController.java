@@ -1,7 +1,6 @@
 package com.ttn.bootcamp.controller;
 
 import com.ttn.bootcamp.domains.Product.Category;
-import com.ttn.bootcamp.domains.Product.ProductVariation;
 import com.ttn.bootcamp.dto.Product.ProductDto;
 import com.ttn.bootcamp.dto.Product.ProductVariationDto;
 import com.ttn.bootcamp.dto.User.AddressDto;
@@ -105,15 +104,30 @@ public class SellerController {
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
-    @PostMapping("/add/product/variation")
+    @PostMapping("/add/productvariation")
     public ResponseEntity<Object> addProductVariation(@Valid @RequestBody ProductVariationDto productVariationDto) throws GenericException {
-        ProductVariationDto productVariation = productVariationService.addProductVariation(productVariationDto);
+        ProductVariationDto productVariation = productVariationService.addOrUpdateProductVariation(productVariationDto);
         return new ResponseEntity<>(productVariation, HttpStatus.OK);
     }
 
-    @GetMapping("/product/variation/{id}")
+    @PutMapping("/update/productvariation")
+    public ResponseEntity<Object> updateProductVariation(@Valid @RequestBody ProductVariationDto productVariationDto) throws GenericException {
+        if (productVariationDto.getId() == 0)
+            throw new GenericException("Product variation id is mandatory", HttpStatus.BAD_REQUEST);
+
+        ProductVariationDto productVariation = productVariationService.addOrUpdateProductVariation(productVariationDto);
+        return new ResponseEntity<>(productVariation, HttpStatus.OK);
+    }
+
+    @GetMapping("/productvariation/{id}")
     public ResponseEntity<Object> getProductVariationById(Authentication authentication, @PathVariable("id") long id) throws GenericException {
-        ProductVariationDto response = productService.getProductVariationById((AppUser) authentication.getPrincipal(), id);
+        ProductVariationDto response = productVariationService.getProductVariationById((AppUser) authentication.getPrincipal(), id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/productvariation")
+    public ResponseEntity<Object> getProductVariationByProduct(Authentication authentication, @RequestParam("productId") long productId) throws GenericException {
+        List<ProductVariationDto> response = productVariationService.getProductVariationByProduct((AppUser) authentication.getPrincipal(), productId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

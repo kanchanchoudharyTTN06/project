@@ -153,16 +153,6 @@ public class ProductServiceImpl implements ProductService {
         throw new GenericException("No product found for given id and seller", HttpStatus.NOT_FOUND);
     }
 
-    @Override
-    public ProductVariationDto getProductVariationById(AppUser principal, long id) throws GenericException {
-        Optional<ProductVariation> productVariation = productVariationRepository.findById(id);
-        /*if (productVariation.isPresent() && productVariation.get().getSeller().getEmail().equals(principal.getUsername()) &&
-                !productVariation.get().isDeleted()) {
-            return product.get().toProductDto();
-        }*/
-        throw new GenericException("No product variation found for given id and parent category", HttpStatus.NOT_FOUND);
-    }
-
     private void productActivationConfirmationEmailHandler(Product product) {
         String body = "<html>\n" +
                 "<body>Dear " + product.getSeller().getFirstName() + "<br><br> Your " + product.getName() +
