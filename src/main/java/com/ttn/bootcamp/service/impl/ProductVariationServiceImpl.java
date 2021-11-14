@@ -10,6 +10,7 @@ import com.ttn.bootcamp.exceptions.GenericException;
 import com.ttn.bootcamp.repository.ProductRepository;
 import com.ttn.bootcamp.repository.ProductVariationRepository;
 import com.ttn.bootcamp.security.AppUser;
+import com.ttn.bootcamp.service.ProductService;
 import com.ttn.bootcamp.service.ProductVariationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,21 +31,19 @@ public class ProductVariationServiceImpl implements ProductVariationService {
     private ProductRepository productRepository;
     @Autowired
     ProductVariationRepository productVariationRepository;
+    @Autowired
+    ProductService productService;
 
     @Override
     public ProductVariationDto addOrUpdateProductVariation(ProductVariationDto productVariationDto) throws GenericException {
-        Optional<Product> product = productRepository.findById(productVariationDto.getProductId());
-        if (!product.isPresent() || product.get().isDeleted())
-            throw new GenericException("No Product found for given id", HttpStatus.NOT_FOUND);
-        else if (!product.get().isActive())
-            throw new GenericException("Product is not active", HttpStatus.INTERNAL_SERVER_ERROR);
+        Product product = productService.getProductById(productVariationDto.getProductId());
 
-        Category category = product.get().getCategory();
+        Category category = product.getCategory();
         List<MetadataDto> metadataFieldValues = productVariationDto.getMetadataList();
         validate(category, metadataFieldValues);
         validateImage(productVariationDto.getImage());
         ProductVariation productVariation = productVariationDto.toProductVariationEntity();
-        productVariation.setProduct(product.get());
+        productVariation.setProduct(product);
         return productVariationRepository.save(productVariation).toProductVariationDto();
     }
 
@@ -92,14 +91,11 @@ public class ProductVariationServiceImpl implements ProductVariationService {
 
     @Override
     public List<ProductVariationDto> getProductVariationByProduct(AppUser principal, long productId) throws GenericException {
-        Optional<Product> product = productRepository.findById(productId);
-        if (product.isPresent()) {
-            List<ProductVariation> productVariationList = productVariationRepository.findByProduct(product.get());
-            if (productVariationList.isEmpty())
-                throw new GenericException("No Product variation found", HttpStatus.NOT_FOUND);
-            return productVariationList.stream().map(ProductVariation::toProductVariationDto)
-                    .collect(Collectors.toList());
-        } else
-            throw new GenericException("No Product is found for given product id", HttpStatus.NOT_FOUND);
+        Product product = productService.getProductById(productId);
+        List<ProductVariation> productVariationList = productVariationRepository.findByProduct(product);
+        if (productVariationList.isEmpty())
+            throw new GenericException("No Product variation found", HttpStatus.NOT_FOUND);
+        return productVariationList.stream().map(ProductVariation::toProductVariationDto)
+                .collect(Collectors.toList());
     }
 }

@@ -8,6 +8,7 @@ import com.ttn.bootcamp.domains.User.Seller;
 import com.ttn.bootcamp.dto.Product.CategoryDto;
 import com.ttn.bootcamp.dto.Product.CategoryMetadataFieldDto;
 import com.ttn.bootcamp.dto.Product.CategoryMetadataFieldValuesDto;
+import com.ttn.bootcamp.dto.Product.ProductDto;
 import com.ttn.bootcamp.exceptions.GenericException;
 import com.ttn.bootcamp.service.AdminService;
 import com.ttn.bootcamp.service.ProductService;
@@ -117,15 +118,27 @@ public class AdminController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/activate/product/{id}")
+    @GetMapping("/product/{id}/activate")
     public ResponseEntity<Object> activateProduct(@PathVariable("id") long id) throws GenericException {
         String response = productService.activateProduct(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/product/{id}")
-    public ResponseEntity<Object> getProductById(@PathVariable("id") long id) throws GenericException {
-        Product product = productService.getProductById(id);
+    @GetMapping("/product/{id}/deactivate")
+    public ResponseEntity<Object> deactivateProduct(@PathVariable("id") long id) throws GenericException {
+        String response = productService.deactivateProduct(id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/products/{id}")
+    public ResponseEntity<Object> viewProductById(@PathVariable("id") long id) throws GenericException {
+        Product product = productService.getProductByIdAdmin(id);
         return new ResponseEntity<>(product.toProductDto(), HttpStatus.OK);
+    }
+
+    @GetMapping("/products")
+    public ResponseEntity<Object> viewAllProducts() throws GenericException {
+        List<ProductDto> product = productService.getAllProductsForAdmin();
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 }

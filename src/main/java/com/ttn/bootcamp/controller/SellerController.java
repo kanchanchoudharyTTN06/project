@@ -82,7 +82,7 @@ public class SellerController {
 
     @GetMapping("/all/products")
     public ResponseEntity<Object> getAllProducts(Authentication authentication) throws GenericException {
-        List<ProductDto> productDto = productService.getAllProducts((AppUser) authentication.getPrincipal());
+        List<ProductDto> productDto = productService.getAllProductsForAdmin((AppUser) authentication.getPrincipal());
         return new ResponseEntity<>(productDto, HttpStatus.OK);
     }
 

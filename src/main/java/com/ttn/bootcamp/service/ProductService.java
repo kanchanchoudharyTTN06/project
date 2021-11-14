@@ -10,7 +10,11 @@ import java.util.List;
 public interface ProductService {
     ProductDto addOrUpdateProduct(ProductDto productDto, AppUser principal) throws GenericException;
 
-    List<ProductDto> getAllProducts(AppUser principal) throws GenericException;
+    List<ProductDto> getAllProductsForAdmin(AppUser principal) throws GenericException;
+
+    List<ProductDto> getAllProductsForAdmin() throws GenericException;
+
+    List<ProductDto> getAllProducts() throws GenericException;
 
     String activateProduct(long id) throws GenericException;
 
@@ -18,5 +22,9 @@ public interface ProductService {
 
     ProductDto getProductById(AppUser principal, long id) throws GenericException;
 
+    Product getProductByIdAdmin(long id) throws GenericException;
+
     Product getProductById(long id) throws GenericException;
+
+    String deactivateProduct(long id) throws GenericException;
 }

@@ -32,8 +32,6 @@ public class ProductServiceImpl implements ProductService {
     private SellerService sellerService;
     private CategoryRepository categoryRepository;
     private EmailService emailService;
-    private SellerRepository sellerRepository;
-    private ProductVariationRepository productVariationRepository;
 
     @Autowired
     public ProductServiceImpl(ProductRepository productRepository, SellerService sellerService, CategoryRepository categoryRepository, EmailService emailService, SellerRepository sellerRepository, ProductVariationRepository productVariationRepository) {
@@ -41,8 +39,6 @@ public class ProductServiceImpl implements ProductService {
         this.sellerService = sellerService;
         this.categoryRepository = categoryRepository;
         this.emailService = emailService;
-        this.sellerRepository = sellerRepository;
-        this.productVariationRepository = productVariationRepository;
     }
 
     @Value("${user.admin.email}")
@@ -71,21 +67,17 @@ public class ProductServiceImpl implements ProductService {
             productList = new ArrayList<>();
         productList.add(product);
         seller.setProductList(productList);
-        //sellerRepository.save(seller);
 
         List<Product> categoryProductList = category.get().getProductList();
         if (Objects.isNull(categoryProductList))
             categoryProductList = new ArrayList<>();
         categoryProductList.add(product);
         category.get().setProductList(categoryProductList);
-        //categoryRepository.save(category.get());
 
         product.setCategory(category.get());
         product.setSeller(seller);
         product = productRepository.save(product);
         productDto = product.toProductDto();
-       /* productDto.setCategoryId(product.getCategory().getId());
-        productDto.setSellerId(product.getSeller().getId());*/
         productActivationEmailHandler(product);
 
         return productDto;
@@ -109,7 +101,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDto> getAllProducts(AppUser appUser) throws GenericException {
+    public List<ProductDto> getAllProductsForAdmin(AppUser appUser) throws GenericException {
         SellerDto sellerDto = sellerService.getSellerProfile(appUser);
         Optional<List<Product>> productList = productRepository.findBySeller(sellerDto.toSellerEntity());
         if (productList.isPresent() && !productList.get().isEmpty())
@@ -119,9 +111,25 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<ProductDto> getAllProductsForAdmin() throws GenericException {
+        List<Product> products = productRepository.findAll();
+        return products.stream()
+                .map(Product::toProductDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductDto> getAllProducts() throws GenericException {
+        List<Product> products = productRepository.findAllByIsDeleted(false);
+        return products.stream()
+                .map(Product::toProductDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public String activateProduct(long id) throws GenericException {
         Optional<Product> productOptional = productRepository.findById(id);
-        if (productOptional.isPresent()) {
+        if (productOptional.isPresent() && !productOptional.get().isActive()) {
             productOptional.get().setActive(true);
             productRepository.save(productOptional.get());
             productActivationConfirmationEmailHandler(productOptional.get());
@@ -152,18 +160,46 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getProductById(long id) throws GenericException {
+    public Product getProductByIdAdmin(long id) throws GenericException {
         Optional<Product> product = productRepository.findById(id);
         if (product.isPresent())
             return product.get();
         throw new GenericException("No product found", HttpStatus.NOT_FOUND);
     }
 
+    @Override
+    public Product getProductById(long id) throws GenericException {
+        Optional<Product> product = productRepository.findById(id);
+        if (product.isPresent() && !product.get().isDeleted())
+            return product.get();
+        throw new GenericException("No product found", HttpStatus.NOT_FOUND);
+    }
+
+    @Override
+    public String deactivateProduct(long id) throws GenericException {
+        Optional<Product> productOptional = productRepository.findById(id);
+        if (productOptional.isPresent() && productOptional.get().isActive()) {
+            productOptional.get().setActive(false);
+            productRepository.save(productOptional.get());
+            productDeActivationConfirmationEmailHandler(productOptional.get());
+            return ApplicationConstants.SUCCESS_RESPONSE;
+        }
+        throw new GenericException("No Product found", HttpStatus.NOT_FOUND);
+    }
+
     private void productActivationConfirmationEmailHandler(Product product) {
         String body = "<html>\n" +
-                "<body>Dear " + product.getSeller().getFirstName() + "<br><br> Your " + product.getName() +
-                " product has been activated by admin.</body></html>";
-        String subject = "Product " + product.getName() + " is activated!";
+                "<body>Dear " + product.getSeller().getFirstName() + "<br><br> Your product " + product.getName() +
+                " has been activated by admin.</body></html>";
+        String subject = "Product " + product.getName() + " has activated!";
+        emailService.sendEmail(product.getSeller().getEmail(), subject, body);
+    }
+
+    private void productDeActivationConfirmationEmailHandler(Product product) {
+        String body = "<html>\n" +
+                "<body>Dear " + product.getSeller().getFirstName() + "<br><br> Your product " + product.getName() +
+                " has been deactivated.</body></html>";
+        String subject = "Product " + product.getName() + " has deactivated!";
         emailService.sendEmail(product.getSeller().getEmail(), subject, body);
     }
 }

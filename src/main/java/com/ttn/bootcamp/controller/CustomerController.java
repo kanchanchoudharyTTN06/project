@@ -89,15 +89,6 @@ public class CustomerController {
     public ResponseEntity<Object> getCategories(@PathVariable(required = false) Optional<Long> id) throws GenericException {
         if (!id.isPresent()) {
             List<Category> list = categoryService.findAllCategory();
-            /*Map<Object, List<Category>> result = list.stream().collect(Collectors.groupingBy(c->c.getParentCategory()));
-            List<Map<String, Object>> mapList = new ArrayList<>();
-            ObjectMapper mapper = new ObjectMapper();
-            list.forEach(category -> {
-                Map<String, Object> map = mapper.convertValue(category, new TypeReference<Map<String, Object>>() {
-                });
-                map.keySet().removeIf(k -> !(k.equals("id") || k.equals("name")));
-                mapList.add(map);
-            });*/
             return new ResponseEntity<>(list, HttpStatus.OK);
         } else {
             Category category = categoryService.findById(id.get());
