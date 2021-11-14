@@ -2,6 +2,7 @@ package com.ttn.bootcamp.controller;
 
 import com.ttn.bootcamp.domains.Product.Category;
 import com.ttn.bootcamp.domains.Product.Product;
+import com.ttn.bootcamp.dto.Product.CategoryDto;
 import com.ttn.bootcamp.dto.Product.ProductDto;
 import com.ttn.bootcamp.dto.User.AddressDto;
 import com.ttn.bootcamp.dto.User.CustomerDto;
@@ -113,5 +114,12 @@ public class CustomerController {
     public ResponseEntity<Object> getSimilarProducts(@PathVariable("id") long id) throws GenericException {
         List<ProductDto> productDtos = productService.getSimilarProductsForId(id);
         return new ResponseEntity<>(productDtos, HttpStatus.OK);
+    }
+
+    @GetMapping("/filtercategory")
+    public ResponseEntity<Object> getFilteredCategory(@RequestParam("filterBy") String filterBy,
+                                                      @RequestParam("filterValue") String filterValue) throws GenericException {
+        List<CategoryDto> categories = productService.getFilteredCategory(filterBy, filterValue);
+        return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 }

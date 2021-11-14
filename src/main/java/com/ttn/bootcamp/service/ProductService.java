@@ -1,6 +1,7 @@
 package com.ttn.bootcamp.service;
 
 import com.ttn.bootcamp.domains.Product.Product;
+import com.ttn.bootcamp.dto.Product.CategoryDto;
 import com.ttn.bootcamp.dto.Product.ProductDto;
 import com.ttn.bootcamp.exceptions.GenericException;
 import com.ttn.bootcamp.security.AppUser;
@@ -29,4 +30,6 @@ public interface ProductService {
     String deactivateProduct(long id) throws GenericException;
 
     List<ProductDto> getSimilarProductsForId(long id) throws GenericException;
+
+    List<CategoryDto> getFilteredCategory(String filterBy, String filterValue) throws GenericException;
 }

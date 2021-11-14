@@ -5,6 +5,7 @@ import com.ttn.bootcamp.ApplicationConstants;
 import com.ttn.bootcamp.domains.Product.Category;
 import com.ttn.bootcamp.domains.Product.Product;
 import com.ttn.bootcamp.domains.User.Seller;
+import com.ttn.bootcamp.dto.Product.CategoryDto;
 import com.ttn.bootcamp.dto.Product.ProductDto;
 import com.ttn.bootcamp.dto.User.SellerDto;
 import com.ttn.bootcamp.exceptions.GenericException;
@@ -195,6 +196,23 @@ public class ProductServiceImpl implements ProductService {
             return productList.stream().map(Product::toProductDto).collect(Collectors.toList());
         }
         throw new GenericException("No product found", HttpStatus.NOT_FOUND);
+    }
+
+    @Override
+    public List<CategoryDto> getFilteredCategory(String filterBy, String filterValue) throws GenericException {
+        List<CategoryDto> categories = new ArrayList<>();
+        if (!filterBy.equalsIgnoreCase("brand")) {
+            throw new GenericException("Filtering is done for brand only", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        if (filterBy.equalsIgnoreCase("brand")) {
+            List<Product> productList = productRepository.findByBrand(filterValue);
+            categories = productList
+                    .stream()
+                    .map(p -> p.getCategory()
+                            .toCategoryDto())
+                    .collect(Collectors.toList());
+        }
+        return categories;
     }
 
     private void productActivationConfirmationEmailHandler(Product product) {
