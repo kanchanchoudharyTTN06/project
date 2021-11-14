@@ -110,4 +110,10 @@ public class SellerController {
         ProductVariationDto productVariation = productVariationService.addProductVariation(productVariationDto);
         return new ResponseEntity<>(productVariation, HttpStatus.OK);
     }
+
+    @GetMapping("/product/variation/{id}")
+    public ResponseEntity<Object> getProductVariationById(Authentication authentication, @PathVariable("id") long id) throws GenericException {
+        ProductVariationDto response = productService.getProductVariationById((AppUser) authentication.getPrincipal(), id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

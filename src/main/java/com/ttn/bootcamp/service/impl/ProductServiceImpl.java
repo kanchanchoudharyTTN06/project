@@ -4,12 +4,15 @@ import com.google.gson.Gson;
 import com.ttn.bootcamp.ApplicationConstants;
 import com.ttn.bootcamp.domains.Product.Category;
 import com.ttn.bootcamp.domains.Product.Product;
+import com.ttn.bootcamp.domains.Product.ProductVariation;
 import com.ttn.bootcamp.domains.User.Seller;
 import com.ttn.bootcamp.dto.Product.ProductDto;
+import com.ttn.bootcamp.dto.Product.ProductVariationDto;
 import com.ttn.bootcamp.dto.User.SellerDto;
 import com.ttn.bootcamp.exceptions.GenericException;
 import com.ttn.bootcamp.repository.CategoryRepository;
 import com.ttn.bootcamp.repository.ProductRepository;
+import com.ttn.bootcamp.repository.ProductVariationRepository;
 import com.ttn.bootcamp.repository.SellerRepository;
 import com.ttn.bootcamp.security.AppUser;
 import com.ttn.bootcamp.service.EmailService;
@@ -32,14 +35,16 @@ public class ProductServiceImpl implements ProductService {
     private CategoryRepository categoryRepository;
     private EmailService emailService;
     private SellerRepository sellerRepository;
+    private ProductVariationRepository productVariationRepository;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository, SellerService sellerService, CategoryRepository categoryRepository, EmailService emailService, SellerRepository sellerRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, SellerService sellerService, CategoryRepository categoryRepository, EmailService emailService, SellerRepository sellerRepository, ProductVariationRepository productVariationRepository) {
         this.productRepository = productRepository;
         this.sellerService = sellerService;
         this.categoryRepository = categoryRepository;
         this.emailService = emailService;
         this.sellerRepository = sellerRepository;
+        this.productVariationRepository = productVariationRepository;
     }
 
     @Value("${user.admin.email}")
@@ -146,6 +151,16 @@ public class ProductServiceImpl implements ProductService {
             return product.get().toProductDto();
         }
         throw new GenericException("No product found for given id and seller", HttpStatus.NOT_FOUND);
+    }
+
+    @Override
+    public ProductVariationDto getProductVariationById(AppUser principal, long id) throws GenericException {
+        Optional<ProductVariation> productVariation = productVariationRepository.findById(id);
+        /*if (productVariation.isPresent() && productVariation.get().getSeller().getEmail().equals(principal.getUsername()) &&
+                !productVariation.get().isDeleted()) {
+            return product.get().toProductDto();
+        }*/
+        throw new GenericException("No product variation found for given id and parent category", HttpStatus.NOT_FOUND);
     }
 
     private void productActivationConfirmationEmailHandler(Product product) {
