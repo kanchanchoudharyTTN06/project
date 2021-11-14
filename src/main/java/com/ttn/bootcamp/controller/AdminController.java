@@ -2,6 +2,7 @@ package com.ttn.bootcamp.controller;
 
 import com.google.gson.Gson;
 import com.ttn.bootcamp.domains.Product.CategoryMetadataField;
+import com.ttn.bootcamp.domains.Product.Product;
 import com.ttn.bootcamp.domains.User.Customer;
 import com.ttn.bootcamp.domains.User.Seller;
 import com.ttn.bootcamp.dto.Product.CategoryDto;
@@ -120,5 +121,11 @@ public class AdminController {
     public ResponseEntity<Object> activateProduct(@PathVariable("id") long id) throws GenericException {
         String response = productService.activateProduct(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/product/{id}")
+    public ResponseEntity<Object> getProductById(@PathVariable("id") long id) throws GenericException {
+        Product product = productService.getProductById(id);
+        return new ResponseEntity<>(product.toProductDto(), HttpStatus.OK);
     }
 }

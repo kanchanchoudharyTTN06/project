@@ -1,5 +1,6 @@
 package com.ttn.bootcamp.service;
 
+import com.ttn.bootcamp.domains.Product.Product;
 import com.ttn.bootcamp.dto.Product.ProductDto;
 import com.ttn.bootcamp.exceptions.GenericException;
 import com.ttn.bootcamp.security.AppUser;
@@ -16,4 +17,6 @@ public interface ProductService {
     String deleteProduct(AppUser principal, long id);
 
     ProductDto getProductById(AppUser principal, long id) throws GenericException;
+
+    Product getProductById(long id) throws GenericException;
 }

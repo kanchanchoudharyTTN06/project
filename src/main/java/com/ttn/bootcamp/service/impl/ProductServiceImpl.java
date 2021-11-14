@@ -4,10 +4,8 @@ import com.google.gson.Gson;
 import com.ttn.bootcamp.ApplicationConstants;
 import com.ttn.bootcamp.domains.Product.Category;
 import com.ttn.bootcamp.domains.Product.Product;
-import com.ttn.bootcamp.domains.Product.ProductVariation;
 import com.ttn.bootcamp.domains.User.Seller;
 import com.ttn.bootcamp.dto.Product.ProductDto;
-import com.ttn.bootcamp.dto.Product.ProductVariationDto;
 import com.ttn.bootcamp.dto.User.SellerDto;
 import com.ttn.bootcamp.exceptions.GenericException;
 import com.ttn.bootcamp.repository.CategoryRepository;
@@ -151,6 +149,14 @@ public class ProductServiceImpl implements ProductService {
             return product.get().toProductDto();
         }
         throw new GenericException("No product found for given id and seller", HttpStatus.NOT_FOUND);
+    }
+
+    @Override
+    public Product getProductById(long id) throws GenericException {
+        Optional<Product> product = productRepository.findById(id);
+        if (product.isPresent())
+            return product.get();
+        throw new GenericException("No product found", HttpStatus.NOT_FOUND);
     }
 
     private void productActivationConfirmationEmailHandler(Product product) {
