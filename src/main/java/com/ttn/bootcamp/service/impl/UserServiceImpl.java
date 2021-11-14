@@ -8,12 +8,10 @@ import com.ttn.bootcamp.util.Utility;
 import com.ttn.bootcamp.domains.User.User;
 import com.ttn.bootcamp.dto.User.UserDto;
 import com.ttn.bootcamp.exceptions.GenericException;
-import com.ttn.bootcamp.repository.TokenRepository;
 import com.ttn.bootcamp.repository.UserRepository;
 import com.ttn.bootcamp.service.EmailService;
 import com.ttn.bootcamp.service.UserService;
 import com.ttn.bootcamp.token.AccountActivationToken;
-import com.ttn.bootcamp.token.AuthToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,14 +27,12 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private EmailService emailService;
-    private TokenRepository tokenRepository;
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, EmailService emailService, TokenRepository tokenRepository, BCryptPasswordEncoder passwordEncoder, AddressRepository addressRepository) {
+    public UserServiceImpl(UserRepository userRepository, EmailService emailService, BCryptPasswordEncoder passwordEncoder, AddressRepository addressRepository) {
         this.userRepository = userRepository;
         this.emailService = emailService;
-        this.tokenRepository = tokenRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -152,11 +148,6 @@ public class UserServiceImpl implements UserService {
                 "</html>";
         String subject = "Congratulations!";
         emailService.sendEmail(user.getEmail(), subject, body);
-    }
-
-    private AuthToken createAuthToken(User user) {
-        AuthToken authToken = new AuthToken(user);
-        return tokenRepository.save(authToken);
     }
 
     @Override
