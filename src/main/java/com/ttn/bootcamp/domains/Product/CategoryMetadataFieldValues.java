@@ -22,11 +22,13 @@ public class CategoryMetadataFieldValues implements Serializable {
     private CategoryMetadataFieldKey categoryMetadataFieldKey;
     private String valuesList;
 
+    @JsonIgnore
     @ManyToOne
     @MapsId("categoryMetadataFieldId")
     @JoinColumn(name = "category_metadata_field_id", referencedColumnName = "id")
     private CategoryMetadataField categoryMetadataField;
 
+    @JsonIgnore
     @ManyToOne
     @MapsId("categoryId")
     @JoinColumn(name = "category_id", referencedColumnName = "id")

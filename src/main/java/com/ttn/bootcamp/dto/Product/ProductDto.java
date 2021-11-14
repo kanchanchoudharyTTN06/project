@@ -1,5 +1,6 @@
 package com.ttn.bootcamp.dto.Product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ttn.bootcamp.domains.Product.Category;
 import com.ttn.bootcamp.domains.Product.CategoryMetadataField;
 import com.ttn.bootcamp.domains.Product.Product;
@@ -30,7 +31,7 @@ public class ProductDto {
     private boolean isActive = false;
     private boolean isDeleted = false;
     private long categoryId;
-
+    @JsonIgnore
     private SellerDto seller;
 
     private List<ProductVariationDto> productVariationList;

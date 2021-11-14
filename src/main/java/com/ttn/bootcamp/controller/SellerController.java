@@ -74,6 +74,12 @@ public class SellerController {
         return new ResponseEntity<>(productDto, HttpStatus.OK);
     }
 
+    @DeleteMapping("/product/{id}")
+    public ResponseEntity<Object> deleteProduct(Authentication authentication, @PathVariable("id") long id) {
+        String response = productService.deleteProduct((AppUser) authentication.getPrincipal(), id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @GetMapping("/all/categories")
     public ResponseEntity<Object> getAllCategory() throws GenericException {
         List<Category> categories = categoryService.findAllCategory();
