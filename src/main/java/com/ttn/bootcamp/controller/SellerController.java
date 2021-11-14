@@ -1,6 +1,7 @@
 package com.ttn.bootcamp.controller;
 
 import com.ttn.bootcamp.domains.Product.Category;
+import com.ttn.bootcamp.domains.Product.ProductVariation;
 import com.ttn.bootcamp.dto.Product.ProductDto;
 import com.ttn.bootcamp.dto.Product.ProductVariationDto;
 import com.ttn.bootcamp.dto.User.AddressDto;

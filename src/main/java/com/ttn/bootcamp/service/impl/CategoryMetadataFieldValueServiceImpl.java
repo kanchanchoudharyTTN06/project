@@ -39,7 +39,7 @@ public class CategoryMetadataFieldValueServiceImpl implements CategoryMetadataFi
         CategoryMetadataFieldKey categoryMetadataFieldKey =
                 new CategoryMetadataFieldKey(categoryMetadataFieldValuesDto.getCategoryMetadataFieldId(), categoryMetadataFieldValuesDto.getCategoryId());
         categoryMetadataFieldValues.setCategoryMetadataFieldKey(categoryMetadataFieldKey);
-        categoryMetadataFieldValues.setValuesList(String.join(", ", categoryMetadataFieldValuesDto.getValuesList()));
+        categoryMetadataFieldValues.setValuesList(String.join(",", categoryMetadataFieldValuesDto.getValuesList()));
 
         categoryMetadataFieldValues.setCategoryMetadataField(categoryMetadataField);
         categoryMetadataFieldValues.setCategory(category);

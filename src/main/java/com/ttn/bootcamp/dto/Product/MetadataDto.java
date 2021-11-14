@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 public class MetadataDto {
     @Min(value = 1, message = "Metadata field id is mandatory")
-    private Integer id; //metadataFieldId
+    private long id; //metadataFieldId
     @NotBlank(message = "Metadata field value is mandatory")
     private String value; //metadataFieldValue
 }
