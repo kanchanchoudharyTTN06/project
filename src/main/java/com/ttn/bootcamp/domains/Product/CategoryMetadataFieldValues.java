@@ -22,7 +22,7 @@ public class CategoryMetadataFieldValues implements Serializable {
     private CategoryMetadataFieldKey categoryMetadataFieldKey;
     private String valuesList;
 
-    /*@ManyToOne
+    @ManyToOne
     @MapsId("categoryMetadataFieldId")
     @JoinColumn(name = "category_metadata_field_id", referencedColumnName = "id")
     private CategoryMetadataField categoryMetadataField;
@@ -30,7 +30,7 @@ public class CategoryMetadataFieldValues implements Serializable {
     @ManyToOne
     @MapsId("categoryId")
     @JoinColumn(name = "category_id", referencedColumnName = "id")
-    private Category category;*/
+    private Category category;
 
     /*@Id
     @JsonIgnore

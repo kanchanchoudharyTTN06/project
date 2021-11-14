@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonFilter("Filter")
+//@JsonFilter("Filter")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

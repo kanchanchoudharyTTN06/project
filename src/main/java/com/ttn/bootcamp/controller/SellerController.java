@@ -1,11 +1,14 @@
 package com.ttn.bootcamp.controller;
 
+import com.ttn.bootcamp.domains.Product.Category;
+import com.ttn.bootcamp.dto.Product.CategoryDto;
 import com.ttn.bootcamp.dto.Product.ProductDto;
 import com.ttn.bootcamp.dto.User.AddressDto;
 import com.ttn.bootcamp.dto.User.SellerDto;
 import com.ttn.bootcamp.exceptions.GenericException;
 import com.ttn.bootcamp.model.ResetPassword;
 import com.ttn.bootcamp.security.AppUser;
+import com.ttn.bootcamp.service.CategoryService;
 import com.ttn.bootcamp.service.ProductService;
 import com.ttn.bootcamp.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,8 @@ public class SellerController {
     SellerService sellerService;
     @Autowired
     private ProductService productService;
+    @Autowired
+    CategoryService categoryService;
 
     @PostMapping("/register")
     public ResponseEntity<Object> userRegistration(@Valid @RequestBody SellerDto sellerDto) throws GenericException {
@@ -67,5 +72,11 @@ public class SellerController {
     public ResponseEntity<Object> getAllProducts(Authentication authentication) throws GenericException {
         List<ProductDto> productDto = productService.getAllProducts((AppUser) authentication.getPrincipal());
         return new ResponseEntity<>(productDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/all/categories")
+    public ResponseEntity<Object> getAllCategory() throws GenericException {
+        List<Category> categories = categoryService.findAllCategory();
+        return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 }

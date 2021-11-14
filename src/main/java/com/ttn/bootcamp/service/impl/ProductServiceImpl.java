@@ -21,10 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -67,9 +64,18 @@ public class ProductServiceImpl implements ProductService {
 
         Product product = productDto.toProductEntity();
         List<Product> productList = seller.getProductList();
+        if (Objects.isNull(productList))
+            productList = new ArrayList<>();
         productList.add(product);
         seller.setProductList(productList);
-        sellerRepository.save(seller);
+        //sellerRepository.save(seller);
+
+        List<Product> categoryProductList = category.get().getProductList();
+        if (Objects.isNull(categoryProductList))
+            categoryProductList = new ArrayList<>();
+        categoryProductList.add(product);
+        category.get().setProductList(categoryProductList);
+        //categoryRepository.save(category.get());
 
         product.setCategory(category.get());
         product.setSeller(seller);
