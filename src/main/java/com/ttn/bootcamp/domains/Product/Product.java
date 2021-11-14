@@ -29,8 +29,8 @@ public class Product {
     private boolean isActive = false;
     private boolean isDeleted = false;
 
-    @JsonIgnore
-    @ManyToOne(cascade = CascadeType.MERGE)
+    //@JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "seller_id", referencedColumnName = "id")
     private Seller seller;
 
@@ -47,8 +47,9 @@ public class Product {
     private List<ProductReview> productReviewList;*/
 
     public ProductDto toProductDto() {
-        ModelMapper mapper = new ModelMapper();
-        return mapper.map(this, ProductDto.class);
+        return new ProductDto(this.id, this.name, this.description, this.brand, this.isCancellable,
+                this.isReturnable, this.isActive, this.isDeleted, this.category.getId(),
+                this.seller.getId(), this.productVariationList);
     }
 
 }

@@ -1,8 +1,8 @@
 package com.ttn.bootcamp.controller;
 
 import com.ttn.bootcamp.domains.Product.Category;
-import com.ttn.bootcamp.dto.Product.CategoryDto;
 import com.ttn.bootcamp.dto.Product.ProductDto;
+import com.ttn.bootcamp.dto.Product.ProductVariationDto;
 import com.ttn.bootcamp.dto.User.AddressDto;
 import com.ttn.bootcamp.dto.User.SellerDto;
 import com.ttn.bootcamp.exceptions.GenericException;
@@ -10,6 +10,7 @@ import com.ttn.bootcamp.model.ResetPassword;
 import com.ttn.bootcamp.security.AppUser;
 import com.ttn.bootcamp.service.CategoryService;
 import com.ttn.bootcamp.service.ProductService;
+import com.ttn.bootcamp.service.ProductVariationService;
 import com.ttn.bootcamp.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,8 @@ public class SellerController {
     private ProductService productService;
     @Autowired
     CategoryService categoryService;
+    @Autowired
+    ProductVariationService productVariationService;
 
     @PostMapping("/register")
     public ResponseEntity<Object> userRegistration(@Valid @RequestBody SellerDto sellerDto) throws GenericException {
@@ -64,7 +67,16 @@ public class SellerController {
 
     @PostMapping("/add/product")
     public ResponseEntity<Object> addProduct(@Valid @RequestBody ProductDto productDto, Authentication authentication) throws GenericException {
-        ProductDto productDtos = productService.addProduct(productDto, (AppUser) authentication.getPrincipal());
+        ProductDto productDtos = productService.addOrUpdateProduct(productDto, (AppUser) authentication.getPrincipal());
+        return new ResponseEntity<>(productDtos, HttpStatus.OK);
+    }
+
+    @PutMapping("/update/product")
+    public ResponseEntity<Object> updateProduct(@Valid @RequestBody ProductDto productDto, Authentication authentication) throws GenericException {
+        if (productDto.getId() == 0)
+            throw new GenericException("Product id is mandatory", HttpStatus.BAD_REQUEST);
+
+        ProductDto productDtos = productService.addOrUpdateProduct(productDto, (AppUser) authentication.getPrincipal());
         return new ResponseEntity<>(productDtos, HttpStatus.OK);
     }
 
@@ -74,9 +86,15 @@ public class SellerController {
         return new ResponseEntity<>(productDto, HttpStatus.OK);
     }
 
-    @DeleteMapping("/product/{id}")
+    @DeleteMapping("/products/{id}")
     public ResponseEntity<Object> deleteProduct(Authentication authentication, @PathVariable("id") long id) {
         String response = productService.deleteProduct((AppUser) authentication.getPrincipal(), id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/products/{id}")
+    public ResponseEntity<Object> getProductById(Authentication authentication, @PathVariable("id") long id) throws GenericException {
+        ProductDto response = productService.getProductById((AppUser) authentication.getPrincipal(), id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -84,5 +102,11 @@ public class SellerController {
     public ResponseEntity<Object> getAllCategory() throws GenericException {
         List<Category> categories = categoryService.findAllCategory();
         return new ResponseEntity<>(categories, HttpStatus.OK);
+    }
+
+    @PostMapping("/add/product/variation")
+    public ResponseEntity<Object> addProductVariation(@Valid @RequestBody ProductVariationDto productVariationDto) throws GenericException {
+        ProductVariationDto productVariation = productVariationService.addProductVariation(productVariationDto);
+        return new ResponseEntity<>(productVariation, HttpStatus.OK);
     }
 }

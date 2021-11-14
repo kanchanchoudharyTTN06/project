@@ -7,11 +7,13 @@ import com.ttn.bootcamp.security.AppUser;
 import java.util.List;
 
 public interface ProductService {
-    ProductDto addProduct(ProductDto productDto, AppUser principal) throws GenericException;
+    ProductDto addOrUpdateProduct(ProductDto productDto, AppUser principal) throws GenericException;
 
     List<ProductDto> getAllProducts(AppUser principal) throws GenericException;
 
     String activateProduct(long id) throws GenericException;
 
     String deleteProduct(AppUser principal, long id);
+
+    ProductDto getProductById(AppUser principal, long id) throws GenericException;
 }

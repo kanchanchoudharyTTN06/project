@@ -1,7 +1,5 @@
 package com.ttn.bootcamp.domains.User;
 
-import com.ttn.bootcamp.dto.User.AddressDto;
-import com.ttn.bootcamp.dto.User.RoleDto;
 import com.ttn.bootcamp.dto.User.UserDto;
 import lombok.*;
 import org.modelmapper.ModelMapper;
@@ -39,7 +37,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private List<Role> roleList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Address> addressList;
 
     public UserDto toUserDto() {

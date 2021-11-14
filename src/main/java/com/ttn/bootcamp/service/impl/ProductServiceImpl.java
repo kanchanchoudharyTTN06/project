@@ -52,7 +52,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDto addProduct(ProductDto productDto, AppUser appUser) throws GenericException {
+    public ProductDto addOrUpdateProduct(ProductDto productDto, AppUser appUser) throws GenericException {
         Seller seller = sellerService.getSellerProfile(appUser).toSellerEntity();
         if (productDto.getCategoryId() == 0)
             throw new GenericException("Category id is mandatory", HttpStatus.BAD_REQUEST);
@@ -81,7 +81,8 @@ public class ProductServiceImpl implements ProductService {
         product.setSeller(seller);
         product = productRepository.save(product);
         productDto = product.toProductDto();
-        productDto.setCategoryId(product.getCategory().getId());
+       /* productDto.setCategoryId(product.getCategory().getId());
+        productDto.setSellerId(product.getSeller().getId());*/
         productActivationEmailHandler(product);
 
         return productDto;
@@ -108,7 +109,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDto> getAllProducts(AppUser appUser) throws GenericException {
         SellerDto sellerDto = sellerService.getSellerProfile(appUser);
         Optional<List<Product>> productList = productRepository.findBySeller(sellerDto.toSellerEntity());
-        if (productList.isPresent())
+        if (productList.isPresent() && !productList.get().isEmpty())
             return productList.get().stream().map(Product::toProductDto)
                     .collect(Collectors.toList());
         throw new GenericException("No content found", HttpStatus.NOT_FOUND);
@@ -128,8 +129,23 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public String deleteProduct(AppUser principal, long id) {
-        productRepository.deleteById(id);
+        Optional<Product> product = productRepository.findById(id);
+        if (product.isPresent() && product.get().getSeller().getEmail().equals(principal.getUsername()) &&
+                !product.get().isDeleted()) {
+            product.get().setDeleted(true);
+            productRepository.save(product.get());
+        }
         return ApplicationConstants.SUCCESS_RESPONSE;
+    }
+
+    @Override
+    public ProductDto getProductById(AppUser principal, long id) throws GenericException {
+        Optional<Product> product = productRepository.findById(id);
+        if (product.isPresent() && product.get().getSeller().getEmail().equals(principal.getUsername()) &&
+                !product.get().isDeleted()) {
+            return product.get().toProductDto();
+        }
+        throw new GenericException("No product found for given id and seller", HttpStatus.NOT_FOUND);
     }
 
     private void productActivationConfirmationEmailHandler(Product product) {

@@ -8,25 +8,26 @@ import org.hibernate.annotations.Type;
 import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductVariationDto {
     private int id;
-    @NotBlank(message = "Quantity is mandatory")
+    @Min(value = 0, message = "Quantity can't be less than 0")
     private int quantityAvailable;
-    @NotBlank(message = "Price is mandatory")
+    @Min(value = 0, message = "Price can't be less than 0")
     private int price;
+    @NotBlank(message = "Image is mandatory")
     private String image;
     private boolean isActive = true;
 
-    @Type(type = "json")
-    @Column(columnDefinition = "json")
-    private String metadata;
+    private MetadataDto metadata;
 
-    @NotBlank(message = "Product Id is mandatory")
+    @Min(value = 1, message = "Product id can't be blank")
     private long productId;
 
     public ProductVariation toProductVariationEntity() {

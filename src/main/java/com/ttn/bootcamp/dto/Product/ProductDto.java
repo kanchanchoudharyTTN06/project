@@ -31,10 +31,9 @@ public class ProductDto {
     private boolean isActive = false;
     private boolean isDeleted = false;
     private long categoryId;
-    @JsonIgnore
-    private SellerDto seller;
+    private long sellerId;
 
-    private List<ProductVariationDto> productVariationList;
+    private List<ProductVariation> productVariationList;
 
     public Product toProductEntity() {
         ModelMapper mapper = new ModelMapper();
