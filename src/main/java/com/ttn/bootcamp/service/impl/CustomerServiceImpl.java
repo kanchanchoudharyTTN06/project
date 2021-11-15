@@ -108,7 +108,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public AddressDto updateAddress(long id, Map<String, Object> requestMap, AppUser user) throws GenericException {
-        return addressService.updateAddress(id, requestMap);
+        return addressService.updateAddress(id, requestMap, user);
     }
 
     @Override

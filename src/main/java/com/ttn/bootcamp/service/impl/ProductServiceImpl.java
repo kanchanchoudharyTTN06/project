@@ -59,8 +59,8 @@ public class ProductServiceImpl implements ProductService {
         Optional<Category> category = categoryRepository.findById(productDto.getCategoryId());
         if (!category.isPresent())
             throw new GenericException("Category is not present.", HttpStatus.NOT_FOUND);
-
-        checkForProductExist(productDto.getName(), productDto.getBrand(), category.get(), seller);
+        if (productDto.getId() == 0)
+            checkForProductExist(productDto.getName(), productDto.getBrand(), category.get(), seller);
 
         Product product = productDto.toProductEntity();
         List<Product> productList = seller.getProductList();
@@ -77,6 +77,7 @@ public class ProductServiceImpl implements ProductService {
 
         product.setCategory(category.get());
         product.setSeller(seller);
+        product.setProductVariationList(Collections.emptyList());
         product = productRepository.save(product);
         productDto = product.toProductDto();
         productActivationEmailHandler(product);

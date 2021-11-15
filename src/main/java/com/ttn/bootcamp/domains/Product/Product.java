@@ -32,7 +32,7 @@ public class Product {
     private boolean isDeleted = false;
 
     //@JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "seller_id", referencedColumnName = "id")
     private Seller seller;
 

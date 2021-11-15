@@ -80,7 +80,7 @@ public class CategoryServiceImpl implements CategoryService {
         if (Objects.nonNull(category.getParentCategory()) && category.getParentCategory().getId() != 0) {
             Category parent = getParentCategory(category.getParentCategory().getId());
             category.setParentCategory(parent);
-        } else if (StringUtils.isNotBlank(category.getParentCategory().getName())) {
+        } else if (Objects.nonNull(category.getParentCategory()) && StringUtils.isNotBlank(category.getParentCategory().getName())) {
             Category parent = categoryRepository.save(category.getParentCategory());
             category.setParentCategory(parent);
         }

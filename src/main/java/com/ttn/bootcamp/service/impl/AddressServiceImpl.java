@@ -5,6 +5,7 @@ import com.ttn.bootcamp.domains.User.Address;
 import com.ttn.bootcamp.dto.User.AddressDto;
 import com.ttn.bootcamp.exceptions.GenericException;
 import com.ttn.bootcamp.repository.AddressRepository;
+import com.ttn.bootcamp.security.AppUser;
 import com.ttn.bootcamp.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,9 +28,9 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public AddressDto updateAddress(long id, Map<String, Object> map) throws GenericException {
+    public AddressDto updateAddress(long id, Map<String, Object> map, AppUser appUser) throws GenericException {
         Optional<Address> address = addressRepository.findById(id);
-        if (address.isPresent()) {
+        if (address.isPresent() && address.get().getUser().getEmail().equalsIgnoreCase(appUser.getUsername())) {
             AddressDto addressDto = address.get().toAddressDto();
             map.forEach((key, value) -> {
                 Field field = ReflectionUtils.findField(AddressDto.class, key);
